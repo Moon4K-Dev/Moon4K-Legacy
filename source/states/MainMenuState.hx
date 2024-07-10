@@ -13,8 +13,6 @@ class MainMenuState extends FlxState
 
 	override public function create()
 	{
-		FlxG.stage.window.title = "StrumShit - MainMenuState";
-
 		coolbackdro = new FlxBackdrop(Paths.image('menubglol'), 0.2, 0, true, true);
 		coolbackdro.velocity.set(200, 110);
 		coolbackdro.updateHitbox();
