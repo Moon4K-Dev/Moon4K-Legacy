@@ -1,4 +1,4 @@
-package backend;
+package game;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -9,7 +9,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 class StrumNote {
     var playerKeys:Array<Array<FlxKey>>;
     public var strumlineArrows:FlxTypedGroup<FlxSprite>;
-    public var numStrumNotes:Int; // Changed from var to public var
+    public var numStrumNotes:Int; 
     var noteFrames:FlxAtlasFrames;
 
     public function new(playerKeys:Array<Array<FlxKey>>, numStrumNotes:Int, noteFrames:FlxAtlasFrames) {
