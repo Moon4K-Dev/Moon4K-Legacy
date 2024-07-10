@@ -47,6 +47,8 @@ class PlayState extends FlxState
     private var strumLine:FlxSprite;
 
     override public function create() {
+        FlxG.stage.window.title = "StrumShit - PlayState";
+
         FlxG.camera.bgColor = 0xFF333333;
         despawnNotes = new FlxTypedGroup<FlxSprite>();
         add(despawnNotes);
@@ -148,6 +150,11 @@ class PlayState extends FlxState
         if (FlxG.keys.anyJustPressed([ENTER, ESCAPE])) {
             openSubState(new substates.PauseSubstate());
         }
+
+        if (FlxG.keys.justPressed.SEVEN)
+        {
+            FlxG.switchState(new states.ChartingState());
+        }
         noteMechanics.update(elapsed);
         super.update(elapsed);
 
@@ -157,7 +164,7 @@ class PlayState extends FlxState
 		notes.forEachAlive(function(daNote:Note)
 		{
             // Adjusting the y position based on the current song position and the note's strum time
-            daNote.y = (strumLine.y + 5 - (daNote.height / 2)) - ((Conductor.songPosition - daNote.strumTime) * 0.4);
+            daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * 0.45);
 
             // Visibility and activity check
             if (daNote.y > FlxG.height)
