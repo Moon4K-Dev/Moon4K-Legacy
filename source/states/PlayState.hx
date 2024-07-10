@@ -25,7 +25,7 @@ class PlayState extends FlxState {
         noteFrames = Paths.getSparrowAtlas('notes');
         strumNotes = new StrumNote(playerKeys, 4, noteFrames);
         add(strumNotes.strumlineArrows);
-        noteMechanics = new NoteMechanics(strumNotes.strumlineArrows);
+        noteMechanics = new NoteMechanics(strumNotes.strumlineArrows, strumNotes.numStrumNotes);
         strumNotes.makeStrumline();
         super.create();
         despawnNotes.sort(FlxSort.byY);

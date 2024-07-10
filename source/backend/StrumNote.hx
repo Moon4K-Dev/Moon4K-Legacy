@@ -9,7 +9,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 class StrumNote {
     var playerKeys:Array<Array<FlxKey>>;
     public var strumlineArrows:FlxTypedGroup<FlxSprite>;
-    var numStrumNotes:Int;
+    public var numStrumNotes:Int; // Changed from var to public var
     var noteFrames:FlxAtlasFrames;
 
     public function new(playerKeys:Array<Array<FlxKey>>, numStrumNotes:Int, noteFrames:FlxAtlasFrames) {
@@ -50,6 +50,7 @@ class StrumNote {
             case 1: return "down note0000";
             case 2: return "up note0000";
             case 3: return "right note0000";
+            case 4: return "middle note000";
             default: return "left note0000";
         }
     }
@@ -60,6 +61,7 @@ class StrumNote {
             case 1: return "down press0000";
             case 2: return "up press0000";
             case 3: return "right press0000";
+            case 4: return "middle pressed0000";
             default: return "left press0000";
         }
     }
