@@ -1,4 +1,4 @@
-package game;
+package backend;
 
 import flixel.util.FlxSort;
 import flixel.FlxG;
@@ -9,7 +9,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxText;
 import flixel.FlxCamera;
 import flixel.util.FlxColor;
-import game.StrumNote;
+import backend.StrumNote;
 
 class NoteMechanics {
     var strumlineArrows:FlxTypedGroup<FlxSprite>;
