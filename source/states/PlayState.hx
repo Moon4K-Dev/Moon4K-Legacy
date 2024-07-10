@@ -41,7 +41,7 @@ class PlayState extends FlxState
     // othr
     var strumNotes:StrumNote;
     var despawnNotes:FlxTypedGroup<FlxSprite>;
-    public static var curSong = 'Bopeebo';
+    public static var curSong = '';
     var noteMechanics:NoteMechanics;
     var noteFrames:FlxAtlasFrames;
     private var strumLine:FlxSprite;
@@ -70,7 +70,6 @@ class PlayState extends FlxState
 		strumLine.scrollFactor.set();
         generateSong('assets/data/bopeebo/bopeebo.json');
         despawnNotes.sort(FlxSort.byY);
-        FlxG.sound.playMusic("assets/music/" + curSong + "_Inst" + Utils.soundExt, 1, false);
     }
 
 	private function generateSong(dataPath:String):Void
@@ -78,7 +77,8 @@ class PlayState extends FlxState
 		// FlxG.log.add(ChartParser.parse());
 
 		var songData = Json.parse(Assets.getText(dataPath));
-        FlxG.sound.playMusic("assets/music/" + curSong + "_Inst" + Utils.soundExt, 1, false);
+        FlxG.sound.playMusic("assets/music/" + songData.song + "_Inst" + Utils.soundExt, 1, false);
+        curSong = songData.song;
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
