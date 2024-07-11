@@ -21,7 +21,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 #end
-import states.MainMenuState;
+import states.SplashState;
 
 using StringTools;
 
@@ -29,7 +29,7 @@ class Main extends Sprite
 {
 	var gameWidth:Int = 1280;
 	var gameHeight:Int = 720;
-	var initialState:Class<FlxState> = MainMenuState; 
+	var initialState:Class<FlxState> = SplashState; 
 	var zoom:Float = -1;
 	var framerate:Int = 60;
 	var skipSplash:Bool = true;

@@ -9,8 +9,9 @@ import backend.NoteMechanics;
 import backend.StrumNote;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxSort;
+import game.Conductor;
 
-class PlayState extends FlxState {
+class PlayState extends SwagState {
     var playerKeys = [[A], [S], [K], [L]];
     var strumNotes:StrumNote;
     var despawnNotes:FlxTypedGroup<FlxSprite>;

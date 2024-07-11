@@ -6,7 +6,7 @@ import flixel.addons.display.FlxBackdrop;
 import flixel.FlxSprite;
 import flixel.FlxG;
 
-class MainMenuState extends FlxState
+class MainMenuState extends SwagState
 {
 	var coolbackdro:FlxBackdrop;
 	var cover:FlxSprite;
