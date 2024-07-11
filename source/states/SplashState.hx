@@ -8,12 +8,13 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
-class SplashState extends FlxState
+class SplashState extends SwagState
 {
     var arrowsexylogo:FlxSprite;
     var funnyText:FlxText;
     static public var titleStarted:Bool = false;
     var curWacky:String;
+	private var ptc:FlxText;
 
     override public function create()
     {
@@ -69,11 +70,20 @@ class SplashState extends FlxState
                     });
                 }
             });
-        }    
+        }  
+		ptc = new FlxText(0, (FlxG.height * 0.89) + 24, FlxG.height, "Press Enter to Continue.", 20);
+        ptc.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+        ptc.scrollFactor.set();
+        ptc.screenCenter(X);
+        add(ptc);  
     }
 
     override public function update(elapsed:Float)
     {
+		if (FlxG.keys.justPressed.ENTER)
+		{
+			transitionState(new MainMenuState());
+		}
         super.update(elapsed);
     }
 }
