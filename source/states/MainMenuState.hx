@@ -34,7 +34,7 @@ class MainMenuState extends SwagState
 	{
 		if (FlxG.keys.justPressed.ENTER)
 		{
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(new states.FreeplayState());
 		}
 		super.update(elapsed);
 	}
