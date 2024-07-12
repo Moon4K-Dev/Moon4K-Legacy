@@ -4,7 +4,7 @@
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="StrumShit Test" file="Strumming" main="Main" version="0.0.1" company="TyDotCS" />
+	<app title="Yet Another 4K Rhythm Game!" file="ya4krg" main="Main" version="0.0.1" company="TyDotCS" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -32,6 +32,17 @@
 	
 	<source path="source" />
 	<assets path="assets" />
+
+	<assets path="assets/images" />
+	<assets path="assets/songs" exclude="*.ogg" if="web"/>
+	<assets path="assets/songs" exclude="*.mp3" unless="web"/>
+	<assets path="assets/music" exclude="*.ogg" if="web"/>
+	<assets path="assets/music" exclude="*.mp3" unless="web"/>
+	<assets path="assets/sounds" exclude="*.ogg" if="web"/>
+	<assets path="assets/sounds" exclude="*.mp3" unless="web"/>
+	<assets path="assets/data" />
+	<assets path="assets/fonts" />
+
 
 	<!-- _______________________________ Libraries ______________________________ -->
 

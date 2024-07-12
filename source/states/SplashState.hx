@@ -15,21 +15,27 @@ class SplashState extends SwagState
     static public var titleStarted:Bool = false;
     var curWacky:String;
 	private var ptc:FlxText;
+	static public var optionsInitialized:Bool = false;
+	static public var transitionsAllowed:Bool = false;
+
+    var introTexts:Array<String> = 
+    [
+        "Look Ma, I'm in a video game!",
+        "Swag Swag Cool Shit",
+        "I love ninjamuffin99",
+        "FNF chart support coming never",
+        "I love Ellen Joe Zenless Zone Zero",
+        "Follow TyDotCS on twitter!",
+        "Inspired by FNF and OSU!Mania",
+        "https://example.com"
+    ];
 
     override public function create()
     {
-        super.create();
+        Options.init();
+        optionsInitialized = true;
 
-        var introTexts:Array<String> = [
-            "Look Ma, I'm in a video game!",
-            "Swag Swag Cool Shit",
-            "I love ninjamuffin99",
-            "FNF chart support coming never",
-            "I love Ellen Joe Zenless Zone Zero",
-            "Follow TyDotCS on twitter!",
-            "Inspired by FNF and OSU!Mania",
-            "https://example.com"
-        ];
+        super.create();
         
         curWacky = FlxG.random.getObject(introTexts);
         trace(curWacky);
@@ -44,7 +50,7 @@ class SplashState extends SwagState
             arrowsexylogo.alpha = 0;
             add(arrowsexylogo);
 
-            funnyText = new FlxText(0, 0, 0, "Welcome to StrumShit!", 24);
+            funnyText = new FlxText(0, 0, 0, "Welcome to YA4KRG (Yet Another 4K Rhythm Game)!!", 24);
             funnyText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, CENTER);
             funnyText.screenCenter();
             funnyText.alpha = 0;
@@ -86,7 +92,7 @@ class SplashState extends SwagState
     {
 		if (FlxG.keys.justPressed.ENTER)
 		{
-			transitionState(new MainMenuState());
+			transitionState(new PlayState());
 		}
         super.update(elapsed);
     }
