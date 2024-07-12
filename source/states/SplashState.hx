@@ -32,6 +32,8 @@ class SplashState extends SwagState
 
     override public function create()
     {
+        FlxG.stage.window.title = "YA4KRG Demo - SplashState";
+
         Options.init();
         optionsInitialized = true;
 

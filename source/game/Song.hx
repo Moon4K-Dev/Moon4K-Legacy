@@ -1,13 +1,13 @@
 package game;
 
-import game.Section;
+import game.Section.SwagSection;
 
 using StringTools;
 
-typedef Song =
+typedef SwagSong  =
 {
 	var song:String;
-	var notes:Array<Section>;
+	var notes:Array<SwagSection>;
 	var bpm:Float;
 
 	var keyCount:Null<Int>;

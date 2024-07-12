@@ -62,7 +62,8 @@ class SwagState extends FlxUIState
 		if (oldStep != curStep)
 			stepHit();
 
-		FlxG.stage.frameRate = Options.getData('fps-cap');
+		if (FlxG.stage != null)
+			FlxG.stage.frameRate = Options.getData('fps-cap');
 
 		if (SplashState.optionsInitialized)
 			Controls.refreshControls();
@@ -87,12 +88,12 @@ class SwagState extends FlxUIState
 			Controls.refreshControls();
 	}
 
-	private function updateBeat():Void
+	function updateBeat():Void
 	{
-		curBeat = Math.floor(curStep / (16 / Conductor.timeScale[1]));
+		curBeat = Math.floor(curStep / Conductor.timeScale[1]);
 	}
 
-	private function updateCurStep():Void
+	function updateCurStep():Void
 	{
 		var lastChange:BPMChangeEvent = {
 			stepTime: 0,
@@ -106,7 +107,29 @@ class SwagState extends FlxUIState
 				lastChange = Conductor.bpmChangeMap[i];
 		}
 
-		Conductor.recalculateStuff();
+		var dumb:TimeScaleChangeEvent = {
+			stepTime: 0,
+			songTime: 0,
+			timeScale: [4, 4]
+		};
+
+		var lastTimeChange:TimeScaleChangeEvent = dumb;
+
+		for (i in 0...Conductor.timeScaleChangeMap.length)
+		{
+			if (Conductor.songPosition >= Conductor.timeScaleChangeMap[i].songTime)
+				lastTimeChange = Conductor.timeScaleChangeMap[i];
+		}
+
+		if (lastTimeChange != dumb)
+			Conductor.timeScale = lastTimeChange.timeScale;
+
+		var multi:Float = 1;
+
+		if (FlxG.state == PlayState.instance)
+			multi = PlayState.songMultiplier;
+
+		Conductor.recalculateStuff(multi);
 
 		curStep = lastChange.stepTime + Math.floor((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
 

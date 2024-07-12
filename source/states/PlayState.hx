@@ -9,14 +9,25 @@ import options.Controls;
 import options.Options;
 import ui.StrumNote;
 import game.Note;
+import flixel.math.FlxMath;
+import flixel.ui.FlxBar;
+import flixel.util.FlxColor;
+import flixel.util.FlxSort;
+import game.Conductor;
+import game.Song;
+import util.Util;
 
 class PlayState extends SwagState
 {
 	static public var instance:PlayState;
 
-	public var speed:Int = 1;
+	static public var songMultiplier:Float = 1;
+
+	public var speed:Float = 2.5;
+	public var song:SwagSong;
 
 	var strumNotes:FlxTypedGroup<StrumNote>;
+	var spawnNotes:Array<Note> = [];
 
 	var keyCount:Int = 4;
 	var laneOffset:Int = 100;
@@ -29,15 +40,28 @@ class PlayState extends SwagState
 	override public function new()
 	{
 		super();
+
+		if (song == null)
+		{
+			song = {
+				song: "Test",
+				notes: [],
+				bpm: 120,
+				keyCount: 4,
+				timescale: [4, 4]
+			};
+		}
+
 		instance = this;
 	}
 
 	override public function create()
 	{
-		FlxG.camera.bgColor = 0xFF333333;
-		super.create();
+		FlxG.stage.window.title = "YA4KRG Demo - PlayState";
 
-		speed = Options.getData('scroll-speed');
+		FlxG.camera.bgColor = 0xFF333333;
+
+		super.create();
 
 		laneOffset = Options.getData('lane-offset');
 
@@ -48,8 +72,34 @@ class PlayState extends SwagState
 
 		add(strumArea);
 
+		if (songMultiplier < 0.1)
+			songMultiplier = 0.1;
+
+		Conductor.changeBPM(song.bpm, songMultiplier);
+
+		Conductor.recalculateStuff(songMultiplier);
+
+		Conductor.safeZoneOffset *= songMultiplier;
+
+		resetSongPos();
+
+		if (song.keyCount != null)
+			keyCount = song.keyCount;
+		else
+			keyCount = 4;
+
+		speed = Options.getData('scroll-speed');
+
+		speed /= songMultiplier;
+
+		if (speed < 0.1 && songMultiplier > 1)
+			speed = 0.1;
+
 		strumNotes = new FlxTypedGroup<StrumNote>();
 		add(strumNotes);
+
+		notes = new FlxTypedGroup<Note>();
+		add(notes);
 
 		for (i in 0...keyCount)
 		{
@@ -64,11 +114,53 @@ class PlayState extends SwagState
 		generateNotes();
 	}
 
+	function resetSongPos()
+	{
+		Conductor.songPosition = 0 - (Conductor.crochet * 4.5);
+	}
+
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		if (FlxG.sound.music != null && FlxG.sound.music.active && FlxG.sound.music.playing)
+			Conductor.songPosition = FlxG.sound.music.time;
+		else
+			Conductor.songPosition += (FlxG.elapsed) * 1000;
+
+		if (spawnNotes[0] != null)
+		{
+			while (spawnNotes.length > 0 && spawnNotes[0].strum - Conductor.songPosition < (1500 * songMultiplier))
+			{
+				var dunceNote:Note = spawnNotes[0];
+				notes.add(dunceNote);
+
+				var index:Int = spawnNotes.indexOf(dunceNote);
+				spawnNotes.splice(index, 1);
+			}
+		}
+
+		for (note in notes)
+		{
+			var strum = strumNotes.members[note.direction % keyCount];
+			note.y = strum.y - (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
+
+			if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null)
+			{
+				notes.remove(note);
+				note.kill();
+				note.destroy();
+			}
+		}
+
 		if (Controls.BACK)
 			transitionState(new SplashState());
+
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			transitionState(new ChartingState());
+			ChartingState.instance.song = song;
+		}
 
 		inputFunction();
 	}
@@ -111,13 +203,132 @@ class PlayState extends SwagState
 		{
 			if (released[i])
 			{
-				strumNotes.members[i].playAnim("static", true);
+				strumNotes.members[i].playAnim("static");
 			}
 		}
+
+
+		var possibleNotes:Array<Note> = [];
+
+		for (note in notes)
+		{
+			note.calculateCanBeHit();
+
+			if (!Options.getData('botplay'))
+			{
+				if (note.canBeHit && !note.tooLate && !note.isSustainNote)
+					possibleNotes.push(note);
+			}
+			else
+			{
+				if ((!note.isSustainNote ? note.strum : note.strum - 1) <= Conductor.songPosition)
+					possibleNotes.push(note);
+			}
+		}
+
+		possibleNotes.sort((a, b) -> Std.int(a.strum - b.strum));
+
+		var doNotHit:Array<Bool> = [false, false, false, false];
+		var noteDataTimes:Array<Float> = [-1, -1, -1, -1];
+
+		if (possibleNotes.length > 0)
+		{
+			for (i in 0...possibleNotes.length)
+			{
+				var note = possibleNotes[i];
+
+				if (((justPressed[note.direction] && !doNotHit[note.direction]) && !Options.getData('botplay'))
+					|| Options.getData('botplay'))
+				{
+					var ratingScores:Array<Int> = [350, 200, 100, 50];
+
+					var noteMs = (Conductor.songPosition - note.strum) / songMultiplier;
+
+					if (Options.getData('botplay'))
+						noteMs = 0;
+
+					var roundedDecimalNoteMs:Float = FlxMath.roundDecimal(noteMs, 3);
+
+					//curRating = "marvelous";
+
+					if (Math.abs(noteMs) > 25)
+						trace("perfect!");
+
+					if (Math.abs(noteMs) > 50)
+						trace("good!");
+
+					if (Math.abs(noteMs) > 70)
+						trace("BAD");
+
+					if (Math.abs(noteMs) > 100)
+						trace("MISS");
+
+					noteDataTimes[note.direction] = note.strum;
+					doNotHit[note.direction] = true;
+
+					strumNotes.members[note.direction].playAnim("confirm", true);
+
+					note.active = false;
+					notes.remove(note);
+					note.kill();
+					note.destroy();
+				}
+			}
+
+			if (possibleNotes.length > 0)
+			{
+				for (i in 0...possibleNotes.length)
+				{
+					var note = possibleNotes[i];
+
+					if (note.strum == noteDataTimes[note.direction] && doNotHit[note.direction])
+					{
+						note.active = false;
+						notes.remove(note);
+						note.kill();
+						note.destroy();
+					}
+				}
+			}
+		}		
 	}
 
 	function generateNotes()
 	{
-		// no swagger yet..
+		for (section in song.notes)
+		{
+			Conductor.recalculateStuff(songMultiplier);
+
+			for (note in section.sectionNotes)
+			{
+				var strum = strumNotes.members[note.noteData % keyCount];
+
+				var daStrumTime:Float = note.noteStrum + (Options.getData('song-offset') * songMultiplier);
+				var daNoteData:Int = Std.int(note.noteData % keyCount);
+
+				var oldNote:Note;
+
+				if (spawnNotes.length > 0)
+					oldNote = spawnNotes[Std.int(spawnNotes.length - 1)];
+				else
+					oldNote = null;
+
+				var swagNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime, Options.getNoteskins()[Options.getData("ui-skin")], false, false,
+					keyCount);
+				swagNote.scrollFactor.set();
+				swagNote.lastNote = oldNote;
+
+				swagNote.playAnim('note');
+
+				spawnNotes.push(swagNote);
+			}
+		}
+
+		spawnNotes.sort(sortByShit);
+	}
+
+	function sortByShit(Obj1:Note, Obj2:Note):Int
+	{
+		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strum, Obj2.strum);
 	}
 }

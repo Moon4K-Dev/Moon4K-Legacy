@@ -35,7 +35,11 @@ class Note extends FlxSprite
 
 	public var origPos:Array<Float> = [0, 0];
 
+	public var rawNoteData:Int = 0;
+
 	public var json:Dynamic = null;
+
+	public var offsets = [0, 0];
 
 	public function new(x, y, direction:Int = 0, ?strum:Float, ?noteskin:String = 'default', ?isSustainNote:Bool = false, ?isEndNote:Bool = false,
 			?keyCount:Int = 4)
@@ -49,7 +53,7 @@ class Note extends FlxSprite
 		this.isEndNote = isEndNote;
 		this.keyCount = keyCount;
 
-		loadNoteSkin(noteskin);
+		loadNoteSkin(noteskin, direction);
 		setOrigPos();
 	}
 
@@ -58,31 +62,42 @@ class Note extends FlxSprite
 		origPos = [x, y];
 	}
 
-	public function loadNoteSkin(?noteskin:String = 'default')
+	public function loadNoteSkin(?noteskin:String = 'default', ?direction:Int = 0)
 	{
-		json = Util.getJson('images/ui-skins/' + noteskin + '/config');
-
-		frames = Util.getSparrow('ui-skins/' + noteskin + '/notes');
-
-		antialiasing = Options.getData('anti-aliasing');
-
-		if (!isSustainNote)
+		// ADD MOD SUPPORT TO THIS CHECK
+		if (!Assets.exists('assets/images/ui-skins/$noteskin/config.json'))
 		{
-			switch (keyCount)
-			{
-				case 1:
-					switch (direction % keyCount)
-					{
-						case 0:
-							animation.addByPrefix("note", json.animations[4][3], 24);
-					}
-			}
+			Options.saveData('ui-skin', 0);
+			noteskin = Options.getNoteskins()[0];
 		}
+
+		this.noteskin = noteskin;
+
+		if (direction == null)
+			direction = this.direction;
+
+		frames = Util.getSparrow('ui-skins/$noteskin/notes');
+		json = Util.getJson('images/ui-skins/$noteskin/config');
+
+		if (json.offsets != null)
+			offsets = json.offsets;
+		else
+			offsets = [0, 0];
+
+		animation.addByPrefix("static", json.animations[direction][0], json.framerate, false);
+		animation.addByPrefix("press", json.animations[direction][1], json.framerate, false);
+		animation.addByPrefix("confirm", json.animations[direction][2], json.framerate, false);
+		animation.addByPrefix("note", json.animations[direction][3], json.framerate, false);
+
+		if (json.antialiasing == true)
+			antialiasing = Options.getData('antialiasing');
+		else
+			antialiasing = false;
 
 		scale.set(json.size, json.size);
 		updateHitbox();
 
-		playAnim('note', true);
+		playAnim("note");
 	}
 
 	public function playAnim(anim:String, ?force:Bool = false)
@@ -91,6 +106,8 @@ class Note extends FlxSprite
 
 		centerOffsets();
 		centerOrigin();
+
+		offset.set(offset.x + offsets[0], offset.y + offsets[1]);
 	}
 
 	override public function update(elapsed:Float)
