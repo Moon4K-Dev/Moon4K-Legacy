@@ -56,6 +56,7 @@ class PlayState extends SwagState
 			};
 		}
 
+		curSong = Freeplay.instance.selectedSong;
 		instance = this;
 	}
 
@@ -66,8 +67,7 @@ class PlayState extends SwagState
 		FlxG.camera.bgColor = 0xFF333333;
 
 		super.create();
-
-		curSong = song.song;
+		trace(curSong);
 
 		laneOffset = Options.getData('lane-offset');
 
@@ -118,7 +118,8 @@ class PlayState extends SwagState
 			strumNotes.add(daStrum);
 		}
 		generateNotes(song.song);
-		FlxG.sound.playMusic("assets/music/" + curSong + "/music" + Utils.soundExt, 1, false);
+		FlxG.sound.playMusic("assets/music/" + curSong + "_Inst" + Utils.soundExt, 1, false);
+		
 	}
 
 	function resetSongPos()

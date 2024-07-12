@@ -261,11 +261,7 @@ class ChartingState extends SwagState
             + "\nCurBeat: "
             + curBeat
             + "\nNote Snap: "
-            + beatSnap		
-            + "\nSpeed: "
-            + song.speed	
-			+ "\nKeys: "
-            + song.keyCount							
+            + beatSnap
             + (FlxG.keys.pressed.SHIFT ? "\n(DISABLED)" : "\n(CONTROL + ARROWS)")
             + "\n");
     }
