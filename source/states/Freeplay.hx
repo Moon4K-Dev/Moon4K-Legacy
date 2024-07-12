@@ -72,8 +72,8 @@ class Freeplay extends SwagState
 
         if (FlxG.keys.justPressed.ENTER)
         {
-			var poop:String = Highscore.formatSong(songs[curSelected].toLowerCase(), curDifficulty);
-			PlayState.instance.song = Song.loadFromJson(poop, songs[curSelected].toLowerCase());
+			//var poop:String = Highscore.formatSong(songs[curSelected].toLowerCase(), curDifficulty);
+			//PlayState.instance.song = Song.loadFromJson(poop, songs[curSelected].toLowerCase());
 			transitionState(new PlayState());
         }
 
