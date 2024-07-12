@@ -27,7 +27,8 @@ class SplashState extends SwagState
         "I love Ellen Joe Zenless Zone Zero",
         "Follow TyDotCS on twitter!",
         "Inspired by FNF and OSU!Mania",
-        "https://example.com"
+        "https://example.com",
+        "Slide the weed homie.."
     ];
 
     override public function create()

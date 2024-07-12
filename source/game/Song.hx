@@ -14,6 +14,7 @@ typedef SwagSong  =
 	var bpm:Float;
 	var sections:Int;
 	var sectionLengths:Array<Dynamic>;
+	var speed:Float;
 	var keyCount:Null<Int>;
 	var timescale:Array<Int>;
 }
@@ -25,6 +26,7 @@ class Song
 	public var bpm:Float;
 	public var sections:Int;
 	public var sectionLengths:Array<Dynamic> = [];	
+	public var speed:Float = 1;
 	public var keyCount:Null<Int>;
 	public var timescale:Array<Int>;
 

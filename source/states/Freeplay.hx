@@ -74,7 +74,6 @@ class Freeplay extends SwagState
         {
 			var poop:String = Highscore.formatSong(songs[curSelected].toLowerCase(), curDifficulty);
 			PlayState.instance.song = Song.loadFromJson(poop, songs[curSelected].toLowerCase());
-			trace('Song Diff: ' + curDifficulty);
 			transitionState(new PlayState());
         }
 

@@ -46,6 +46,7 @@ class ChartingState extends SwagState
 			bpm: 100,
 			sections: 0,
 			sectionLengths: [],
+			speed: 1,
 			keyCount: 4,
 			timescale: [4, 4]
 		};

@@ -50,6 +50,7 @@ class PlayState extends SwagState
 				bpm: 100,
 				sections: 0,
 				sectionLengths: [],
+				speed: 1,
 				keyCount: 4,
 				timescale: [4, 4]
 			};
@@ -65,6 +66,8 @@ class PlayState extends SwagState
 		FlxG.camera.bgColor = 0xFF333333;
 
 		super.create();
+
+		curSong = song.song;
 
 		laneOffset = Options.getData('lane-offset');
 
@@ -91,7 +94,7 @@ class PlayState extends SwagState
 		else
 			keyCount = 4;
 
-		speed = Options.getData('scroll-speed');
+		speed = song.speed;
 
 		speed /= songMultiplier;
 
@@ -115,6 +118,7 @@ class PlayState extends SwagState
 			strumNotes.add(daStrum);
 		}
 		generateNotes(song.song);
+		FlxG.sound.playMusic("assets/music/" + curSong + "/music" + Utils.soundExt, 1, false);
 	}
 
 	function resetSongPos()
