@@ -36,6 +36,7 @@ class PlayState extends SwagState
 	var notes:FlxTypedGroup<Note>;
 
 	static public var strumY:Float = 0;
+	public static var curSong:String = '';
 
 	override public function new()
 	{
@@ -113,7 +114,7 @@ class PlayState extends SwagState
 
 			strumNotes.add(daStrum);
 		}
-		generateNotes();
+		generateNotes(song.song);
 	}
 
 	function resetSongPos()
@@ -294,7 +295,7 @@ class PlayState extends SwagState
 		}		
 	}
 
-	function generateNotes()
+	function generateNotes(dataPath:String):Void
 	{
 		for (section in song.notes)
 		{
