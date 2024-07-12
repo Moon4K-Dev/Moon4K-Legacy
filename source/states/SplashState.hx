@@ -94,7 +94,7 @@ class SplashState extends SwagState
     {
 		if (FlxG.keys.justPressed.ENTER)
 		{
-			transitionState(new PlayState());
+			transitionState(new ChartingState());
 		}
         super.update(elapsed);
     }

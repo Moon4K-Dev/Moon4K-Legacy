@@ -44,6 +44,8 @@ class ChartingState extends SwagState
 			song: "Test",
 			notes: [],
 			bpm: 100,
+			sections: 0,
+			sectionLengths: [],
 			keyCount: 4,
 			timescale: [4, 4]
 		};

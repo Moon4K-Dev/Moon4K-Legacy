@@ -7,7 +7,7 @@ class Options
 	// functions
 	static public function init()
 	{
-		FlxG.save.bind("subparrhythm", "subpar-data");
+		FlxG.save.bind("ya4krg", "TyDotCS");
 
 		for (option in defaultOptions)
 		{
@@ -38,8 +38,15 @@ class Options
 		[
 			"keybinds",
 			[
-				["A", "S", "K", "L"],
-				["A", "S", "SPACE", "K", "L"]
+				["SPACE"],
+				["D", "K"],
+				["D", "SPACE", "K"],
+				["D", "F", "J", "K"],
+				["D", "F", "SPACE", "J", "K"],
+				["S", "D", "F", "J", "K", "L"],
+				["S", "D", "F", "SPACE", "J", "K", "L"],
+				["A", "S", "D", "F", "H", "J", "K", "L"],
+				["A", "S", "D", "F", "SPACE", "H", "J", "K", "L"]
 			]
 		],
 		[
@@ -49,9 +56,6 @@ class Options
 				["ESCAPE", "SPACE", "A", "S", "W", "D"]
 			]
 		],
-		["downscroll", true],
-		["show-backgrounds", true],
-		["antialiasing", true],
 		["scroll-speed", 2],
 		["lane-offset", 100],
 		["note-offset", 0],

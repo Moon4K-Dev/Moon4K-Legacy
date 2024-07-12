@@ -46,7 +46,9 @@ class PlayState extends SwagState
 			song = {
 				song: "Test",
 				notes: [],
-				bpm: 120,
+				bpm: 100,
+				sections: 0,
+				sectionLengths: [],
 				keyCount: 4,
 				timescale: [4, 4]
 			};
@@ -206,7 +208,6 @@ class PlayState extends SwagState
 				strumNotes.members[i].playAnim("static");
 			}
 		}
-
 
 		var possibleNotes:Array<Note> = [];
 
