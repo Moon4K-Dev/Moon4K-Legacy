@@ -164,6 +164,14 @@ class PlayState extends SwagState
 		if (Controls.BACK)
 			transitionState(new SplashState());
 
+        #if !(mobile)
+        if (FlxG.keys.anyJustPressed([ENTER, ESCAPE]))
+        {
+            var pauseSubState = new substates.PauseSubstate();
+            openSubState(pauseSubState);
+        }
+        #end
+
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			transitionState(new ChartingState());

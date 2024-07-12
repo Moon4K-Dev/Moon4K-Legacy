@@ -48,7 +48,6 @@ class ChartingState extends SwagState
 
     var saveButton:FlxButton;
 
-    // New UI elements for speed, keyCount, and bpm
     var speedInput:FlxInputText;
     var keyCountInput:FlxInputText;
     var bpmInput:FlxInputText;
@@ -88,6 +87,7 @@ class ChartingState extends SwagState
 
         beatSnap = Conductor.stepsPerSection;
 
+		columns = song.keyCount;
         gridBG = FlxGridOverlay.create(gridSize, gridSize, gridSize * columns, gridSize * rows, true, 0xFF404040, 0xFF525252);
         gridBG.screenCenter();
         add(gridBG);
@@ -278,14 +278,14 @@ class ChartingState extends SwagState
     function setKeyCount():Void
     {
         song.keyCount = Std.parseInt(keyCountInput.text);
-        updateGrid(); // Update the grid to reflect the new key count
+        updateGrid();
     }
 
     function setBPM():Void
     {
         song.bpm = Std.parseFloat(bpmInput.text);
         Conductor.bpm = song.bpm;
-        updateGrid(); // Update the grid to reflect the new BPM
+        updateGrid();
     }
 
     function loadSong(daSong:String):Void
