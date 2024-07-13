@@ -19,6 +19,9 @@ import util.Util;
 import game.UI;
 import flixel.FlxCamera;
 import flixel.FlxSubState;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.text.FlxText;
 
 class PlayState extends SwagState
 {
@@ -45,6 +48,7 @@ class PlayState extends SwagState
 
     public var songScore:Int = 0;
     public var misses:Int = 0;
+	var rating:FlxSprite = new FlxSprite();
 
     override public function new()
     {
@@ -138,8 +142,14 @@ class PlayState extends SwagState
         notes.cameras = [camHUD];
 
         generateNotes(song.song);
-        FlxG.sound.playMusic(Paths.song(curSong +'/music'));    
+        FlxG.sound.playMusic(Paths.song(curSong +'/music'));   
+		FlxG.sound.music.onComplete = endSong; 
     }
+
+	function endSong():Void
+	{
+		transitionState(new ResultsState());
+	}
 
     function resetSongPos()
     {
@@ -183,6 +193,10 @@ class PlayState extends SwagState
             }
         }
 
+		FlxTween.tween(rating, {alpha: 0}, 0.2, {
+			startDelay: Conductor.crochet * 0.001
+		});
+
         if (Controls.BACK)
             transitionState(new SplashState());
 
@@ -205,8 +219,17 @@ class PlayState extends SwagState
 
         if (FlxG.keys.justPressed.SEVEN)
         {
+        	if (FlxG.sound.music != null)
+            	FlxG.sound.music.stop();
             transitionState(new ChartingState());
             ChartingState.instance.song = song;
+        }
+
+        if (FlxG.keys.justPressed.EIGHT)
+        {
+			if (FlxG.sound.music != null)
+            	FlxG.sound.music.stop();
+            transitionState(new ResultsState());
         }
 
         inputFunction();
@@ -318,24 +341,56 @@ class PlayState extends SwagState
 						noteMs = 0;
 
 					var roundedDecimalNoteMs:Float = FlxMath.roundDecimal(noteMs, 3);
+					var noteDiff:Float = Math.abs(Conductor.songPosition);
 
 					//curRating = "marvelous";
 
-					if (Math.abs(noteMs) > 25)
-						trace("perfect!");
-						songScore += 350;
+					var score:Int = 350;
+					var daRating:String = "sick";
 
-					if (Math.abs(noteMs) > 50)
+					if (noteDiff > Conductor.safeZoneOffset * 1)
+					{
+						daRating = "sick";
+						trace("sick!");
+						score = 350;
+					}	
+					if (noteDiff > Conductor.safeZoneOffset * 0.9)
+					{
+						daRating = "good";
 						trace("good!");
-						songScore += 200;
-
-					if (Math.abs(noteMs) > 70)
+						score = 200;
+					}	
+					else if (noteDiff > Conductor.safeZoneOffset * 0.7)
+					{
+						daRating = "bad";
 						trace("BAD");
-						songScore += 100;
+						score = 100;
+					}	
+					else if (noteDiff > Conductor.safeZoneOffset * 0.9)
+					{
+						daRating = "shit";
+						trace("SHIT");
+						score = 50;
+					}	
+					songScore += score;
 
-					if (Math.abs(noteMs) > 100)
-						trace("SHII");
-						songScore += 50;
+					var placement:String = "my balls hurt";
+					var coolText:FlxText = new FlxText(0, 0, 0, placement, 32);
+					coolText.screenCenter();
+					coolText.x = FlxG.width * 0.55;
+
+					rating.loadGraphic('assets/images/' + daRating + ".png");
+					rating.screenCenter(X);
+					rating.x = coolText.x - 40;
+					rating.y -= 60;
+					rating.acceleration.y = 550;
+					rating.velocity.y -= FlxG.random.int(140, 175);
+					rating.setGraphicSize(Std.int(rating.width * 0.7));
+					rating.updateHitbox();
+					rating.antialiasing = true;
+					rating.velocity.x -= FlxG.random.int(0, 10);
+					add(rating);
+					rating.updateHitbox();
 
                     noteDataTimes[note.direction] = note.strum;
                     doNotHit[note.direction] = true;

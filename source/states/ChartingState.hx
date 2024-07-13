@@ -231,6 +231,18 @@ class ChartingState extends SwagState
             PlayState.instance.song = song;
         }
 
+		if (FlxG.keys.justPressed.SPACE)
+		{
+			if (FlxG.sound.music.playing)
+			{
+				FlxG.sound.music.pause();
+			}
+			else
+			{
+				FlxG.sound.music.play();
+			}
+		}
+
         if (FlxG.mouse.x > gridBG.x
             && FlxG.mouse.x < gridBG.x + gridBG.width
             && FlxG.mouse.y > gridBG.y
