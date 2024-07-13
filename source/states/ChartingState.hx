@@ -64,7 +64,7 @@ class ChartingState extends SwagState
         instance = this;
 
         song = {
-            song: "Test",
+            song: "test",
             notes: [],
             bpm: 100,
             sections: 0,
