@@ -71,6 +71,11 @@ class Paths
 		return file('music/$key.$SOUND_EXT');
 	}
 
+	inline static public function song(key:String)
+	{
+		return file('songs/$key.$SOUND_EXT');
+	}
+
 	inline static public function image(key:String)
 	{
 		return file('images/$key.png');

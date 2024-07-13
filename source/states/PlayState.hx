@@ -118,7 +118,7 @@ class PlayState extends SwagState
 			strumNotes.add(daStrum);
 		}
 		generateNotes(song.song);
-		FlxG.sound.playMusic(Paths.music(curSong +'_Inst'));		
+		FlxG.sound.playMusic(Paths.song(curSong +'/music'));	
 	}
 
 	function resetSongPos()
