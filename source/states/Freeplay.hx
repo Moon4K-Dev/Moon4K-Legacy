@@ -11,6 +11,8 @@ import flixel.util.FlxColor;
 import game.Song;
 import game.Highscore;
 import flixel.addons.display.FlxBackdrop;
+import haxe.Json;
+import sys.io.File;
 
 class Freeplay extends SwagState
 {
@@ -24,6 +26,7 @@ class Freeplay extends SwagState
     var diffText:FlxText;
     public var selectedSong:String;
     static public var instance:Freeplay;
+    var songData:Dynamic;
 
     public function new() {
         super();
@@ -80,7 +83,9 @@ class Freeplay extends SwagState
 
         if (FlxG.keys.justPressed.ENTER)
         {
+            loadSongJson(selectedSong);
             transitionState(new PlayState());
+            PlayState.instance.song = songData;
         }
 
         super.update(elapsed);
@@ -100,5 +105,13 @@ class Freeplay extends SwagState
             txt.color = (txt.ID == curSelected) ? FlxColor.YELLOW : FlxColor.WHITE;
         });
         selectedSong = songs[curSelected];
-    }    
+    }
+
+    function loadSongJson(songName:String):Void
+    {
+        var path:String = "assets/data/" + songName + "/" + songName + ".json";
+        var jsonContent:String = File.getContent(path);
+        songData = Json.parse(jsonContent);
+        trace(songData);
+    }
 }
