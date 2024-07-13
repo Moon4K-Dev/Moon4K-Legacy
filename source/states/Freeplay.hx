@@ -15,7 +15,7 @@ import flixel.addons.display.FlxBackdrop;
 class Freeplay extends SwagState
 {
     var grpSongs:FlxTypedGroup<FlxText>;
-    public static var songs:Array<String> = ["fartface"];
+    public static var songs:Array<String> = ["test"];
     public var curSelected:Int = 0;
     var scoreText:FlxText;
     var lerpScore:Int = 0;

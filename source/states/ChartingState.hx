@@ -23,6 +23,7 @@ import haxe.io.Path;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
+import openfl.net.FileFilter;
 
 using StringTools;
 
@@ -47,14 +48,14 @@ class ChartingState extends SwagState
     public var song:SwagSong;
 
     var saveButton:FlxButton;
+	var loadButton:FlxButton;
+    var speedButton:FlxButton;
+    var keyCountButton:FlxButton;
+    var bpmButton:FlxButton;
 
     var speedInput:FlxInputText;
     var keyCountInput:FlxInputText;
     var bpmInput:FlxInputText;
-
-    var speedButton:FlxButton;
-    var keyCountButton:FlxButton;
-    var bpmButton:FlxButton;
 
     override public function new()
     {
@@ -134,6 +135,44 @@ class ChartingState extends SwagState
 
         bpmButton = new FlxButton(70, FlxG.height - 160, "Set BPM", setBPM);
         add(bpmButton);
+
+        loadButton = new FlxButton(70, FlxG.height - 200, "Load Song", loadSongFromFile);
+        add(loadButton);		
+    }
+
+    function loadSongFromFile():Void {
+        _file = new FileReference();
+        _file.addEventListener(Event.SELECT, onFileSelected);
+        _file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+        _file.browse([new FileFilter("JSON Files", "*.json")]);
+    }
+
+    function onFileSelected(event:Event):Void {
+        _file.addEventListener(Event.COMPLETE, onLoadComplete);
+        _file.load();
+    }
+
+    function onLoadComplete(event:Event):Void {
+        _file.removeEventListener(Event.COMPLETE, onLoadComplete);
+        _file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+
+        var jsonData:String = _file.data.readUTFBytes(_file.data.length);
+        var loadedSong:SwagSong = Json.parse(jsonData);
+        
+        // Update the song object and UI with loaded data
+        song = loadedSong;
+        updateGrid(); // Refresh the grid with the new song data
+
+        // You may want to reset other UI elements related to the song
+        speedInput.text = Std.string(song.speed);
+        keyCountInput.text = Std.string(song.keyCount);
+        bpmInput.text = Std.string(song.bpm);
+    }
+
+    function onLoadError(event:IOErrorEvent):Void {
+        _file.removeEventListener(Event.COMPLETE, onLoadComplete);
+        _file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+        trace("Error loading song: " + event.text);
     }
 
     function saveChart():Void
