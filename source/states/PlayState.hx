@@ -16,6 +16,8 @@ import flixel.util.FlxSort;
 import game.Conductor;
 import game.Song;
 import util.Util;
+import game.UI;
+import flixel.FlxCamera;
 
 class PlayState extends SwagState
 {
@@ -37,6 +39,11 @@ class PlayState extends SwagState
 
 	static public var strumY:Float = 0;
 	public static var curSong:String = '';
+	var hud:UI;
+	private var camHUD:FlxCamera;
+
+	public var songScore:Int = 0;
+	public var misses:Int = 0;
 
 	override public function new()
 	{
@@ -65,6 +72,10 @@ class PlayState extends SwagState
 		FlxG.stage.window.title = "YA4KRG Demo - PlayState";
 
 		FlxG.camera.bgColor = 0xFF333333;
+
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+		FlxG.cameras.add(camHUD);
 
 		super.create();
 		trace(curSong);
@@ -117,6 +128,14 @@ class PlayState extends SwagState
 
 			strumNotes.add(daStrum);
 		}
+
+		hud = new UI();
+		add(hud);
+
+		hud.cameras = [camHUD];
+		strumNotes.cameras = [camHUD];
+		notes.cameras = [camHUD];
+
 		generateNotes(song.song);
 		FlxG.sound.playMusic(Paths.song(curSong +'/music'));	
 	}
