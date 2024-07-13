@@ -159,11 +159,9 @@ class ChartingState extends SwagState
         var jsonData:String = _file.data.readUTFBytes(_file.data.length);
         var loadedSong:SwagSong = Json.parse(jsonData);
         
-        // Update the song object and UI with loaded data
         song = loadedSong;
-        updateGrid(); // Refresh the grid with the new song data
-
-        // You may want to reset other UI elements related to the song
+        updateGrid();
+        
         speedInput.text = Std.string(song.speed);
         keyCountInput.text = Std.string(song.keyCount);
         bpmInput.text = Std.string(song.bpm);
