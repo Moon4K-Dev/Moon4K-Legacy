@@ -28,8 +28,7 @@ class Freeplay extends SwagState
     static public var instance:Freeplay;
     var songData:Dynamic;
     var missesTxt:FlxText;
-
-    
+    public var songInfoData:Array<Dynamic>;
     var visibleRange:Int = 5;
     var songHeight:Int = 100;
 
@@ -105,6 +104,13 @@ class Freeplay extends SwagState
             PlayState.instance.song = songData;
         }
 
+        if (FlxG.keys.justPressed.TAB)
+        {
+            loadSongInfoJson(selectedSong);
+            var infosubstate = new substates.SongInfoSubstate();
+            openSubState(infosubstate);
+        }
+
         super.update(elapsed);
     }
 
@@ -142,7 +148,15 @@ class Freeplay extends SwagState
         });
 
         selectedSong = songs[curSelected];
+    } 
+    
+    function loadSongInfoJson(songName:String):Void {
+        var path:String = "assets/data/" + songName + "/songInfo.json";
+        var jsonContent:String = File.getContent(path);
+        songInfoData = Json.parse(jsonContent);
+        trace(songInfoData);
     }
+    
 
     function loadSongJson(songName:String):Void
     {
