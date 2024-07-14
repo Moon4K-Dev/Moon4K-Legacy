@@ -197,7 +197,7 @@ class PlayState extends SwagState
 			startDelay: Conductor.crochet * 0.001
 		});
 
-        if (Controls.BACK)
+        if (FlxG.keys.justPressed.BACKSPACE)
             transitionState(new SplashState());
 
         #if !(mobile)

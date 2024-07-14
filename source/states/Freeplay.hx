@@ -17,7 +17,7 @@ import sys.io.File;
 class Freeplay extends SwagState
 {
     var grpSongs:FlxTypedGroup<FlxText>;
-    public static var songs:Array<String> = ["test"];
+    public static var songs:Array<String> = ["test", "very", "swagger", "freeplay", "concept", "idk", "what else", "to put", "here"];
     public var curSelected:Int = 0;
     var scoreText:FlxText;
     var lerpScore:Int = 0;
@@ -27,6 +27,9 @@ class Freeplay extends SwagState
     public var selectedSong:String;
     static public var instance:Freeplay;
     var songData:Dynamic;
+    
+    var visibleRange:Int = 5;
+    var songHeight:Int = 100;
 
     public function new() {
         super();
@@ -38,20 +41,20 @@ class Freeplay extends SwagState
     override public function create()
     {
         FlxG.stage.window.title = "YA4KRG Demo - FreeplayState";
-        var coolbackdro:FlxBackdrop = new FlxBackdrop(Paths.image('menubglol'), 0.2, 0, true, true);
-        coolbackdro.velocity.set(200, 110);
-        coolbackdro.updateHitbox();
-        coolbackdro.alpha = 0.5;
-        coolbackdro.screenCenter();
-        add(coolbackdro);
+        
+        var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('menubglol'), 0.2, 0, true, true);
+        coolBackdrop.velocity.set(50, 30);
+        coolBackdrop.alpha = 0.7;
+        add(coolBackdrop);
 
         grpSongs = new FlxTypedGroup<FlxText>();
         add(grpSongs);
 
         for (i in 0...songs.length)
         {
-            var songTxt:FlxText = new FlxText(0, 50 + (i * 130), 0, songs[i], 100);
-            songTxt.screenCenter(X);
+            var songTxt:FlxText = new FlxText(0, 50 + (i * songHeight), FlxG.width, songs[i], 32);
+            songTxt.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, CENTER);
+            songTxt.scrollFactor.set();
             songTxt.ID = i;
             grpSongs.add(songTxt);
         }
@@ -65,7 +68,7 @@ class Freeplay extends SwagState
         diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
         diffText.font = scoreText.font;
         add(diffText);
-
+        
         changeSelection();
 
         super.create();
@@ -96,14 +99,34 @@ class Freeplay extends SwagState
         curSelected += change;
 
         if (curSelected < 0)
-            curSelected = grpSongs.length - 1;
-        if (curSelected >= grpSongs.length)
             curSelected = 0;
+        if (curSelected >= grpSongs.length)
+            curSelected = grpSongs.length - 1;
+
+        var startY:Int = 50;
+        var spacing:Int = 100;
+        var visibleCount:Int = 5;
+        var offset:Int = Math.floor(visibleCount / 2);
 
         grpSongs.forEach((txt:FlxText) ->
         {
-            txt.color = (txt.ID == curSelected) ? FlxColor.YELLOW : FlxColor.WHITE;
+            var index = txt.ID - (curSelected - offset);
+            txt.y = startY + (index * spacing);
+            
+            if (txt.ID == curSelected)
+            {
+                txt.color = FlxColor.YELLOW;
+                txt.size = 36;
+                txt.alpha = 1.0;
+            }
+            else
+            {
+                txt.color = FlxColor.WHITE;
+                txt.size = 32;
+                txt.alpha = 0.7;
+            }
         });
+
         selectedSong = songs[curSelected];
     }
 
