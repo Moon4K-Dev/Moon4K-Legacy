@@ -10,17 +10,21 @@ import flixel.input.keyboard.FlxKey;
 import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
+import states.PlayState;
+import game.Song;
 
 class PauseSubstate extends SwagSubState
 {
     var grpMenuShit:FlxTypedGroup<FlxText>;
-
     var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
     var curSelected:Int = 0;
+    var lastSong:SwagSong; // Variable to store the last song
 
     public function new()
     {
         super();
+
+        lastSong = PlayState.instance.song; // Save the current song
 
         var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         bg.alpha = 0.6;
@@ -28,7 +32,7 @@ class PauseSubstate extends SwagSubState
         add(bg);
 
         var songInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-        songInfo.text += "Song: " + states.PlayState.curSong;
+        songInfo.text += "Song: " + lastSong.song; // Display the song name
         songInfo.scrollFactor.set();
         songInfo.setFormat(Paths.font("vcr.ttf"), 32);
         songInfo.updateHitbox();
@@ -76,9 +80,11 @@ class PauseSubstate extends SwagSubState
                 case "Resume":
                     close();
                 case "Restart Song":
-                    FlxG.resetState();
-				case "Options":
-					//transitionState(new states.OptionSelectState());
+                    var newPlayState = new PlayState();
+                    newPlayState.song = lastSong; // Set the song back to the last song
+                    transitionState(newPlayState);
+                case "Options":
+                    // transitionState(new states.OptionSelectState());
                 case "Exit to menu":
                     transitionState(new states.Freeplay());
             }
