@@ -79,6 +79,7 @@ class BaseOptionsSubState extends SwagSubState
                     var save = Options.getData(saveName);
 
                     Options.saveData(saveName, !save);
+                    trace(saveName, !save);
                 }
             case 'float' | 'int':
                 if (Controls.UI_LEFT_P || Controls.UI_RIGHT_P)
@@ -103,6 +104,7 @@ class BaseOptionsSubState extends SwagSubState
                             value = menuShit[curSelected][4][1];
 
                         Options.saveData(saveName, value);
+                        trace(saveName, value);
                     }
                 }
                 else
@@ -128,6 +130,7 @@ class BaseOptionsSubState extends SwagSubState
 
                         Options.saveData('$saveName-num', value);
                         Options.saveData(saveName, menuShit[curSelected][4][Math.floor(value)]);
+                        trace('$saveName-num', value);
                     }
                 }
                 else

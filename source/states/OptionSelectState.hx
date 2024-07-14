@@ -22,10 +22,11 @@ class OptionSelectState extends SwagState
     var camFollowPos:FlxObject;
 
     var menuShit:Array<Dynamic> = [
-        ["Graphics", "Change how the game looks!"],
-        ["Gameplay", "Change stuff to help your gameplay!"],
-        ["Controls", "Change your controls. See what fits you best!"],
-        ["Exit", "Exit the options menu."]
+        ["Graphics"],
+        ["Gameplay"],
+        ["UI Skin"],
+        ["Controls"],
+        ["Exit"]
     ];
     var menuItems:FlxTypedGroup<OptionSelectBox>;
 
@@ -45,7 +46,7 @@ class OptionSelectState extends SwagState
 
         for (i in 0...menuShit.length)
         {
-            var option:OptionSelectBox = new OptionSelectBox(0, (100 * i), menuShit[i][0], menuShit[i][1]);
+            var option:OptionSelectBox = new OptionSelectBox(0, (100 * i), menuShit[i][0], menuShit[i][1], i);
             menuItems.add(option);
         }
 
@@ -96,11 +97,6 @@ class OptionSelectState extends SwagState
                             "Improves performance at the cost of sharper graphics when\ndisabled.",
                             "antialiasing",
                             "bool"
-                        ],
-                        [   "UI Skin",
-                            "Select skins for Notes", 
-                            "ui-skin",
-                            "menu"
                         ]
                     ];
 
@@ -127,6 +123,8 @@ class OptionSelectState extends SwagState
 
                     persistentDraw = false;
                     openSubState(new BaseOptionsSubState());
+                case 'UI Skin':    
+                    transitionState(new SkinState());
                 case 'Exit':
                     transitionState(new SplashState());
             }
@@ -138,20 +136,27 @@ class OptionSelectState extends SwagState
         curSelected += change;
 
         if (curSelected < 0)
-            curSelected = menuItems.members.length - 1;
+            curSelected = menuItems.length - 1;
 
-        if (curSelected > menuItems.members.length - 1)
+        if (curSelected > menuItems.length - 1)
             curSelected = 0;
 
-        for (i in 0...menuItems.members.length)
-        {
+        var startY = 100;
+        var spacing = 50;
+
+        for (i in 0...menuItems.length) {
             var optionBox = menuItems.members[i];
-            for (text in optionBox.members)
-            {
-                if (Std.is(text, FlxText))
-                {
-                    var flxText = cast text;
-                    flxText.color = (curSelected == i) ? FlxColor.YELLOW : FlxColor.WHITE;
+            for (j in 0...optionBox.length) {
+                var txt = optionBox.members[j];
+                txt.y = startY + (i * spacing);
+                txt.color = FlxColor.WHITE;
+
+                if (i == curSelected) {
+                    txt.size = 36;
+                    txt.alpha = 1.0;
+                } else {
+                    txt.size = 32;
+                    txt.alpha = 0.7;
                 }
             }
         }
@@ -163,7 +168,7 @@ class OptionSelectState extends SwagState
 
 class OptionSelectBox extends FlxTypedGroup<FlxText>
 {
-    public function new(x:Float, y:Float, title:String, desc:String)
+    public function new(x:Float, y:Float, title:String, desc:String, id:Int)
     {
         super();
 
@@ -171,12 +176,14 @@ class OptionSelectBox extends FlxTypedGroup<FlxText>
         titleText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
         titleText.screenCenter(X);
         titleText.antialiasing = Options.getData('antialiasing');
+        titleText.ID = id; // Set the ID for titleText
         add(titleText);
 
         var descText:FlxText = new FlxText(x, y + 50, 0, desc, 24);
         descText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER);
         descText.screenCenter(X);
         descText.antialiasing = Options.getData('antialiasing');
+        descText.ID = id; // Set the ID for descText
         add(descText);
     }
 
@@ -185,4 +192,3 @@ class OptionSelectBox extends FlxTypedGroup<FlxText>
         super.update(elapsed);
     }
 }
-
