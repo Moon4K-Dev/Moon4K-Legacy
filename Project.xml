@@ -42,6 +42,7 @@
 	<assets path="assets/sounds" exclude="*.mp3" unless="web"/>
 	<assets path="assets/data" />
 	<assets path="assets/fonts" />
+	<assets path='example_mods' rename='mods' embed='false'/>
 
 
 	<!-- _______________________________ Libraries ______________________________ -->
