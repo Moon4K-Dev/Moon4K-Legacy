@@ -27,6 +27,8 @@ class Freeplay extends SwagState
     public var selectedSong:String;
     static public var instance:Freeplay;
     var songData:Dynamic;
+    var missesTxt:FlxText;
+
     
     var visibleRange:Int = 5;
     var songHeight:Int = 100;
@@ -46,6 +48,18 @@ class Freeplay extends SwagState
         coolBackdrop.velocity.set(50, 30);
         coolBackdrop.alpha = 0.7;
         add(coolBackdrop);
+
+		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
+		textBG.alpha = 0.6;
+		add(textBG);
+
+		var leText:String = "Press TAB to see the Song Info // Press Enter to start the song.";
+		var size:Int = 18;
+		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
+		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
+		text.scrollFactor.set();
+		add(text);
+		super.create();
 
         grpSongs = new FlxTypedGroup<FlxText>();
         add(grpSongs);
