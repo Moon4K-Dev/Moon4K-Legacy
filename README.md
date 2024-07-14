@@ -1,6 +1,12 @@
-# StrumShit
+# Yet Another 4K Rhythm Game! (YAK4KRG)
 
-* haha funny arrow tesitg
+* Funny 4k rhythm game engine
+
+* Maybe never Open Source'd
+
+# How to mod
+
+* Coming soon.
 
 # Credits
 

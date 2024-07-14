@@ -5,11 +5,7 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.FlxObject;
 import flixel.util.FlxColor;
-import game.Song;
-import game.Highscore;
 import flixel.addons.display.FlxBackdrop;
 import haxe.Json;
 import sys.io.File;
@@ -21,16 +17,11 @@ class Freeplay extends SwagState
     var songs:Array<String>;
     public var curSelected:Int = 0;
     var scoreText:FlxText;
-    var lerpScore:Int = 0;
-    var intendedScore:Int = 0;
-    var curDifficulty:Int = 1;
     var diffText:FlxText;
     public var selectedSong:String;
     static public var instance:Freeplay;
     var songData:Dynamic;
-    var missesTxt:FlxText;
     public var songInfoData:Array<Dynamic>;
-    var visibleRange:Int = 5;
     var songHeight:Int = 100;
 
     public function new() {
@@ -152,22 +143,72 @@ class Freeplay extends SwagState
     } 
     
     function loadSongInfoJson(songName:String):Void {
-        var path:String = "assets/data/" + songName + "/songInfo.json";
+        var modName:String = ModMenuState.activeMod;
+        var path:String;
+    
+        if (modName != "")
+        {
+            path = "mods/" + modName + "/data/" + songName + "/songInfo.json";
+            if (sys.FileSystem.exists(path))
+            {
+                var jsonContent:String = File.getContent(path);
+                songInfoData = Json.parse(jsonContent);
+                trace("Loaded from mod: " + path);
+                return;
+            }
+        }
+    
+        // Fallback to default assets
+        path = "assets/data/" + songName + "/songInfo.json";
         var jsonContent:String = File.getContent(path);
         songInfoData = Json.parse(jsonContent);
-        trace(songInfoData);
+        trace("Loaded from assets: " + path);
     }
-
+    
     function loadSongJson(songName:String):Void
     {
-        var path:String = "assets/data/" + songName + "/" + songName + ".json";
+        var modName:String = ModMenuState.activeMod;
+        var path:String;
+    
+        if (modName != "")
+        {
+            path = "mods/" + modName + "/data/" + songName + "/" + songName + ".json";
+            if (sys.FileSystem.exists(path))
+            {
+                var jsonContent:String = File.getContent(path);
+                songData = Json.parse(jsonContent);
+                trace("Loaded from mod: " + path);
+                return;
+            }
+        }
+    
+        // Fallback to default assets
+        path = "assets/data/" + songName + "/" + songName + ".json";
         var jsonContent:String = File.getContent(path);
         songData = Json.parse(jsonContent);
-        trace(songData);
+        trace("Loaded from assets: " + path);
     }
+    
 
     function loadSongs():Void {
         songs = [];
+        var modName:String = ModMenuState.activeMod; 
+
+        if (modName != "")
+        {
+            var modSongsDir:String = "mods/" + modName + "/songs/";
+            var directories:Array<String> = FileSystem.readDirectory(modSongsDir);
+            
+            for (dir in directories)
+            {
+                var fullPath:String = modSongsDir + dir;
+                if (FileSystem.isDirectory(fullPath))
+                {
+                    songs.push(dir);
+                }
+            }
+        }
+
         var dataDir:String = "assets/data/";
         var directories:Array<String> = FileSystem.readDirectory(dataDir);
         

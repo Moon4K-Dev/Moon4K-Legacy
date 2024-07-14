@@ -1,5 +1,6 @@
 package states;
 
+import states.ModMenuState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -33,6 +34,7 @@ class SplashState extends SwagState
 
     override public function create()
     {
+        FlxG.camera.bgColor = 0xFF000000;
         FlxG.stage.window.title = "YA4KRG Demo - SplashState";
 
         Options.init();
@@ -84,7 +86,7 @@ class SplashState extends SwagState
                 }
             });
         }  
-		ptc = new FlxText(0, (FlxG.height * 0.89) + 24, FlxG.height, "Press Enter to Play // Press Shift to go to the Options Menu", 20);
+		ptc = new FlxText(0, (FlxG.height * 0.89) + 24, FlxG.height, "Press Enter to Play // Press Space to enter the Mods Menu // Press Shift to go to the Options Menu", 20);
         ptc.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         ptc.scrollFactor.set();
         ptc.screenCenter(X);
@@ -94,14 +96,14 @@ class SplashState extends SwagState
     override public function update(elapsed:Float)
     {
 		if (FlxG.keys.justPressed.ENTER)
-		{
 			transitionState(new Freeplay());
-		}
 
 		if (FlxG.keys.justPressed.SHIFT)
-		{
-			transitionState(new OptionSelectState());
-		}        
+			transitionState(new OptionSelectState());    
+        
+        if (FlxG.keys.justPressed.SPACE)
+            transitionState(new ModMenuState());
+
         super.update(elapsed);
     }
 }
