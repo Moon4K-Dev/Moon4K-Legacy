@@ -13,11 +13,12 @@ import game.Highscore;
 import flixel.addons.display.FlxBackdrop;
 import haxe.Json;
 import sys.io.File;
+import sys.FileSystem;
 
 class Freeplay extends SwagState
 {
     var grpSongs:FlxTypedGroup<FlxText>;
-    public static var songs:Array<String> = ["test", "very", "swagger", "freeplay", "concept", "idk", "what else", "to put", "here"];
+    var songs:Array<String>;
     public var curSelected:Int = 0;
     var scoreText:FlxText;
     var lerpScore:Int = 0;
@@ -35,8 +36,8 @@ class Freeplay extends SwagState
     public function new() {
         super();
         this.curSelected = 0;
-        this.selectedSong = songs[curSelected];
         instance = this;
+        loadSongs();
     }
 
     override public function create()
@@ -48,17 +49,17 @@ class Freeplay extends SwagState
         coolBackdrop.alpha = 0.7;
         add(coolBackdrop);
 
-		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
-		textBG.alpha = 0.6;
-		add(textBG);
+        var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
+        textBG.alpha = 0.6;
+        add(textBG);
 
-		var leText:String = "Press TAB to see the Song Info // Press Enter to start the song.";
-		var size:Int = 18;
-		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
-		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
-		text.scrollFactor.set();
-		add(text);
-		super.create();
+        var leText:String = "Press TAB to see the Song Info // Press Enter to start the song.";
+        var size:Int = 18;
+        var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
+        text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
+        text.scrollFactor.set();
+        add(text);
+        super.create();
 
         grpSongs = new FlxTypedGroup<FlxText>();
         add(grpSongs);
@@ -156,7 +157,6 @@ class Freeplay extends SwagState
         songInfoData = Json.parse(jsonContent);
         trace(songInfoData);
     }
-    
 
     function loadSongJson(songName:String):Void
     {
@@ -164,5 +164,20 @@ class Freeplay extends SwagState
         var jsonContent:String = File.getContent(path);
         songData = Json.parse(jsonContent);
         trace(songData);
+    }
+
+    function loadSongs():Void {
+        songs = [];
+        var dataDir:String = "assets/data/";
+        var directories:Array<String> = FileSystem.readDirectory(dataDir);
+        
+        for (dir in directories)
+        {
+            var fullPath:String = dataDir + dir;
+            if (FileSystem.isDirectory(fullPath))
+            {
+                songs.push(dir);
+            }
+        }
     }
 }
