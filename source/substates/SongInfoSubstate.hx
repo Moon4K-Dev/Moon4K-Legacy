@@ -8,7 +8,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import states.Freeplay;
 
-class SongInfoSubstate extends FlxSubState
+class SongInfoSubstate extends SwagSubState
 {
     var bg:FlxSprite;
     var songInfoText:FlxText;

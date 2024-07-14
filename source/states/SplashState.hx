@@ -84,8 +84,8 @@ class SplashState extends SwagState
                 }
             });
         }  
-		ptc = new FlxText(0, (FlxG.height * 0.89) + 24, FlxG.height, "Press Enter to Continue.", 20);
-        ptc.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		ptc = new FlxText(0, (FlxG.height * 0.89) + 24, FlxG.height, "Press Enter to Play // Press Shift to go to the Options Menu", 20);
+        ptc.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         ptc.scrollFactor.set();
         ptc.screenCenter(X);
         add(ptc);  
@@ -97,6 +97,11 @@ class SplashState extends SwagState
 		{
 			transitionState(new Freeplay());
 		}
+
+		if (FlxG.keys.justPressed.SHIFT)
+		{
+			transitionState(new OptionSelectState());
+		}        
         super.update(elapsed);
     }
 }

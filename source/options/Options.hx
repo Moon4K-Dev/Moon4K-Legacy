@@ -56,12 +56,13 @@ class Options
 				["ESCAPE", "SPACE", "A", "S", "W", "D"]
 			]
 		],
+		["downscroll", false],
 		["scroll-speed", 2],
 		["lane-offset", 100],
 		["note-offset", 0],
 		["fps-cap", 120],
 		["ui-skin", 0],
-	]; // we're doing it in an array bc fuck you
+	];
 
 	static public function getNoteskins():Array<String>
 	{

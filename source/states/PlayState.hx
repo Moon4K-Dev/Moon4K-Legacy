@@ -90,6 +90,9 @@ class PlayState extends SwagState
         strumArea = new FlxSprite(0, 50);
         strumArea.visible = false;
 
+		if (Options.getData('downscroll'))
+			strumArea.y = FlxG.height - 150;
+
         strumArea.y -= 20;
 
         add(strumArea);
@@ -181,7 +184,10 @@ class PlayState extends SwagState
         for (note in notes)
         {
             var strum = strumNotes.members[note.direction % keyCount];
-            note.y = strum.y - (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
+			if (Options.getData('downscroll'))
+				note.y = strum.y + (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
+			else
+				note.y = strum.y - (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
 
             if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null)
             {

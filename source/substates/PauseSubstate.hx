@@ -15,7 +15,7 @@ import flixel.FlxSubState;
 import flixel.FlxCamera;
 import states.PlayState;
 
-class PauseSubstate extends FlxSubState
+class PauseSubstate extends SwagSubState
 {
 	#if mobile
 	var flxPad:FlxVirtualPad;
