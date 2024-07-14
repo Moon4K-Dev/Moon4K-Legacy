@@ -8,6 +8,7 @@ import lime.utils.Assets;
 import openfl.display.BitmapData;
 import openfl.media.Sound;
 import states.ModMenuState;
+import sys.FileSystem;
 
 using StringTools;
 
@@ -108,47 +109,41 @@ class Util
 	 * @param   isMusic              Define if the sound is from the `music` folder.
 	 * @param   customPath           Define a custom path for your sound. EX: `data/mySound`
 	 */
-	static public function getSound(path:String, ?music:Bool = false, ?customPath:Bool = false):Dynamic
+    static public function getSound(path:String, ?music:Bool = false, ?customPath:Bool = false):Dynamic 
 	{
-		var base:String = "";
+        var base:String = "";
 
-		if (!customPath)
-		{
-			if (!music)
-				base = "sounds/";
-			else
-				base = "music/";
-		}
+        if (!customPath) {
+            base = music ? "music/" : "sounds/";
+        }
 
-		var gamingPath = base + path + soundExt;
-		var modName:String = ModMenuState.activeMod;
+        var gamingPath = base + path + soundExt;
+        var modName:String = ModMenuState.activeMods.length > 0 ? ModMenuState.activeMods[0] : "";
 
-		// Check if sound exists in the mods folder first
-		var modPath:String = "mods/" + modName + "/" + gamingPath;
+        // Check if sound exists in the mods folder first
+        var modPath:String = "mods/" + modName + "/" + gamingPath;
 
-		if (Cache.getFromCache(gamingPath, "sound") == null)
-		{
-			var sound:Sound = null;
+        if (Cache.getFromCache(gamingPath, "sound") == null) {
+            var sound:Sound = null;
 
-			// Try loading from mod path
-			if (modName != "" && sys.FileSystem.exists(modPath))
-			{
-				sound = Sound.fromFile(modPath);
-				Cache.addToCache(gamingPath, sound, "sound");
-				trace("Loaded sound from mod: " + modPath);
-			}
-			else
-			{
-				// Fallback to default assets
-				sound = Sound.fromFile("assets/" + gamingPath);
-				Cache.addToCache(gamingPath, sound, "sound");
-				trace("Loaded sound from assets: " + gamingPath);
-			}
-		}
+            // Try loading from mod path
+            if (modName != "" && FileSystem.exists(modPath)) {
+                sound = Sound.fromFile(modPath);
+                Cache.addToCache(gamingPath, sound, "sound");
+                trace("Loaded sound from mod: " + modPath);
+            } else {
+                // Fallback to default assets
+                sound = Sound.fromFile("assets/" + gamingPath);
+                Cache.addToCache(gamingPath, sound, "sound");
+                trace("Loaded sound from assets: " + gamingPath);
+            }
+        }
 
-		return Cache.getFromCache(gamingPath, "sound");
-	}
+        return Cache.getFromCache(gamingPath, "sound");
+    }
 
+
+	
 	/**
 	 * Return a song from the `assets` folder.
 	 * MP3 is used for web, OGG is used for Desktop.

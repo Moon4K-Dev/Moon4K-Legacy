@@ -11,8 +11,7 @@ import haxe.Json;
 import sys.io.File;
 import sys.FileSystem;
 
-class Freeplay extends SwagState
-{
+class Freeplay extends SwagState {
     var grpSongs:FlxTypedGroup<FlxText>;
     var songs:Array<String>;
     public var curSelected:Int = 0;
@@ -31,10 +30,9 @@ class Freeplay extends SwagState
         loadSongs();
     }
 
-    override public function create()
-    {
+    override public function create() {
         FlxG.stage.window.title = "YA4KRG Demo - FreeplayState";
-        
+
         var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('menubglol'), 0.2, 0, true, true);
         coolBackdrop.velocity.set(50, 30);
         coolBackdrop.alpha = 0.7;
@@ -55,8 +53,7 @@ class Freeplay extends SwagState
         grpSongs = new FlxTypedGroup<FlxText>();
         add(grpSongs);
 
-        for (i in 0...songs.length)
-        {
+        for (i in 0...songs.length) {
             var songTxt:FlxText = new FlxText(0, 50 + (i * songHeight), FlxG.width, songs[i], 32);
             songTxt.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, CENTER);
             songTxt.scrollFactor.set();
@@ -73,31 +70,26 @@ class Freeplay extends SwagState
         diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
         diffText.font = scoreText.font;
         add(diffText);
-        
-        changeSelection();
 
+        changeSelection();
         super.create();
     }
 
-    override public function update(elapsed:Float)
-    {       
-        if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE)
-        {
+    override public function update(elapsed:Float) {
+        if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE) {
             transitionState(new states.SplashState());
-        } 
+        }
 
         if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN)
             changeSelection(FlxG.keys.justPressed.UP ? -1 : 1);
 
-        if (FlxG.keys.justPressed.ENTER)
-        {
+        if (FlxG.keys.justPressed.ENTER) {
             loadSongJson(selectedSong);
             transitionState(new PlayState());
             PlayState.instance.song = songData;
         }
 
-        if (FlxG.keys.justPressed.TAB)
-        {
+        if (FlxG.keys.justPressed.TAB) {
             loadSongInfoJson(selectedSong);
             var infosubstate = new substates.SongInfoSubstate();
             openSubState(infosubstate);
@@ -106,8 +98,7 @@ class Freeplay extends SwagState
         super.update(elapsed);
     }
 
-    function changeSelection(change:Int = 0)
-    {
+    function changeSelection(change:Int = 0) {
         curSelected += change;
 
         if (curSelected < 0)
@@ -117,93 +108,74 @@ class Freeplay extends SwagState
 
         var startY:Int = 50;
         var spacing:Int = 100;
-        var visibleCount:Int = 5;
-        var offset:Int = Math.floor(visibleCount / 2);
 
-        grpSongs.forEach((txt:FlxText) ->
-        {
-            var index = txt.ID - (curSelected - offset);
-            txt.y = startY + (index * spacing);
-            
-            if (txt.ID == curSelected)
-            {
-                txt.color = FlxColor.YELLOW;
+        grpSongs.forEach((txt:FlxText) -> {
+            txt.y = startY + (txt.ID * spacing);
+            txt.color = FlxColor.WHITE;
+
+            if (txt.ID == curSelected) {
                 txt.size = 36;
                 txt.alpha = 1.0;
-            }
-            else
-            {
-                txt.color = FlxColor.WHITE;
+            } else {
                 txt.size = 32;
                 txt.alpha = 0.7;
             }
         });
 
         selectedSong = songs[curSelected];
-    } 
-    
+    }
+
     function loadSongInfoJson(songName:String):Void {
-        var modName:String = ModMenuState.activeMod;
-        var path:String;
-    
-        if (modName != "")
-        {
+        var modName:String = ModMenuState.activeMods.length > 0 ? ModMenuState.activeMods[0] : "";
+        var path;
+
+        if (modName != "") {
             path = "mods/" + modName + "/data/" + songName + "/songInfo.json";
-            if (sys.FileSystem.exists(path))
-            {
+            if (sys.FileSystem.exists(path)) {
                 var jsonContent:String = File.getContent(path);
                 songInfoData = Json.parse(jsonContent);
                 trace("Loaded from mod: " + path);
                 return;
             }
         }
-    
-        // Fallback to default assets
+
         path = "assets/data/" + songName + "/songInfo.json";
         var jsonContent:String = File.getContent(path);
         songInfoData = Json.parse(jsonContent);
         trace("Loaded from assets: " + path);
     }
-    
-    function loadSongJson(songName:String):Void
-    {
-        var modName:String = ModMenuState.activeMod;
-        var path:String;
-    
-        if (modName != "")
-        {
+
+    function loadSongJson(songName:String):Void {
+        var modName:String = ModMenuState.activeMods.length > 0 ? ModMenuState.activeMods[0] : "";
+        var path;
+
+        if (modName != "") {
             path = "mods/" + modName + "/data/" + songName + "/" + songName + ".json";
-            if (sys.FileSystem.exists(path))
-            {
+            if (sys.FileSystem.exists(path)) {
                 var jsonContent:String = File.getContent(path);
                 songData = Json.parse(jsonContent);
                 trace("Loaded from mod: " + path);
                 return;
             }
         }
-    
-        // Fallback to default assets
+
         path = "assets/data/" + songName + "/" + songName + ".json";
         var jsonContent:String = File.getContent(path);
         songData = Json.parse(jsonContent);
         trace("Loaded from assets: " + path);
     }
-    
 
     function loadSongs():Void {
         songs = [];
-        var modName:String = ModMenuState.activeMod; 
+        var modName:String = ModMenuState.activeMods.length > 0 ? ModMenuState.activeMods[0] : "";
 
-        if (modName != "")
-        {
+        if (modName != "") {
             var modSongsDir:String = "mods/" + modName + "/songs/";
             var directories:Array<String> = FileSystem.readDirectory(modSongsDir);
-            
-            for (dir in directories)
-            {
+
+            for (dir in directories) {
                 var fullPath:String = modSongsDir + dir;
-                if (FileSystem.isDirectory(fullPath))
-                {
+                if (FileSystem.isDirectory(fullPath)) {
                     songs.push(dir);
                 }
             }
@@ -211,12 +183,10 @@ class Freeplay extends SwagState
 
         var dataDir:String = "assets/data/";
         var directories:Array<String> = FileSystem.readDirectory(dataDir);
-        
-        for (dir in directories)
-        {
+
+        for (dir in directories) {
             var fullPath:String = dataDir + dir;
-            if (FileSystem.isDirectory(fullPath))
-            {
+            if (FileSystem.isDirectory(fullPath)) {
                 songs.push(dir);
             }
         }

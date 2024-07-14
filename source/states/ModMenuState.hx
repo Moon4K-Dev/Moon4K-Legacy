@@ -1,6 +1,5 @@
 package states;
 
-import states.SwagState;
 import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -10,14 +9,13 @@ import flixel.util.FlxColor;
 import flixel.addons.display.FlxBackdrop;
 import sys.FileSystem;
 
-class ModMenuState extends SwagState
-{
+class ModMenuState extends FlxState {
     var grpMods:FlxTypedGroup<FlxText>;
     var mods:Array<String>;
     public var curSelected:Int = 0;
     public var selectedMod:String;
     var modHeight:Int = 100;
-    public static var activeMod:String = "";
+    public static var activeMods:Array<String> = [];
 
     public function new() {
         super();
@@ -25,8 +23,7 @@ class ModMenuState extends SwagState
         loadMods();
     }
 
-    override public function create()
-    {
+    override public function create() {
         FlxG.stage.window.title = "YA4KRG Demo - ModMenuState";
 
         var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('menubglol'), 0.2, 0, true, true);
@@ -49,17 +46,13 @@ class ModMenuState extends SwagState
         grpMods = new FlxTypedGroup<FlxText>();
         add(grpMods);
 
-        if (mods.length == 0)
-        {
+        if (mods.length == 0) {
             var noModsText:FlxText = new FlxText(0, FlxG.height / 2 - 10, FlxG.width, "No mods found!", 32);
             noModsText.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, CENTER);
             noModsText.scrollFactor.set();
             add(noModsText);
-        }
-        else
-        {
-            for (i in 0...mods.length)
-            {
+        } else {
+            for (i in 0...mods.length) {
                 var modTxt:FlxText = new FlxText(0, 50 + (i * modHeight), FlxG.width, mods[i], 32);
                 modTxt.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, CENTER);
                 modTxt.scrollFactor.set();
@@ -74,51 +67,41 @@ class ModMenuState extends SwagState
         super.create();
     }
 
-    override public function update(elapsed:Float)
-    {       
-        if (FlxG.keys.justPressed.ESCAPE)
-        {
+    override public function update(elapsed:Float) {
+        if (FlxG.keys.justPressed.ESCAPE) {
             FlxG.switchState(new SplashState());
-        } 
+        }
 
         if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN)
             changeSelection(FlxG.keys.justPressed.UP ? -1 : 1);
 
-        if (FlxG.keys.justPressed.ENTER)
-        {
+        if (FlxG.keys.justPressed.ENTER) {
             toggleMod(selectedMod);
         }
 
         super.update(elapsed);
     }
 
-    function changeSelection(change:Int = 0)
-    {
+    function changeSelection(change:Int = 0) {
         curSelected += change;
 
-        if (curSelected < 0)
-            curSelected = 0;
-        if (curSelected >= grpMods.length)
-            curSelected = grpMods.length - 1;
+        if (curSelected < 0) curSelected = 0;
+        if (curSelected >= grpMods.length) curSelected = grpMods.length - 1;
 
         var startY:Int = 50;
         var spacing:Int = 100;
         var visibleCount:Int = 5;
         var offset:Int = Math.floor(visibleCount / 2);
 
-        grpMods.forEach((txt:FlxText) ->
-        {
+        grpMods.forEach((txt:FlxText) -> {
             var index = txt.ID - (curSelected - offset);
             txt.y = startY + (index * spacing);
-            
-            if (txt.ID == curSelected)
-            {
+
+            if (txt.ID == curSelected) {
                 txt.color = FlxColor.YELLOW;
                 txt.size = 36;
                 txt.alpha = 1.0;
-            }
-            else
-            {
+            } else {
                 txt.color = FlxColor.WHITE;
                 txt.size = 32;
                 txt.alpha = 0.7;
@@ -126,18 +109,16 @@ class ModMenuState extends SwagState
         });
 
         selectedMod = mods[curSelected];
-    } 
-    
+    }
+
     function loadMods():Void {
         mods = [];
         var modDir:String = "mods/";
         var directories:Array<String> = FileSystem.readDirectory(modDir);
-        
-        for (dir in directories)
-        {
+
+        for (dir in directories) {
             var fullPath:String = modDir + dir;
-            if (FileSystem.isDirectory(fullPath))
-            {
+            if (FileSystem.isDirectory(fullPath)) {
                 mods.push(dir);
             }
         }
@@ -145,6 +126,10 @@ class ModMenuState extends SwagState
 
     function toggleMod(modName:String):Void {
         trace("Toggled mod: " + modName);
-        ModMenuState.activeMod = modName; 
+        if (activeMods.indexOf(modName) >= 0) {
+            activeMods.remove(modName);
+        } else {
+            activeMods.push(modName);
+        }
     }
 }
