@@ -18,21 +18,19 @@ class PauseSubstate extends SwagSubState
     var grpMenuShit:FlxTypedGroup<FlxText>;
     var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
     var curSelected:Int = 0;
-    var lastSong:SwagSong; // Variable to store the last song
-
+    var lastSong:SwagSong;
     public function new()
     {
         super();
 
-        lastSong = PlayState.instance.song; // Save the current song
-
+        lastSong = PlayState.instance.song;
         var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         bg.alpha = 0.6;
         bg.scrollFactor.set();
         add(bg);
 
         var songInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-        songInfo.text += "Song: " + lastSong.song; // Display the song name
+        songInfo.text += "Song: " + lastSong.song;
         songInfo.scrollFactor.set();
         songInfo.setFormat(Paths.font("vcr.ttf"), 32);
         songInfo.updateHitbox();
@@ -45,7 +43,7 @@ class PauseSubstate extends SwagSubState
         {
             var swaggerTXT:FlxText = new FlxText(0, 0, FlxG.width, menuItems[i]);
             swaggerTXT.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, "center");
-            swaggerTXT.alpha = 0.6; // Default alpha
+            swaggerTXT.alpha = 0.6;
             grpMenuShit.add(swaggerTXT);
         }
 
@@ -81,7 +79,7 @@ class PauseSubstate extends SwagSubState
                     close();
                 case "Restart Song":
                     var newPlayState = new PlayState();
-                    newPlayState.song = lastSong; // Set the song back to the last song
+                    newPlayState.song = lastSong; 
                     transitionState(newPlayState);
                 case "Options":
                     // transitionState(new states.OptionSelectState());
