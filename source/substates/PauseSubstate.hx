@@ -16,7 +16,7 @@ import game.Song;
 class PauseSubstate extends SwagSubState
 {
     var grpMenuShit:FlxTypedGroup<FlxText>;
-    var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
+    var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
     var curSelected:Int = 0;
     var lastSong:SwagSong;
     public function new()
@@ -81,8 +81,6 @@ class PauseSubstate extends SwagSubState
                     var newPlayState = new PlayState();
                     newPlayState.song = lastSong; 
                     transitionState(newPlayState);
-                case "Options":
-                    // transitionState(new states.OptionSelectState());
                 case "Exit to menu":
                     transitionState(new states.Freeplay());
             }
