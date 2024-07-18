@@ -125,6 +125,7 @@ class OptionSelectState extends SwagState
                     openSubState(new BaseOptionsSubState());
                 case 'UI Skin':    
                     transitionState(new SkinState());
+                case 'Controls':
                 case 'Exit':
                     transitionState(new MainMenuState());
             }

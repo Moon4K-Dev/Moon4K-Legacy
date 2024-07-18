@@ -57,6 +57,12 @@ class MainMenuState extends SwagState
         optionsButton.y = FlxG.height / 1.3 - optionsButton.height / 1.3;
         add(optionsButton);
 
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "YA4KRG" + Utils.VERSION, 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
+
+
         super.create();
     }
 

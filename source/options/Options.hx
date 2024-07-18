@@ -38,15 +38,7 @@ class Options
 		[
 			"keybinds",
 			[
-				["SPACE"],
-				["D", "K"],
-				["D", "SPACE", "K"],
-				["D", "F", "J", "K"],
-				["D", "F", "SPACE", "J", "K"],
-				["S", "D", "F", "J", "K", "L"],
-				["S", "D", "F", "SPACE", "J", "K", "L"],
-				["A", "S", "D", "F", "H", "J", "K", "L"],
-				["A", "S", "D", "F", "SPACE", "H", "J", "K", "L"]
+				["A", "S", "K", "L"]
 			]
 		],
 		[
@@ -61,7 +53,7 @@ class Options
 		["lane-offset", 100],
 		["note-offset", 0],
 		["fps-cap", 120],
-		["ui-skin", 0],
+		["ui-skin", 1],
 	];
 
 	static public function getNoteskins():Array<String>
