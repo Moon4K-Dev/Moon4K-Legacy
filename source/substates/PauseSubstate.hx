@@ -29,10 +29,10 @@ class PauseSubstate extends SwagSubState
         bg.scrollFactor.set();
         add(bg);
 
-        var songInfo:FlxText = new FlxText(20, 15, 0, "", 32);
+        var songInfo:FlxText = new FlxText(20, 15, 0, "", 21);
         songInfo.text += "Song: " + lastSong.song;
         songInfo.scrollFactor.set();
-        songInfo.setFormat(Paths.font("vcr.ttf"), 32);
+        songInfo.setFormat(Paths.font("vcr.ttf"), 21);
         songInfo.updateHitbox();
         add(songInfo);
 

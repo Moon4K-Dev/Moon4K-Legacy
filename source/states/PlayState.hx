@@ -50,6 +50,15 @@ class PlayState extends SwagState
     public var misses:Int = 0;
 	var rating:FlxSprite = new FlxSprite();
 
+    // health
+    static public var healthGain:Float = 10;
+	static public var healthLoss:Float = -10;
+	public var health:Float = 100;
+	public var minHealth:Float = 0;
+	public var maxHealth:Float = 100;
+	var healthBarBG:FlxSprite;
+	var healthBar:FlxBar;
+
     override public function new()
     {
         super();

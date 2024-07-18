@@ -7,7 +7,6 @@ import haxe.Json;
 import lime.utils.Assets;
 import openfl.display.BitmapData;
 import openfl.media.Sound;
-import states.ModMenuState;
 import sys.FileSystem;
 
 using StringTools;
@@ -118,25 +117,11 @@ class Util
         }
 
         var gamingPath = base + path + soundExt;
-        var modName:String = ModMenuState.activeMods.length > 0 ? ModMenuState.activeMods[0] : "";
-
-        // Check if sound exists in the mods folder first
-        var modPath:String = "mods/" + modName + "/" + gamingPath;
-
         if (Cache.getFromCache(gamingPath, "sound") == null) {
             var sound:Sound = null;
-
-            // Try loading from mod path
-            if (modName != "" && FileSystem.exists(modPath)) {
-                sound = Sound.fromFile(modPath);
-                Cache.addToCache(gamingPath, sound, "sound");
-                trace("Loaded sound from mod: " + modPath);
-            } else {
-                // Fallback to default assets
-                sound = Sound.fromFile("assets/" + gamingPath);
-                Cache.addToCache(gamingPath, sound, "sound");
-                trace("Loaded sound from assets: " + gamingPath);
-            }
+            sound = Sound.fromFile("assets/" + gamingPath);
+            Cache.addToCache(gamingPath, sound, "sound");
+            trace("Loaded sound from assets: " + gamingPath);
         }
 
         return Cache.getFromCache(gamingPath, "sound");

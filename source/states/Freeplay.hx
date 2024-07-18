@@ -126,19 +126,7 @@ class Freeplay extends SwagState {
     }
 
     function loadSongInfoJson(songName:String):Void {
-        var modName:String = ModMenuState.activeMods.length > 0 ? ModMenuState.activeMods[0] : "";
         var path;
-
-        if (modName != "") {
-            path = "mods/" + modName + "/data/" + songName + "/songInfo.json";
-            if (sys.FileSystem.exists(path)) {
-                var jsonContent:String = File.getContent(path);
-                songInfoData = Json.parse(jsonContent);
-                trace("Loaded from mod: " + path);
-                return;
-            }
-        }
-
         path = "assets/data/" + songName + "/songInfo.json";
         var jsonContent:String = File.getContent(path);
         songInfoData = Json.parse(jsonContent);
@@ -146,19 +134,7 @@ class Freeplay extends SwagState {
     }
 
     function loadSongJson(songName:String):Void {
-        var modName:String = ModMenuState.activeMods.length > 0 ? ModMenuState.activeMods[0] : "";
         var path;
-
-        if (modName != "") {
-            path = "mods/" + modName + "/data/" + songName + "/" + songName + ".json";
-            if (sys.FileSystem.exists(path)) {
-                var jsonContent:String = File.getContent(path);
-                songData = Json.parse(jsonContent);
-                trace("Loaded from mod: " + path);
-                return;
-            }
-        }
-
         path = "assets/data/" + songName + "/" + songName + ".json";
         var jsonContent:String = File.getContent(path);
         songData = Json.parse(jsonContent);
@@ -167,20 +143,6 @@ class Freeplay extends SwagState {
 
     function loadSongs():Void {
         songs = [];
-        var modName:String = ModMenuState.activeMods.length > 0 ? ModMenuState.activeMods[0] : "";
-
-        if (modName != "") {
-            var modSongsDir:String = "mods/" + modName + "/songs/";
-            var directories:Array<String> = FileSystem.readDirectory(modSongsDir);
-
-            for (dir in directories) {
-                var fullPath:String = modSongsDir + dir;
-                if (FileSystem.isDirectory(fullPath)) {
-                    songs.push(dir);
-                }
-            }
-        }
-
         var dataDir:String = "assets/data/";
         var directories:Array<String> = FileSystem.readDirectory(dataDir);
 
