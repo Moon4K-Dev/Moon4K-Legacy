@@ -77,7 +77,7 @@ class OptionSelectState extends SwagState
         camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 
         if (Controls.BACK)
-            transitionState(new SplashState());
+            transitionState(new MainMenuState());
 
         if (Controls.UI_UP)
             changeSelection(-1);
@@ -126,7 +126,7 @@ class OptionSelectState extends SwagState
                 case 'UI Skin':    
                     transitionState(new SkinState());
                 case 'Exit':
-                    transitionState(new SplashState());
+                    transitionState(new MainMenuState());
             }
         }
     }

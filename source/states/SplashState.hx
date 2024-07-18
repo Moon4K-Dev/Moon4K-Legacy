@@ -7,6 +7,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 class SplashState extends SwagState
 {
@@ -14,9 +15,9 @@ class SplashState extends SwagState
     var funnyText:FlxText;
     static public var titleStarted:Bool = false;
     var curWacky:String;
-	private var ptc:FlxText;
-	static public var optionsInitialized:Bool = false;
-	static public var transitionsAllowed:Bool = false;
+    private var ptc:FlxText;
+    static public var optionsInitialized:Bool = false;
+    static public var transitionsAllowed:Bool = false;
 
     var introTexts:Array<String> = 
     [
@@ -30,6 +31,8 @@ class SplashState extends SwagState
         "https://example.com",
         "Slide the weed homie.."
     ];
+
+    private var timer:FlxTimer;
 
     override public function create()
     {
@@ -46,7 +49,6 @@ class SplashState extends SwagState
 
         if (!titleStarted)
         {
-            // splash screen
             arrowsexylogo = new FlxSprite().loadGraphic(Paths.image('splash/notelogo'));
             arrowsexylogo.screenCenter();
             arrowsexylogo.setGraphicSize(Std.int(arrowsexylogo.width * 0.3));
@@ -85,21 +87,18 @@ class SplashState extends SwagState
                 }
             });
         }  
-		ptc = new FlxText(0, (FlxG.height * 0.89) + 24, FlxG.height, "| Press Enter to Play // Press Shift to go to the Options Menu |", 20);
-        ptc.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-        ptc.scrollFactor.set();
-        ptc.screenCenter(X);
-        add(ptc);  
+        timer = new FlxTimer();
+        timer.start(5.5, onTimerComplete, 3);
+
+    }
+
+    private function onTimerComplete(timer:FlxTimer):Void
+    {
+        transitionState(new MainMenuState());
     }
 
     override public function update(elapsed:Float)
     {
-		if (FlxG.keys.justPressed.ENTER)
-			transitionState(new Freeplay());
-
-		if (FlxG.keys.justPressed.SHIFT)
-			transitionState(new OptionSelectState());    
-
         super.update(elapsed);
     }
 }

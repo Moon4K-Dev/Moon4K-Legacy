@@ -1,5 +1,6 @@
 package states;
 
+import states.Freeplay;
 import haxe.Exception;
 import openfl.geom.Matrix;
 import openfl.display.BitmapData;
@@ -106,7 +107,7 @@ class ResultsState extends SwagState
 		if (FlxG.keys.justPressed.ENTER)
 		{
 
-			FlxG.switchState(new states.SplashState());
+			FlxG.switchState(new Freeplay());
 		}
 		super.update(elapsed);
 	}

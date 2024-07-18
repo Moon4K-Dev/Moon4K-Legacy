@@ -22,6 +22,7 @@ import flixel.FlxSubState;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
+import flixel.util.FlxTimer;
 
 class PlayState extends SwagState
 {
@@ -49,7 +50,10 @@ class PlayState extends SwagState
     public var songScore:Int = 0;
     public var misses:Int = 0;
 	var rating:FlxSprite = new FlxSprite();
-
+    // swag
+    var startedCountdown:Bool = false;
+	private var generatedMusic:Bool = false;
+	private var startingSong:Bool = false;
     // health
     static public var healthGain:Float = 10;
 	static public var healthLoss:Float = -10;
@@ -153,13 +157,52 @@ class PlayState extends SwagState
         strumNotes.cameras = [camHUD];
         notes.cameras = [camHUD];
 
+        startingSong = true;
+        startCountdown();
         generateNotes(song.song);
+    }
+
+	function startSong():Void
+    {
+        previousFrameTime = FlxG.game.ticks;
+        lastReportedPlayheadPosition = 0;
+        startingSong = false;
         FlxG.sound.playMusic(Paths.song(curSong +'/music'));   
 		FlxG.sound.music.onComplete = endSong; 
     }
+    
+
+	function startCountdown():Void
+        {
+            var startTimer:FlxTimer;
+            startedCountdown = true;
+            Conductor.songPosition = 0;
+            Conductor.songPosition -= Conductor.crochet * 5;
+    
+            var swagCounter:Int = 0;
+    
+            startTimer = new FlxTimer().start(Conductor.crochet / 4000, function(tmr:FlxTimer)
+            {    
+                switch (swagCounter)
+                {
+                    case 0:
+                        trace("THREE!");
+                    case 1:
+                        trace("TWO!");
+                    case 2:
+                        trace("ONE!");
+                    case 3:
+                        trace("GO!");
+                    case 4:
+                }
+                swagCounter += 1;
+            }, 5);
+        }
 
 	function endSong():Void
 	{
+        if (FlxG.sound.music != null)
+            FlxG.sound.music.stop();
 		transitionState(new ResultsState());
 	}
 
@@ -169,8 +212,43 @@ class PlayState extends SwagState
     }
 
 	private var paused:Bool = false;
+    var previousFrameTime:Int = 0;
+	var lastReportedPlayheadPosition:Int = 0;
+	var songTime:Float = 0;
+    
     override public function update(elapsed:Float)
     {
+        if (startingSong)
+		{
+			if (startedCountdown)
+			{
+				Conductor.songPosition += FlxG.elapsed * 1000;
+				if (Conductor.songPosition >= 0)
+					startSong();
+			}
+		}
+		else
+		{
+			Conductor.songPosition = FlxG.sound.music.time;
+
+			if (!paused)
+			{
+				songTime += FlxG.game.ticks - previousFrameTime;
+				previousFrameTime = FlxG.game.ticks;
+
+				// Interpolation type beat
+				if (Conductor.lastSongPos != Conductor.songPosition)
+				{
+					songTime = (songTime + Conductor.songPosition) / 2;
+					Conductor.lastSongPos = Conductor.songPosition;
+					// Conductor.songPosition += FlxG.elapsed * 1000;
+					// trace('MISSED FRAME');
+				}
+			}
+
+			// Conductor.lastSongPos = FlxG.sound.music.time;
+		}
+
         super.update(elapsed);
 
         if (FlxG.sound.music != null && FlxG.sound.music.active && FlxG.sound.music.playing)
@@ -213,10 +291,10 @@ class PlayState extends SwagState
 		});
 
         if (FlxG.keys.justPressed.BACKSPACE)
-            transitionState(new SplashState());
+            transitionState(new MainMenuState());
 
         #if !(mobile)
-        if (FlxG.keys.anyJustPressed([ENTER, ESCAPE]))
+        if (FlxG.keys.anyJustPressed([ENTER, ESCAPE]) && startedCountdown)
         {
             var pauseSubState = new substates.PauseSubstate();
 			paused = true;
