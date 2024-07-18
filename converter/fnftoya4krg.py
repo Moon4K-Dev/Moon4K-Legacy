@@ -4,7 +4,7 @@ import os
 
 def transform_json(input_data):
     output_data = {
-        "keyCount": input_data["song"].get("keyCount", 4),  # Default to 4 keys
+        "keyCount": input_data["song"].get("keyCount", 4), # 4 keys only lol
         "sectionLengths": [],
         "timescale": input_data["song"].get("timescale", [4, 4]),
         "notes": [],
@@ -14,14 +14,24 @@ def transform_json(input_data):
         "bpm": input_data["song"]["bpm"]
     }
 
+    first_section_data = {
+        "sectionNotes": [],
+        "changeTimeScale": False,
+        "timeScale": [4, 4],
+        "changeBPM": False,
+        "bpm": input_data["song"]["bpm"]
+    }
+
+    output_data["notes"].append(first_section_data)
+
     for section in input_data["song"]["notes"]:
         output_data["sectionLengths"].append(section.get("lengthInSteps", 0))
         
         section_data = {
             "sectionNotes": [],
-            "changeTimeScale": False,
-            "timeScale": [4, 4],
-            "changeBPM": section.get("bpm") is not None,
+            "changeTimeScale": section.get("changeTimeScale", False),
+            "timeScale": section.get("timeScale", [4, 4]),
+            "changeBPM": section.get("changeBPM", False),
             "bpm": section.get("bpm", input_data["song"]["bpm"])
         }
         
