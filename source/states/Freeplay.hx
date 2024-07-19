@@ -125,14 +125,14 @@ class Freeplay extends SwagState {
     }
 
     function loadSongInfoJson(songName:String):Void {
-        var path = "assets/data/" + songName + "/songInfo.json";
+        var path = "assets/charts/" + songName + "/songInfo.json";
         var jsonContent:String = File.getContent(path);
         songInfoData = Json.parse(jsonContent);
         trace("Loaded from assets: " + path);
     }
 
     function loadSongJson(songName:String):Void {
-        var path = "assets/data/" + songName + "/" + songName + ".json";
+        var path = "assets/charts/" + songName + "/" + songName + ".json";
         var jsonContent:String = File.getContent(path);
         songData = Json.parse(jsonContent);
         trace("Loaded from assets: " + path);
@@ -140,7 +140,7 @@ class Freeplay extends SwagState {
 
     function loadSongs():Void {
         songs = [];
-        var dataDir:String = "assets/data/";
+        var dataDir:String = "assets/charts/";
         var directories:Array<String> = FileSystem.readDirectory(dataDir);
 
         for (dir in directories) {
