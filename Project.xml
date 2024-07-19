@@ -34,15 +34,10 @@
 	<assets path="assets" />
 
 	<assets path="assets/images" />
-	<assets path="assets/songs" exclude="*.ogg" if="web"/>
-	<assets path="assets/songs" exclude="*.mp3" unless="web"/>
-	<assets path="assets/music" exclude="*.ogg" if="web"/>
-	<assets path="assets/music" exclude="*.mp3" unless="web"/>
-	<assets path="assets/sounds" exclude="*.ogg" if="web"/>
-	<assets path="assets/sounds" exclude="*.mp3" unless="web"/>
-	<assets path="assets/data" />
+	<assets path="assets/sfx" exclude="*.ogg" if="web"/>
+	<assets path="assets/sfx" exclude="*.mp3" unless="web"/>
+	<assets path="assets/charts" />
 	<assets path="assets/fonts" />
-	<assets path='example_mods' rename='mods' embed='false'/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 

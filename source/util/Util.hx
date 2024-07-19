@@ -136,7 +136,7 @@ class Util
 	 */
 	static public function getSong(song:String):Dynamic
 	{
-		return getSound('songs/$song/music', false, true);
+		return getSound('charts/$song/music', false, true);
 	}
 
 	/**

@@ -33,7 +33,7 @@ class Freeplay extends SwagState {
     override public function create() {
         FlxG.stage.window.title = "YA4KRG Demo - FreeplayState";
 
-        var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('menubglol'), 0.2, 0, true, true);
+        var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
         coolBackdrop.velocity.set(50, 30);
         coolBackdrop.alpha = 0.7;
         add(coolBackdrop);

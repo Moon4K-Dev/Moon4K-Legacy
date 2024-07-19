@@ -70,7 +70,7 @@ class PlayState extends SwagState
         if (song == null)
         {
             song = {
-                song: "test",
+                song: "",
                 notes: [],
                 bpm: 100,
                 sections: 0,
@@ -96,7 +96,6 @@ class PlayState extends SwagState
         FlxG.cameras.add(camHUD);
 
         super.create();
-        trace(curSong);
 
         laneOffset = Options.getData('lane-offset');
 
@@ -181,7 +180,7 @@ class PlayState extends SwagState
     
             var swagCounter:Int = 0;
     
-            startTimer = new FlxTimer().start(Conductor.crochet / 4000, function(tmr:FlxTimer)
+            startTimer = new FlxTimer().start(Conductor.crochet / 5000, function(tmr:FlxTimer)
             {    
                 switch (swagCounter)
                 {

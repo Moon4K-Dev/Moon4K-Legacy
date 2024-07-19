@@ -73,7 +73,7 @@ class Paths
 
 	inline static public function song(key:String)
 	{
-		return file('songs/$key.$SOUND_EXT');
+		return file('charts/$key.$SOUND_EXT');
 	}
 
 	inline static public function image(key:String)
