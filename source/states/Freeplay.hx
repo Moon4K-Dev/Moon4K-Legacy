@@ -22,6 +22,7 @@ class Freeplay extends SwagState {
     var songData:Dynamic;
     public var songInfoData:Array<Dynamic>;
     var songHeight:Int = 100;
+    var noSongsText:FlxText;
 
     public function new() {
         super();
@@ -54,8 +55,6 @@ class Freeplay extends SwagState {
         add(grpSongs);
 
         updateSongList();
-
-        selectedSong = songs[curSelected];
 
         scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
         scoreText.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, RIGHT);
@@ -155,15 +154,26 @@ class Freeplay extends SwagState {
         grpSongs.clear();
         loadSongs();
 
-        for (i in 0...songs.length) {
-            var songTxt:FlxText = new FlxText(0, 50 + (i * songHeight), FlxG.width, songs[i], 32);
-            songTxt.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, CENTER);
-            songTxt.scrollFactor.set();
-            songTxt.ID = i;
-            grpSongs.add(songTxt);
+        if (songs.length == 0) {
+            if (noSongsText == null) {
+                noSongsText = new FlxText(0, FlxG.height / 2 - 10, FlxG.width, "There's no songs in the songs folder!", 24);
+                noSongsText.setFormat("assets/fonts/vcr.ttf", 24, FlxColor.RED, CENTER);
+                add(noSongsText);
+            }
+        } else {
+            if (noSongsText != null) {
+                remove(noSongsText);
+                noSongsText = null;
+            }
+            for (i in 0...songs.length) {
+                var songTxt:FlxText = new FlxText(0, 50 + (i * songHeight), FlxG.width, songs[i], 32);
+                songTxt.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, CENTER);
+                songTxt.scrollFactor.set();
+                songTxt.ID = i;
+                grpSongs.add(songTxt);
+            }
+            selectedSong = songs[curSelected];
         }
-
-        selectedSong = songs[curSelected];
     }
 
     function rescanSongs():Void {
