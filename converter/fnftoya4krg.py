@@ -49,7 +49,7 @@ def transform_json(input_data):
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python script.py <input_json_file>")
+        print("Usage: python fnftoya4krg.py fnfchart.json")
         return
     
     input_file_path = sys.argv[1]
