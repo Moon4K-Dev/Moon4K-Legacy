@@ -23,6 +23,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
+import sys.FileSystem;
+import hxcodec.flixel.FlxVideo;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -94,7 +96,8 @@ class PlayState extends SwagState {
 	override public function create() {
 		FlxG.stage.window.title = "YA4KRG Demo - PlayState";
 
-		FlxG.camera.bgColor = 0xFF333333;
+		//FlxG.camera.bgColor = 0xFF333333;
+		checkAndSetBackground();
 
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
@@ -163,6 +166,30 @@ class PlayState extends SwagState {
 		startingSong = true;
 		startCountdown();
 		generateNotes(song.song);
+	}
+
+	function checkAndSetBackground():Void {
+		var daSongswag = song.song;
+		var bgImagePath:String = 'assets/charts/' + daSongswag + '/image.png';
+		trace(bgImagePath);
+		var bgVideoPath:String = 'assets/charts/' + daSongswag + '/video.mp4';
+		trace(bgVideoPath);
+		if (FileSystem.exists(bgImagePath)) {
+			var songbg:FlxSprite = new FlxSprite(-80).loadGraphic(Util.getchartImage(daSongswag + '/image'));
+			songbg.setGraphicSize(Std.int(songbg.width * 1.1));
+			songbg.updateHitbox();
+			songbg.screenCenter();
+			songbg.visible = true;
+			songbg.antialiasing = true;
+			add(songbg);
+		}
+		else if (FileSystem.exists(bgVideoPath)) {
+			var video:FlxVideo = new FlxVideo();
+			video.play(bgVideoPath, true); // location:String, shouldLoop:Bool = false
+		}
+		else {
+			FlxG.camera.bgColor = 0xFF333333;
+		}
 	}
 
 	function startSong():Void {
@@ -290,6 +317,7 @@ class PlayState extends SwagState {
 		if (FlxG.keys.anyJustPressed([ENTER, ESCAPE]) && startedCountdown) {
 			var pauseSubState = new substates.PauseSubstate();
 			paused = true;
+			Discord.changePresence("Paused on: " + curSong);
 			openSubState(pauseSubState);
 		}
 		#end

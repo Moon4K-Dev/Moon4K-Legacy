@@ -2,10 +2,12 @@ package util;
 
 import flixel.graphics.FlxGraphic;
 import openfl.media.Sound;
+import hxcodec.flixel.FlxVideo;
 
 class Cache {
 	public static var soundCache:Map<String, Sound> = [];
 	public static var imageCache:Map<String, FlxGraphic> = [];
+	public static var vidyaCache:Map<String, FlxVideo> = [];
 
 	public static function addToCache(key:String, value:Dynamic, cacheName:String) {
 		var cache = convertStringToCache(cacheName);
@@ -25,6 +27,8 @@ class Cache {
 				return soundCache;
 			case "image":
 				return imageCache;
+			case "video":
+					return vidyaCache;
 			default:
 				return new Map<String, String>();
 		}

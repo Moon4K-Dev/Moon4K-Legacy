@@ -8,6 +8,7 @@ import lime.utils.Assets;
 import openfl.display.BitmapData;
 import openfl.media.Sound;
 import sys.FileSystem;
+import hxcodec.flixel.FlxVideo;
 
 using StringTools;
 
@@ -54,6 +55,56 @@ class Util {
 
 		return null;
 	}
+
+	/**
+	 * Return a image from the `assets` folder.
+	 * Only works for static png files. Use getSparrow for animated sprites.
+	 * @param   imagePath            Path to the image.
+	 */
+	 static public function getchartImage(path:String, ?customPath:Bool = false):Dynamic {
+		var png = path;
+
+		if (!customPath)
+			png = "assets/charts/" + png;
+		else
+			png = "assets/" + png;
+
+		if (sys.FileSystem.exists(Sys.getCwd() + png + ".png")) {
+			if (Cache.getFromCache(png, "image") == null) {
+				var graphic = FlxGraphic.fromBitmapData(BitmapData.fromFile(Sys.getCwd() + png + ".png"), false, png, false);
+				graphic.destroyOnNoUse = false;
+
+				Cache.addToCache(png, graphic, "image");
+			}
+
+			return Cache.getFromCache(png, "image");
+		}
+
+		return null;
+	}
+
+	static public function getchartVideo(path:String, ?customPath:Bool = false):Dynamic {
+		var videoPath = path;
+	
+		if (!customPath)
+			videoPath = "assets/charts/" + videoPath;
+		else
+			videoPath = "assets/" + videoPath;
+	
+		if (sys.FileSystem.exists(Sys.getCwd() + videoPath + ".mp4")) {
+			if (Cache.getFromCache(videoPath, "video") == null) {
+				var video = new FlxVideo();
+				video.onEndReached.add(video.dispose);
+	
+				Cache.addToCache(videoPath, video, "video");
+			}
+	
+			return Cache.getFromCache(videoPath, "video");
+		}
+	
+		return null;
+	}
+	
 
 	/**
 	 * Return a animated image from the `assets` folder using a png and xml.
