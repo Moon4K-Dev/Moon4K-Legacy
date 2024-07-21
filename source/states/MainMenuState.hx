@@ -20,6 +20,7 @@ class MainMenuState extends SwagState
     override public function create()
     {
         FlxG.stage.window.title = "YA4KRG Demo - MainMenuState";
+        Discord.changePresence("In the Main Menu!", null);
 
         var swagbg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/bg'));
         swagbg.setGraphicSize(Std.int(swagbg.width * 1.1));

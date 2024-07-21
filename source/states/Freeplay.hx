@@ -33,6 +33,8 @@ class Freeplay extends SwagState {
 
     override public function create() {
         FlxG.stage.window.title = "YA4KRG Demo - FreeplayState";
+        Discord.changePresence("Selecting a song...", null);
+
 
         var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
         coolBackdrop.velocity.set(50, 30);

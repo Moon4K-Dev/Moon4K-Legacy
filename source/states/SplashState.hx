@@ -38,6 +38,8 @@ class SplashState extends SwagState
     {
         FlxG.camera.bgColor = 0xFF000000;
         FlxG.stage.window.title = "YA4KRG Demo - SplashState";
+        Discord.changePresence("Just booted the game :D", null);
+
 
         Options.init();
         optionsInitialized = true;

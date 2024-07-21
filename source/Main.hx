@@ -22,6 +22,7 @@ import sys.io.File;
 import sys.io.Process;
 #end
 import states.SplashState;
+import hxdiscord_rpc.Discord as DiscordRPC;
 
 using StringTools;
 
@@ -80,6 +81,8 @@ class Main extends Sprite
 		}
 	
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
+		Discord.load();
+
 
 		#if !web
 		fpsVar = new FPS(10, 3, 0xFFFFFF);

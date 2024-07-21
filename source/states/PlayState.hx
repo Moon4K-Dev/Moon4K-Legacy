@@ -62,6 +62,10 @@ class PlayState extends SwagState
 	public var maxHealth:Float = 100;
 	var healthBarBG:FlxSprite;
 	var healthBar:FlxBar;
+	// Discord RPC variables
+	var iconRPC:String = "";
+	var detailsText:String = "";
+	var detailsPausedText:String = "";
 
     override public function new()
     {
@@ -219,6 +223,16 @@ class PlayState extends SwagState
     
     override public function update(elapsed:Float)
     {
+
+        if (!Options.getData('botplay'))
+        {
+            Discord.changePresence("Playing: " + curSong + " with " + songScore + " Score and " + misses + " Misses!");   
+        }
+        else
+        {
+            Discord.changePresence("Playing: " + curSong + " with Botplay!");   
+        }
+
         if (startingSong)
 		{
 			if (startedCountdown)

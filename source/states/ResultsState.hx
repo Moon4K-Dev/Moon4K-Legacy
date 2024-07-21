@@ -48,6 +48,8 @@ class ResultsState extends SwagState
 
 	override function create()
 	{
+		Discord.changePresence("Viewing their results!", null);
+
 		background = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		background.scrollFactor.set();
 		add(background);
