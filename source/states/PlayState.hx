@@ -105,13 +105,13 @@ class PlayState extends SwagState {
 		checkAndSetBackground();
 
 		// Buddies shit
-        reimu = new FlxSprite(0, 0).loadGraphic(Paths.image('buddies/reimu'));
+        reimu = new FlxSprite(0, 0).loadGraphic(Paths.image('buddies/reimu/reimu'));
 		if (!Options.getData('reimulol')) {  reimu.visible = false;} else {reimu.visible = true;}  
 		reimu.scale.set(0.5, 0.5);
         add(reimu);
 
         boyfriend = new FlxSprite(770, 450);
-        boyfriend.frames = Paths.getSparrowAtlas('buddies/BOYFRIEND');
+        boyfriend.frames = Paths.getSparrowAtlas('buddies/bf/BOYFRIEND');
         boyfriend.animation.addByPrefix('idle', 'BF idle dance', 24, false);
 		boyfriend.animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
 		boyfriend.animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
