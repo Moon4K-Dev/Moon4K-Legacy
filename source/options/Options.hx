@@ -49,6 +49,7 @@ class Options
 			]
 		],
 		["downscroll", false],
+		["botplay", false],
 		["scroll-speed", 2],
 		["lane-offset", 100],
 		["note-offset", 0],

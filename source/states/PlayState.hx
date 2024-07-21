@@ -166,7 +166,9 @@ class PlayState extends SwagState
         previousFrameTime = FlxG.game.ticks;
         lastReportedPlayheadPosition = 0;
         startingSong = false;
-        FlxG.sound.playMusic(Paths.song(curSong +'/music'));   
+        //FlxG.sound.playMusic(Paths.song(curSong +'/music'));
+        var daSong = song.song;
+        FlxG.sound.playMusic(Util.getSong(daSong));   
 		FlxG.sound.music.onComplete = endSong; 
     }
     

@@ -112,6 +112,12 @@ class OptionSelectState extends SwagState
                             "bool"
                         ],
                         [
+                            "Botplay",
+                            "Makes the bot play the game",
+                            "botplay",
+                            "bool"
+                        ],
+                        [
                             "Note Offset",
                             "Adjust how early/late your notes appear on-screen.",
                             "note-offset",
