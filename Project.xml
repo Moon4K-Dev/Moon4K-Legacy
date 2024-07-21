@@ -84,4 +84,6 @@
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+	<icon path="setup/rpcIcon.png" />
+
 </project>

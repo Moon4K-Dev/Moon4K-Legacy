@@ -4,22 +4,19 @@ import game.Song.SwagSong;
 
 using StringTools;
 
-typedef BPMChangeEvent =
-{
+typedef BPMChangeEvent = {
 	var stepTime:Int;
 	var songTime:Float;
 	var bpm:Float;
 }
 
-typedef TimeScaleChangeEvent =
-{
+typedef TimeScaleChangeEvent = {
 	var stepTime:Int;
 	var songTime:Float;
 	var timeScale:Array<Int>;
 }
 
-class Conductor
-{
+class Conductor {
 	public static var bpm:Float = 100;
 	public static var crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
 	public static var stepCrochet:Float = crochet / 4; // steps in milliseconds
@@ -39,8 +36,7 @@ class Conductor
 
 	public function new() {}
 
-	public static function recalculateStuff(?multi:Float = 1)
-	{
+	public static function recalculateStuff(?multi:Float = 1) {
 		safeZoneOffset = Math.floor((safeFrames / 60) * 1000) * multi;
 
 		crochet = ((60 / bpm) * 1000);
@@ -59,10 +55,8 @@ class Conductor
 		var totalSteps:Int = 0;
 		var totalPos:Float = 0;
 
-		for (i in 0...song.notes.length)
-		{
-			if (song.notes[i].changeBPM && song.notes[i].bpm != curBPM)
-			{
+		for (i in 0...song.notes.length) {
+			if (song.notes[i].changeBPM && song.notes[i].bpm != curBPM) {
 				curBPM = song.notes[i].bpm;
 
 				var event:BPMChangeEvent = {
@@ -76,8 +70,7 @@ class Conductor
 
 			if (song.notes[i].changeTimeScale
 				&& song.notes[i].timeScale[0] != curTimeScale[0]
-				&& song.notes[i].timeScale[1] != curTimeScale[1])
-			{
+				&& song.notes[i].timeScale[1] != curTimeScale[1]) {
 				curTimeScale = song.notes[i].timeScale;
 
 				var event:TimeScaleChangeEvent = {
@@ -98,8 +91,7 @@ class Conductor
 		recalculateStuff(songMultiplier);
 	}
 
-	public static function changeBPM(newBpm:Float, ?multi:Float = 1)
-	{
+	public static function changeBPM(newBpm:Float, ?multi:Float = 1) {
 		bpm = newBpm;
 
 		recalculateStuff(multi);

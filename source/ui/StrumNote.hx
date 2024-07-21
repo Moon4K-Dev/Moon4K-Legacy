@@ -6,31 +6,26 @@ import lime.utils.Assets;
 import options.Options;
 import util.Util;
 
-class StrumNote extends FlxSprite
-{
+class StrumNote extends FlxSprite {
 	public var json:Dynamic;
 	public var noteskin:String = "default";
 	public var direction:Int = 0;
 
 	public var offsets = [0, 0];
 
-	override public function new(x:Float, y:Float, ?direction:Int = 0, ?noteskin:String = "default", ?keyCount:Int = 4)
-	{
+	override public function new(x:Float, y:Float, ?direction:Int = 0, ?noteskin:String = "default", ?keyCount:Int = 4) {
 		super(x, y);
 
 		this.direction = direction;
 		loadNoteSkin(noteskin, direction);
 	}
 
-	override public function update(elapsed:Float)
-	{
+	override public function update(elapsed:Float) {
 		super.update(elapsed);
 	}
 
-	public function playAnim(anim:String, ?force:Bool = false, ?reversed:Bool = false, ?frame:Int = 0)
-	{
-		if (animation.getByName(anim) != null)
-		{
+	public function playAnim(anim:String, ?force:Bool = false, ?reversed:Bool = false, ?frame:Int = 0) {
+		if (animation.getByName(anim) != null) {
 			animation.play(anim, force, reversed, frame);
 			centerOffsets();
 			centerOrigin();
@@ -39,11 +34,9 @@ class StrumNote extends FlxSprite
 		}
 	}
 
-	public function loadNoteSkin(?noteskin:String = "default", ?direction:Null<Int>)
-	{
+	public function loadNoteSkin(?noteskin:String = "default", ?direction:Null<Int>) {
 		// ADD MOD SUPPORT TO THIS CHECK
-		if (!Assets.exists('assets/images/ui-skins/$noteskin/config.json'))
-		{
+		if (!Assets.exists('assets/images/ui-skins/$noteskin/config.json')) {
 			Options.saveData('ui-skin', 0);
 			noteskin = Options.getNoteskins()[0];
 		}

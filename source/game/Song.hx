@@ -7,8 +7,7 @@ import lime.utils.Assets;
 
 using StringTools;
 
-typedef SwagSong  = 
-{
+typedef SwagSong = {
 	var song:String;
 	var notes:Array<SwagSection>;
 	var bpm:Float;
@@ -19,19 +18,17 @@ typedef SwagSong  =
 	var timescale:Array<Int>;
 }
 
-class Song
-{
+class Song {
 	public var song:String;
 	public var notes:Array<SwagSection>;
 	public var bpm:Float;
 	public var sections:Int;
-	public var sectionLengths:Array<Dynamic> = [];	
+	public var sectionLengths:Array<Dynamic> = [];
 	public var speed:Float = 1;
 	public var keyCount:Null<Int>;
 	public var timescale:Array<Int>;
 
-	public function new(song, notes, bpm, sections, keyCount, timescale)
-	{
+	public function new(song, notes, bpm, sections, keyCount, timescale) {
 		this.song = song;
 		this.notes = notes;
 		this.bpm = bpm;
@@ -39,18 +36,15 @@ class Song
 		this.keyCount = keyCount;
 		this.timescale = timescale != null ? timescale : [];
 
-		for (i in 0...notes.length)
-		{
+		for (i in 0...notes.length) {
 			this.sectionLengths.push(notes[i]);
 		}
 	}
 
-	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
-	{
+	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong {
 		var rawJson = Assets.getText('assets/data/' + folder.toLowerCase() + '/' + jsonInput.toLowerCase() + '.json').trim();
 
-		while (!rawJson.endsWith("}"))
-		{
+		while (!rawJson.endsWith("}")) {
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}

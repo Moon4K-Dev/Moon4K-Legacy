@@ -5,12 +5,10 @@ import hxdiscord_rpc.Types;
 import openfl.Lib;
 import sys.thread.Thread;
 
-class Discord
-{
+class Discord {
 	public static var initialized:Bool = false;
 
-	public static function load():Void
-	{
+	public static function load():Void {
 		if (initialized)
 			return;
 
@@ -21,10 +19,8 @@ class Discord
 		RichPresence.Initialize(Utils.discordRpc, cpp.RawPointer.addressOf(handlers), 1, null);
 
 		// Daemon Thread
-		Thread.create(function()
-		{
-			while (true)
-			{
+		Thread.create(function() {
+			while (true) {
 				RichPresence.RunCallbacks();
 				Sys.sleep(1);
 			}
@@ -35,13 +31,11 @@ class Discord
 		initialized = true;
 	}
 
-	public static function changePresence(details:String, ?state:String, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float):Void
-	{
+	public static function changePresence(details:String, ?state:String, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float):Void {
 		var discordPresence:DiscordRichPresence = DiscordRichPresence.create();
 		var startTimestamp:Float = if (hasStartTimestamp) Date.now().getTime() else 0;
 
-		if (endTimestamp > 0)
-		{
+		if (endTimestamp > 0) {
 			endTimestamp = startTimestamp + endTimestamp;
 		}
 
@@ -58,8 +52,7 @@ class Discord
 		RichPresence.UpdatePresence(cpp.RawConstPointer.addressOf(discordPresence));
 	}
 
-	private static function onReady(request:cpp.RawConstPointer<DiscordUser>):Void
-	{
+	private static function onReady(request:cpp.RawConstPointer<DiscordUser>):Void {
 		final user:cpp.Star<DiscordUser> = cpp.ConstPointer.fromRaw(request).ptr;
 
 		if (Std.parseInt(cast(user.discriminator, String)) != 0)
@@ -70,13 +63,11 @@ class Discord
 		Discord.changePresence('Just Started');
 	}
 
-	private static function onDisconnected(errorCode:Int, message:cpp.ConstCharStar):Void
-	{
+	private static function onDisconnected(errorCode:Int, message:cpp.ConstCharStar):Void {
 		trace('(Discord) Disconnected ($errorCode: ${cast (message, String)})');
 	}
 
-	private static function onError(errorCode:Int, message:cpp.ConstCharStar):Void
-	{
+	private static function onError(errorCode:Int, message:cpp.ConstCharStar):Void {
 		trace('(Discord) Error ($errorCode: ${cast (message, String)})');
 		// spammed with """errors"""
 	}

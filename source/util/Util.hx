@@ -11,8 +11,7 @@ import sys.FileSystem;
 
 using StringTools;
 
-class Util
-{
+class Util {
 	static public var soundExt:String = #if web '.mp3' #else '.ogg' #end;
 
 	/**
@@ -34,8 +33,7 @@ class Util
 	 * Only works for static png files. Use getSparrow for animated sprites.
 	 * @param   imagePath            Path to the image.
 	 */
-	static public function getImage(path:String, ?customPath:Bool = false):Dynamic
-	{
+	static public function getImage(path:String, ?customPath:Bool = false):Dynamic {
 		var png = path;
 
 		if (!customPath)
@@ -43,10 +41,8 @@ class Util
 		else
 			png = "assets/" + png;
 
-		if (sys.FileSystem.exists(Sys.getCwd() + png + ".png"))
-		{
-			if (Cache.getFromCache(png, "image") == null)
-			{
+		if (sys.FileSystem.exists(Sys.getCwd() + png + ".png")) {
+			if (Cache.getFromCache(png, "image") == null) {
 				var graphic = FlxGraphic.fromBitmapData(BitmapData.fromFile(Sys.getCwd() + png + ".png"), false, png, false);
 				graphic.destroyOnNoUse = false;
 
@@ -64,31 +60,25 @@ class Util
 	 * Only works if there is a png and xml file with the same directory & name.
 	 * @param   imagePath            Path to the image.
 	 */
-	static public function getSparrow(pngName:String, ?xmlName:Null<String>, ?customPath:Bool = false)
-	{
+	static public function getSparrow(pngName:String, ?xmlName:Null<String>, ?customPath:Bool = false) {
 		var png = pngName;
 		var xml = xmlName;
 
 		if (xmlName == null)
 			xml = png;
 
-		if (customPath)
-		{
+		if (customPath) {
 			png = 'assets/$png';
 			xml = 'assets/$xml';
-		}
-		else
-		{
+		} else {
 			png = 'assets/images/$png';
 			xml = 'assets/images/$xml';
 		}
 
-		if (sys.FileSystem.exists(Sys.getCwd() + png + ".png") && sys.FileSystem.exists(Sys.getCwd() + xml + ".xml"))
-		{
+		if (sys.FileSystem.exists(Sys.getCwd() + png + ".png") && sys.FileSystem.exists(Sys.getCwd() + xml + ".xml")) {
 			var xmlData = sys.io.File.getContent(Sys.getCwd() + xml + ".xml");
 
-			if (Cache.getFromCache(png, "image") == null)
-			{
+			if (Cache.getFromCache(png, "image") == null) {
 				var graphic = FlxGraphic.fromBitmapData(BitmapData.fromFile(Sys.getCwd() + png + ".png"), false, png, false);
 				graphic.destroyOnNoUse = false;
 
@@ -108,34 +98,30 @@ class Util
 	 * @param   isMusic              Define if the sound is from the `music` folder.
 	 * @param   customPath           Define a custom path for your sound. EX: `data/mySound`
 	 */
-    static public function getSound(path:String, ?music:Bool = false, ?customPath:Bool = false):Dynamic 
-	{
-        var base:String = "";
+	static public function getSound(path:String, ?music:Bool = false, ?customPath:Bool = false):Dynamic {
+		var base:String = "";
 
-        if (!customPath) {
-            base = music ? "music/" : "sounds/";
-        }
+		if (!customPath) {
+			base = music ? "music/" : "sounds/";
+		}
 
-        var gamingPath = base + path + soundExt;
-        if (Cache.getFromCache(gamingPath, "sound") == null) {
-            var sound:Sound = null;
-            sound = Sound.fromFile("assets/" + gamingPath);
-            Cache.addToCache(gamingPath, sound, "sound");
-            trace("Loaded sound from assets: " + gamingPath);
-        }
+		var gamingPath = base + path + soundExt;
+		if (Cache.getFromCache(gamingPath, "sound") == null) {
+			var sound:Sound = null;
+			sound = Sound.fromFile("assets/" + gamingPath);
+			Cache.addToCache(gamingPath, sound, "sound");
+			trace("Loaded sound from assets: " + gamingPath);
+		}
 
-        return Cache.getFromCache(gamingPath, "sound");
-    }
+		return Cache.getFromCache(gamingPath, "sound");
+	}
 
-
-	
 	/**
 	 * Return a song from the `assets` folder.
 	 * MP3 is used for web, OGG is used for Desktop.
 	 * @param   songName            The name of the song.
 	 */
-	static public function getSong(song:String):Dynamic
-	{
+	static public function getSong(song:String):Dynamic {
 		return getSound('charts/$song/music', false, true);
 	}
 
@@ -143,8 +129,7 @@ class Util
 	 * Return text from a file in the `assets` folder.
 	 * @param   filePath            Path to the file.
 	 */
-	static public function getText(filePath:String)
-	{
+	static public function getText(filePath:String) {
 		if (sys.FileSystem.exists(Sys.getCwd() + "assets/" + filePath))
 			return sys.io.File.getContent(Sys.getCwd() + "assets/" + filePath);
 
@@ -155,8 +140,7 @@ class Util
 	 * Return the contents of a JSON file in the `assets` folder.
 	 * @param   jsonPath            Path to the json.
 	 */
-	static public function getJson(filePath:String)
-	{
+	static public function getJson(filePath:String) {
 		if (sys.FileSystem.exists(Sys.getCwd() + 'assets/$filePath.json'))
 			return Json.parse(sys.io.File.getContent(Sys.getCwd() + 'assets/$filePath.json'));
 
@@ -171,8 +155,7 @@ class Util
 	 * @param   min              The minimum value.
 	 * @param   max              The maximum value.
 	 */
-	static public function boundTo(value:Float, min:Float, max:Float):Float
-	{
+	static public function boundTo(value:Float, min:Float, max:Float):Float {
 		var newValue:Float = value;
 
 		if (newValue < min)

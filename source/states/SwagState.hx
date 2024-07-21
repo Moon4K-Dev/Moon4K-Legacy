@@ -14,17 +14,14 @@ import game.Conductor;
 import options.Controls;
 import options.Options;
 
-class SwagState extends FlxUIState
-{
+class SwagState extends FlxUIState {
 	var curStep:Int = 0;
 	var curBeat:Int = 0;
 
-	override public function new(?noTransition:Bool = false)
-	{
+	override public function new(?noTransition:Bool = false) {
 		super();
 
-		if (!SplashState.transitionsAllowed)
-		{
+		if (!SplashState.transitionsAllowed) {
 			noTransition = true;
 			SplashState.transitionsAllowed = true;
 		}
@@ -44,16 +41,14 @@ class SwagState extends FlxUIState
 		FlxTransitionableState.skipNextTransOut = noTransition;
 	}
 
-	override public function create()
-	{
+	override public function create() {
 		super.create();
 
 		if (SplashState.optionsInitialized)
 			Controls.refreshControls();
 	}
 
-	override public function update(elapsed:Float)
-	{
+	override public function update(elapsed:Float) {
 		var oldStep:Int = curStep;
 
 		updateCurStep();
@@ -71,8 +66,7 @@ class SwagState extends FlxUIState
 		super.update(elapsed);
 	}
 
-	public function transitionState(state:FlxState, ?noTransition:Bool = false)
-	{
+	public function transitionState(state:FlxState, ?noTransition:Bool = false) {
 		if (SplashState.optionsInitialized)
 			Controls.refreshControls();
 
@@ -88,21 +82,18 @@ class SwagState extends FlxUIState
 			Controls.refreshControls();
 	}
 
-	function updateBeat():Void
-	{
+	function updateBeat():Void {
 		curBeat = Math.floor(curStep / Conductor.timeScale[1]);
 	}
 
-	function updateCurStep():Void
-	{
+	function updateCurStep():Void {
 		var lastChange:BPMChangeEvent = {
 			stepTime: 0,
 			songTime: 0,
 			bpm: 0
 		}
 
-		for (i in 0...Conductor.bpmChangeMap.length)
-		{
+		for (i in 0...Conductor.bpmChangeMap.length) {
 			if (Conductor.songPosition >= Conductor.bpmChangeMap[i].songTime)
 				lastChange = Conductor.bpmChangeMap[i];
 		}
@@ -115,8 +106,7 @@ class SwagState extends FlxUIState
 
 		var lastTimeChange:TimeScaleChangeEvent = dumb;
 
-		for (i in 0...Conductor.timeScaleChangeMap.length)
-		{
+		for (i in 0...Conductor.timeScaleChangeMap.length) {
 			if (Conductor.songPosition >= Conductor.timeScaleChangeMap[i].songTime)
 				lastTimeChange = Conductor.timeScaleChangeMap[i];
 		}
@@ -136,14 +126,12 @@ class SwagState extends FlxUIState
 		updateBeat();
 	}
 
-	public function stepHit():Void
-	{
+	public function stepHit():Void {
 		if (curStep % Conductor.timeScale[0] == 0)
 			beatHit();
 	}
 
-	public function beatHit():Void
-	{
+	public function beatHit():Void {
 		// do literally nothing dumbass
 	}
 }

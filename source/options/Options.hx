@@ -2,45 +2,34 @@ package options;
 
 import flixel.FlxG;
 
-class Options
-{
+class Options {
 	// functions
-	static public function init()
-	{
+	static public function init() {
 		FlxG.save.bind("ya4krg", "TyDotCS");
 
-		for (option in defaultOptions)
-		{
+		for (option in defaultOptions) {
 			if (getData(option[0]) == null)
 				saveData(option[0], option[1]);
 		}
 	}
 
-	static public function saveData(save:String, value:Dynamic)
-	{
+	static public function saveData(save:String, value:Dynamic) {
 		Reflect.setProperty(FlxG.save.data, save, value);
 		FlxG.save.flush();
 	}
 
-	static public function getData(save:String):Dynamic
-	{
+	static public function getData(save:String):Dynamic {
 		return Reflect.getProperty(FlxG.save.data, save);
 	}
 
-	static public function resetData()
-	{
+	static public function resetData() {
 		FlxG.save.erase();
 		init();
 	}
 
 	// variables
 	static public var defaultOptions:Array<Array<Dynamic>> = [
-		[
-			"keybinds",
-			[
-				["A", "S", "K", "L"]
-			]
-		],
+		["keybinds", [["A", "S", "K", "L"]]],
 		[
 			"uibinds",
 			[
@@ -57,8 +46,7 @@ class Options
 		["ui-skin", 1],
 	];
 
-	static public function getNoteskins():Array<String>
-	{
+	static public function getNoteskins():Array<String> {
 		var swagArray:Array<String> = [];
 
 		#if sys

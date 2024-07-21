@@ -17,8 +17,7 @@ import ui.StrumNote;
 import util.Util;
 import flixel.addons.display.FlxBackdrop;
 
-class SkinState extends SwagState
-{
+class SkinState extends SwagState {
 	var box:FlxSprite;
 
 	var skinText:FlxText;
@@ -35,16 +34,14 @@ class SkinState extends SwagState
 
 	var strumNotes:FlxTypedGroup<StrumNote>;
 
-	override public function create()
-	{
-        FlxG.stage.window.title = "YA4KRG Demo - SkinState";
+	override public function create() {
+		FlxG.stage.window.title = "YA4KRG Demo - SkinState";
 		Discord.changePresence("Selecting a Note skin...", null);
 
-
-        var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
-        coolBackdrop.velocity.set(50, 30);
-        coolBackdrop.alpha = 0.7;
-        add(coolBackdrop);
+		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
+		coolBackdrop.velocity.set(50, 30);
+		coolBackdrop.alpha = 0.7;
+		add(coolBackdrop);
 
 		super.create();
 
@@ -62,8 +59,7 @@ class SkinState extends SwagState
 		strumNotes = new FlxTypedGroup<StrumNote>();
 		add(strumNotes);
 
-		for (i in 0...keyCount)
-		{
+		for (i in 0...keyCount) {
 			var daStrum:StrumNote = new StrumNote(0, 0, i, Options.getNoteskins()[Options.getData('ui-skin')]);
 
 			daStrum.screenCenter();
@@ -77,8 +73,7 @@ class SkinState extends SwagState
 		refreshText();
 	}
 
-	override public function update(elapsed:Float)
-	{
+	override public function update(elapsed:Float) {
 		super.update(elapsed);
 
 		// background speeeeeeeeeen
@@ -87,33 +82,28 @@ class SkinState extends SwagState
 		if (gridDir > 360)
 			gridDir = 0;
 
-		if (Controls.BACK)
-		{
+		if (Controls.BACK) {
 			Options.saveData('ui-skin', curSelected);
 			transitionState(new OptionSelectState());
 		}
 
-		if (Controls.UI_LEFT)
-		{
+		if (Controls.UI_LEFT) {
 			changeSelection(-1);
 		}
 
-		if (Controls.UI_RIGHT)
-		{
+		if (Controls.UI_RIGHT) {
 			changeSelection(1);
 		}
 
 		refreshText();
 	}
 
-	function refreshText()
-	{
+	function refreshText() {
 		skinText.text = json.name;
 		skinText.screenCenter(X);
 	}
 
-	function changeSelection(?change:Int = 0)
-	{
+	function changeSelection(?change:Int = 0) {
 		curSelected += change;
 
 		if (curSelected < 0)
@@ -124,8 +114,7 @@ class SkinState extends SwagState
 
 		json = Util.getJson('images/ui-skins/' + noteskins[curSelected] + '/config');
 
-		for (i in 0...strumNotes.members.length)
-		{
+		for (i in 0...strumNotes.members.length) {
 			var note = strumNotes.members[i];
 
 			note.loadNoteSkin(noteskins[curSelected]);

@@ -27,8 +27,7 @@ import openfl.OFLSprite;
 
 using StringTools;
 
-class ResultsState extends SwagState
-{
+class ResultsState extends SwagState {
 	public var background:FlxSprite;
 	public var text:FlxText;
 
@@ -46,8 +45,7 @@ class ResultsState extends SwagState
 	public var ranking:String;
 	public var accuracy:String;
 
-	override function create()
-	{
+	override function create() {
 		Discord.changePresence("Viewing their results!", null);
 
 		background = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -65,8 +63,7 @@ class ResultsState extends SwagState
 
 		var score = PlayState.instance.songScore;
 
-		comboText = new FlxText(20, -75, 0,
-			'Judgements:\nScore: ${PlayState.instance.songScore}\nMisses - ${PlayState.instance.misses}
+		comboText = new FlxText(20, -75, 0, 'Judgements:\nScore: ${PlayState.instance.songScore}\nMisses - ${PlayState.instance.misses}
         ');
 		comboText.size = 28;
 		comboText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
@@ -98,17 +95,14 @@ class ResultsState extends SwagState
 
 	var frames = 0;
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		if (music != null)
 			if (music.volume < 0.5)
 				music.volume += 0.01 * elapsed;
 
 		// keybinds
 
-		if (FlxG.keys.justPressed.ENTER)
-		{
-
+		if (FlxG.keys.justPressed.ENTER) {
 			FlxG.switchState(new Freeplay());
 		}
 		super.update(elapsed);

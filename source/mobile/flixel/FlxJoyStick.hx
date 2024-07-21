@@ -20,8 +20,7 @@ import openfl.utils.Assets;
  * @author Ka Wing Chin
  * @author Mihai Alexandru (M.A. Jigsaw) to work only with touch and to use custom assets
  */
-class FlxJoyStick extends FlxSpriteGroup
-{
+class FlxJoyStick extends FlxSpriteGroup {
 	/**
 	 * This function is called when the button is released.
 	 */
@@ -110,8 +109,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	 * @param   Radius       The radius where the thumb can move. If 0, half the base's width will be used.
 	 * @param   Ease         Used to smoothly back thumb to center. Must be between 0 and (FlxG.updateFrameRate / 60).
 	 */
-	public function new(X:Float = 0, Y:Float = 0, Radius:Float = 0, Ease:Float = 0.25)
-	{
+	public function new(X:Float = 0, Y:Float = 0, Radius:Float = 0, Ease:Float = 0.25) {
 		super(X, Y);
 
 		_radius = Radius;
@@ -132,8 +130,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	/**
 	 * Creates the background of the analog stick.
 	 */
-	function createBase():Void
-	{
+	function createBase():Void {
 		base = new FlxSprite(0, 0);
 		base.loadGraphic(Assets.getBitmapData('assets/mobile/joystick/base.png'));
 		base.x += -base.width * 0.5;
@@ -151,8 +148,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	/**
 	 * Creates the thumb of the analog stick.
 	 */
-	function createThumb():Void
-	{
+	function createThumb():Void {
 		thumb = new FlxSprite(0, 0);
 		thumb.loadGraphic(Assets.getBitmapData('assets/mobile/joystick/thumb.png'));
 		thumb.x += -thumb.width * 0.5;
@@ -171,8 +167,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	 * Creates the touch zone. It's based on the size of the background.
 	 * The thumb will react when the touch is in the zone.
 	 */
-	public function createZone():Void
-	{
+	public function createZone():Void {
 		if (base != null && _radius == 0)
 			_radius = base.width * 0.5;
 
@@ -182,8 +177,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	/**
 	 * Clean up memory.
 	 */
-	override public function destroy():Void
-	{
+	override public function destroy():Void {
 		super.destroy();
 
 		_zone = FlxDestroyUtil.put(_zone);
@@ -203,25 +197,20 @@ class FlxJoyStick extends FlxSpriteGroup
 	/**
 	 * Update the behavior.
 	 */
-	override public function update(elapsed:Float):Void
-	{
+	override public function update(elapsed:Float):Void {
 		var offAll:Bool = true;
 
 		// There is no reason to get into the loop if their is already a pointer on the analog
 		if (_currentTouch != null)
 			_tempTouches.push(_currentTouch);
-		else
-		{
-			for (touch in FlxG.touches.list)
-			{
+		else {
+			for (touch in FlxG.touches.list) {
 				var touchInserted:Bool = false;
 
-				for (analog in _analogs)
-				{
+				for (analog in _analogs) {
 					// Check whether the pointer is already taken by another analog.
 					// TODO: check this place. This line was 'if (analog != this && analog._currentTouch != touch && touchInserted == false)'
-					if (analog == this && analog._currentTouch != touch && !touchInserted)
-					{
+					if (analog == this && analog._currentTouch != touch && !touchInserted) {
 						_tempTouches.push(touch);
 						touchInserted = true;
 					}
@@ -229,23 +218,19 @@ class FlxJoyStick extends FlxSpriteGroup
 			}
 		}
 
-		for (touch in _tempTouches)
-		{
+		for (touch in _tempTouches) {
 			_point.set(touch.screenX, touch.screenY);
 
-			if (!updateAnalog(_point, touch.pressed, touch.justPressed, touch.justReleased, touch))
-			{
+			if (!updateAnalog(_point, touch.pressed, touch.justPressed, touch.justReleased, touch)) {
 				offAll = false;
 				break;
 			}
 		}
 
-		if ((status == HIGHLIGHT || status == NORMAL) && _amount != 0)
-		{
+		if ((status == HIGHLIGHT || status == NORMAL) && _amount != 0) {
 			_amount -= _amount * _ease * FlxG.updateFramerate / 60;
 
-			if (Math.abs(_amount) < 0.1)
-			{
+			if (Math.abs(_amount) < 0.1) {
 				_amount = 0;
 				_direction = 0;
 			}
@@ -262,16 +247,13 @@ class FlxJoyStick extends FlxSpriteGroup
 		super.update(elapsed);
 	}
 
-	function updateAnalog(TouchPoint:FlxPoint, Pressed:Bool, JustPressed:Bool, JustReleased:Bool, Touch:FlxTouch):Bool
-	{
+	function updateAnalog(TouchPoint:FlxPoint, Pressed:Bool, JustPressed:Bool, JustReleased:Bool, Touch:FlxTouch):Bool {
 		var offAll:Bool = true;
 
-		if (_zone.containsPoint(TouchPoint) || (status == PRESSED))
-		{
+		if (_zone.containsPoint(TouchPoint) || (status == PRESSED)) {
 			offAll = false;
 
-			if (Pressed)
-			{
+			if (Pressed) {
 				if (Touch != null)
 					_currentTouch = Touch;
 
@@ -280,8 +262,7 @@ class FlxJoyStick extends FlxSpriteGroup
 				if (JustPressed && onDown != null)
 					onDown();
 
-				if (status == PRESSED)
-				{
+				if (status == PRESSED) {
 					if (onPressed != null)
 						onPressed();
 
@@ -299,9 +280,7 @@ class FlxJoyStick extends FlxSpriteGroup
 					acceleration.x = Math.cos(_direction) * _amount;
 					acceleration.y = Math.sin(_direction) * _amount;
 				}
-			}
-			else if (JustReleased && status == PRESSED)
-			{
+			} else if (JustReleased && status == PRESSED) {
 				_currentTouch = null;
 
 				status = HIGHLIGHT;
@@ -312,8 +291,7 @@ class FlxJoyStick extends FlxSpriteGroup
 				acceleration.set();
 			}
 
-			if (status == NORMAL)
-			{
+			if (status == NORMAL) {
 				status = HIGHLIGHT;
 
 				if (onOver != null)
@@ -343,8 +321,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	 */
 	public var justPressed(get, never):Bool;
 
-	function get_justPressed():Bool
-	{
+	function get_justPressed():Bool {
 		if (_currentTouch != null)
 			return _currentTouch.justPressed && status == PRESSED;
 
@@ -356,24 +333,21 @@ class FlxJoyStick extends FlxSpriteGroup
 	 */
 	public var justReleased(get, never):Bool;
 
-	function get_justReleased():Bool
-	{
+	function get_justReleased():Bool {
 		if (_currentTouch != null)
 			return _currentTouch.justReleased && status == HIGHLIGHT;
 
 		return false;
 	}
 
-	override public function set_x(X:Float):Float
-	{
+	override public function set_x(X:Float):Float {
 		super.set_x(X);
 		createZone();
 
 		return X;
 	}
 
-	override public function set_y(Y:Float):Float
-	{
+	override public function set_y(Y:Float):Float {
 		super.set_y(Y);
 		createZone();
 

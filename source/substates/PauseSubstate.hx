@@ -13,108 +13,97 @@ import flixel.text.FlxText;
 import states.PlayState;
 import game.Song;
 
-class PauseSubstate extends SwagSubState
-{
-    var grpMenuShit:FlxTypedGroup<FlxText>;
-    var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
-    var curSelected:Int = 0;
-    var lastSong:SwagSong;
-    public function new()
-    {
-        super();
+class PauseSubstate extends SwagSubState {
+	var grpMenuShit:FlxTypedGroup<FlxText>;
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
+	var curSelected:Int = 0;
+	var lastSong:SwagSong;
 
-        lastSong = PlayState.instance.song;
-        var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-        bg.alpha = 0.6;
-        bg.scrollFactor.set();
-        add(bg);
+	public function new() {
+		super();
 
-        var songInfo:FlxText = new FlxText(20, 15, 0, "", 21);
-        songInfo.text += "Song: " + lastSong.song;
-        songInfo.scrollFactor.set();
-        songInfo.setFormat(Paths.font("vcr.ttf"), 21);
-        songInfo.updateHitbox();
-        add(songInfo);
+		lastSong = PlayState.instance.song;
+		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		bg.alpha = 0.6;
+		bg.scrollFactor.set();
+		add(bg);
 
-        grpMenuShit = new FlxTypedGroup<FlxText>();
-        add(grpMenuShit);
+		var songInfo:FlxText = new FlxText(20, 15, 0, "", 21);
+		songInfo.text += "Song: " + lastSong.song;
+		songInfo.scrollFactor.set();
+		songInfo.setFormat(Paths.font("vcr.ttf"), 21);
+		songInfo.updateHitbox();
+		add(songInfo);
 
-        for (i in 0...menuItems.length)
-        {
-            var swaggerTXT:FlxText = new FlxText(0, 0, FlxG.width, menuItems[i]);
-            swaggerTXT.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, "center");
-            swaggerTXT.alpha = 0.6;
-            grpMenuShit.add(swaggerTXT);
-        }
+		grpMenuShit = new FlxTypedGroup<FlxText>();
+		add(grpMenuShit);
 
-        centerMenuItems();
+		for (i in 0...menuItems.length) {
+			var swaggerTXT:FlxText = new FlxText(0, 0, FlxG.width, menuItems[i]);
+			swaggerTXT.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, "center");
+			swaggerTXT.alpha = 0.6;
+			grpMenuShit.add(swaggerTXT);
+		}
 
-        cameras = [FlxG.cameras.list[1]];
-    }
+		centerMenuItems();
 
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
+		cameras = [FlxG.cameras.list[1]];
+	}
 
-        var upP = Controls.UI_UP;
-        var downP = Controls.UI_DOWN;
-        var accepted = Controls.ACCEPT;
+	override function update(elapsed:Float) {
+		super.update(elapsed);
 
-        if (upP)
-        {
-            changeSelection(-1);
-        }
-        if (downP)
-        {
-            changeSelection(1);
-        }
+		var upP = Controls.UI_UP;
+		var downP = Controls.UI_DOWN;
+		var accepted = Controls.ACCEPT;
 
-        if (accepted)
-        {
-            var daSelected:String = menuItems[curSelected];
+		if (upP) {
+			changeSelection(-1);
+		}
+		if (downP) {
+			changeSelection(1);
+		}
 
-            switch (daSelected)
-            {
-                case "Resume":
-                    close();
-                case "Restart Song":
-                    var newPlayState = new PlayState();
-                    newPlayState.song = lastSong; 
-                    transitionState(newPlayState);
-                case "Exit to menu":
-                    transitionState(new states.Freeplay());
-            }
-        }
-    }
+		if (accepted) {
+			var daSelected:String = menuItems[curSelected];
 
-    override function destroy()
-    {
-        super.destroy();
-    }
+			switch (daSelected) {
+				case "Resume":
+					close();
+				case "Restart Song":
+					var newPlayState = new PlayState();
+					newPlayState.song = lastSong;
+					transitionState(newPlayState);
+				case "Exit to menu":
+					transitionState(new states.Freeplay());
+			}
+		}
+	}
 
-    function changeSelection(change:Int = 0):Void
-    {
-        curSelected += change;
+	override function destroy() {
+		super.destroy();
+	}
 
-        if (curSelected < 0)
-            curSelected = menuItems.length - 1;
-        if (curSelected >= menuItems.length)
-            curSelected = 0;
+	function changeSelection(change:Int = 0):Void {
+		curSelected += change;
 
-        centerMenuItems();
-    }
+		if (curSelected < 0)
+			curSelected = menuItems.length - 1;
+		if (curSelected >= menuItems.length)
+			curSelected = 0;
 
-    function centerMenuItems():Void
-    {
-        var totalHeight:Float = 70 * menuItems.length;
-        var startY:Float = (FlxG.height - totalHeight) / 2;
+		centerMenuItems();
+	}
 
-        for (i in 0...grpMenuShit.members.length)
-        {
-            var item = grpMenuShit.members[i];
-            item.y = startY + i * 70;
+	function centerMenuItems():Void {
+		var totalHeight:Float = 70 * menuItems.length;
+		var startY:Float = (FlxG.height - totalHeight) / 2;
 
-            item.alpha = (i == curSelected) ? 1 : 0.6;
-        }
-    }
+		for (i in 0...grpMenuShit.members.length) {
+			var item = grpMenuShit.members[i];
+			item.y = startY + i * 70;
+
+			item.alpha = (i == curSelected) ? 1 : 0.6;
+		}
+	}
 }
