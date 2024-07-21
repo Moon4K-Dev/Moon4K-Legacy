@@ -25,6 +25,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxTimer;
 import sys.FileSystem;
 import hxcodec.flixel.FlxVideo;
+import tea.SScript;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -72,6 +73,7 @@ class PlayState extends SwagState {
 	var iconRPC:String = "";
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
+	public var video:FlxVideo = new FlxVideo();
 
 	override public function new() {
 		super();
@@ -104,6 +106,10 @@ class PlayState extends SwagState {
 		FlxG.cameras.add(camHUD);
 
 		super.create();
+
+		SScript.superClassInstances["PlayState"] = this;
+		
+		var scripts:Array<SScript> = SScript.listScripts('assets/charts/'); // Every script with a class extending PlayState will use 'this' instance
 
 		laneOffset = Options.getData('lane-offset');
 
@@ -166,8 +172,20 @@ class PlayState extends SwagState {
 		startingSong = true;
 		startCountdown();
 		generateNotes(song.song);
+		checkandrunscripts();
 	}
 
+	function checkandrunscripts():Void {
+		//var songscript:SScript = new SScript("script.hx");
+		var daSongswagg = song.song;
+		var scriptPath:String = 'assets/charts/' + daSongswagg + '/script.hx';
+		if (FileSystem.exists(scriptPath)) 
+		{
+			var songscript:SScript = new SScript("assets/charts/" + daSongswagg + "/script.hx");
+			var randomNumber:Float = songscript.call('returnRandom').returnValue;
+		}	
+		else {trace("no script found for the current song");} // probably the most disgusting thing I've ever wrote...
+	}
 	function checkAndSetBackground():Void {
 		var daSongswag = song.song;
 		var bgImagePath:String = 'assets/charts/' + daSongswag + '/image.png';
@@ -184,11 +202,7 @@ class PlayState extends SwagState {
 			add(songbg);
 		}
 		else if (FileSystem.exists(bgVideoPath)) {
-			var video:FlxVideo = new FlxVideo();
 			video.play(bgVideoPath, true); // location:String, shouldLoop:Bool = false
-		}
-		else {
-			FlxG.camera.bgColor = 0xFF333333;
 		}
 	}
 
@@ -317,6 +331,7 @@ class PlayState extends SwagState {
 		if (FlxG.keys.anyJustPressed([ENTER, ESCAPE]) && startedCountdown) {
 			var pauseSubState = new substates.PauseSubstate();
 			paused = true;
+			video.pause();
 			Discord.changePresence("Paused on: " + curSong);
 			openSubState(pauseSubState);
 		}
@@ -534,5 +549,12 @@ class PlayState extends SwagState {
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int {
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strum, Obj2.strum);
+	}
+
+	override function destroy()
+	{
+		super.destroy();
+
+		SScript.superClassInstances.clear(); // May cause memory leaks if not cleared
 	}
 }

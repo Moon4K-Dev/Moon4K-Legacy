@@ -46,6 +46,9 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="hxdiscord_rpc"/>
 	<haxelib name="hxCodec" if="desktop || mobile" />
+	<haxelib name="SScript"/>
+	<haxedef name="hscriptPos"/>
+	<haxedef name="openflPos"/>
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
