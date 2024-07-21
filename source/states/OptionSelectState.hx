@@ -20,7 +20,7 @@ class OptionSelectState extends SwagState {
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 
-	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], ["Controls"], ["Exit"]];
+	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], ["Buddies"], ["Controls"], ["Exit"]];
 	var menuItems:FlxTypedGroup<OptionSelectBox>;
 
 	override public function create() {
@@ -114,6 +114,14 @@ class OptionSelectState extends SwagState {
 					openSubState(new BaseOptionsSubState());
 				case 'UI Skin':
 					transitionState(new SkinState());
+				case 'Buddies':
+					// "title", "desc", "save", "type", []
+					BaseOptionsSubState.menuShit = [
+						["Reimu", "A controllable Reimu that's onscreen!", "reimulol", "bool"],
+						["Boyfriend", "No way fnf bf!! He does his poses based on ur notes!", "bffunky", "bool"]
+					];		
+					persistentDraw = false;
+					openSubState(new BaseOptionsSubState());			
 				case 'Controls':
 				case 'Exit':
 					transitionState(new MainMenuState());

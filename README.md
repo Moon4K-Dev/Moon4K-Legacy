@@ -4,11 +4,11 @@
 
 # Credits
 
-* Ty (me!) - Mmmm... Strumming
+* Ty (me!) - Mmmm... video game
 
-* Omega.Rabatich - BF Model
+* Funkin' Crew - Boyfriend from the hit game Friday Night Funkin'
 
-* ElastedAlorian - Lil template for 3d stuffs
+* ZUN - Reimu from the hit series Touhou
 
 ## GUIDES
 
