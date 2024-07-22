@@ -60,6 +60,11 @@ class MainMenuState extends SwagState {
 	}
 
 	override public function update(elapsed:Float) {
+
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			transitionState(new states.OnlineDLState());
+		}
 		super.update(elapsed);
 	}
 }
