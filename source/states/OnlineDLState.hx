@@ -13,6 +13,7 @@ import sys.FileSystem;
 import sys.io.FileOutput;
 import sys.io.FileInput;
 import haxe.io.Bytes;
+import haxe.Json;
 
 using StringTools;
 
@@ -31,7 +32,7 @@ class OnlineDLState extends SwagState {
         coolBackdrop.alpha = 0.7;
         add(coolBackdrop);
 
-        fetchDirectoryListing("https://raw.githubusercontent.com/yophlox/YA4kRG-OnlineMaps/main/maps.txt");
+        fetchDirectoryListing("https://raw.githubusercontent.com/yophlox/YA4kRG-OnlineMaps/main/maps.json");
 
         super.create();
     }
@@ -61,27 +62,26 @@ class OnlineDLState extends SwagState {
     }
 
     function parseDirectoryListing(data:String):Void {
-        var lines = data.split("\n");
+        var maps:Array<Dynamic> = Json.parse(data);
         var yPosition = 50; 
-        
+
         files = [];
         fileTexts = [];
 
-        for (line in lines) {
-            line = line.trim();
-            if (line.endsWith(".zip")) {
-                var fileName = line;
-                files.push(fileName); 
+        for (map in maps) {
+            var name = map.name;
+            var downloadUrl = map.download;
 
-                var fileText = new FlxText(10, yPosition, FlxG.width - 20, fileName);
-                fileText.size = 16;
-                fileText.color = FlxColor.WHITE;
-                fileText.alignment = "left";
-                add(fileText);
-                fileTexts.push(fileText);
+            files.push(downloadUrl); 
 
-                yPosition += 20;
-            }
+            var fileText = new FlxText(10, yPosition, FlxG.width - 20, name);
+            fileText.size = 16;
+            fileText.color = FlxColor.WHITE;
+            fileText.alignment = "left";
+            add(fileText);
+            fileTexts.push(fileText);
+
+            yPosition += 20;
         }
 
         if (files.length > 0) {
@@ -103,22 +103,27 @@ class OnlineDLState extends SwagState {
         selectedFile = files[curSelected];
     }
 
-    function downloadFile(fileName:String):Void {
-        var url = "https://raw.githubusercontent.com/yophlox/YA4kRG-OnlineMaps/main/" + fileName;
-        var http = new Http(url);
-        
-        http.onData = function(data:String) {
-            trace("Download complete: " + fileName);
-            saveFile(fileName, data);
-        };
-        http.onError = function(error:String) {
-            trace("Failed to download file: " + fileName);
-        };
-        http.request(true);
-    }
+    function downloadFile(fileUrl:String):Void {
+        var http = new Http(fileUrl);
     
+        http.onData = function(data:String) {
+            trace("Download complete: " + fileUrl);
+            saveFile(fileUrl, data);
+        };
+    
+        http.onError = function(error:String) {
+            trace("Failed to download file: " + error);
+        };
+    
+        http.onStatus = function(status:Int) {
+            trace("HTTP Status: " + status);
+        };
+    
+        http.request(true);
+    }    
 
-    function saveFile(fileName:String, data:String):Void {
+    function saveFile(fileUrl:String, data:String):Void {
+        var fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
         var directoryPath = "assets/downloads/";
     
         if (!FileSystem.exists(directoryPath)) {
