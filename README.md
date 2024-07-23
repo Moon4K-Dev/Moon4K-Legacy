@@ -1,12 +1,12 @@
 # Yet Another 4K Rhythm Game! (YAK4KRG)
 
-* Funny 4k rhythm game engine
+* Funny 4k rhythm game
 
 # Credits
 
 * Ty (me!) - Mmmm... video game
 
-* Funkin' Crew - Boyfriend from the hit game Friday Night Funkin'
+* Funkin' Crew - Boyfriend from the hit game Friday Night Funkin' (& 2Hot)
 
 * ZUN - Reimu from the hit series Touhou
 
