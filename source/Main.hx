@@ -22,6 +22,8 @@ import sys.io.Process;
 #end
 import states.SplashState;
 import hxdiscord_rpc.Discord as DiscordRPC;
+import api.gamejolt.GJToastManager;
+import api.gamejolt.GameJoltAPI;
 
 using StringTools;
 
@@ -33,7 +35,7 @@ class Main extends Sprite {
 	var framerate:Int = 60;
 	var skipSplash:Bool = true;
 	var startFullscreen:Bool = false;
-
+	public static var gjToastManager:GJToastManager;
 	public static var fpsVar:FPS;
 
 	public static function main():Void {
@@ -72,6 +74,8 @@ class Main extends Sprite {
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 		Discord.load();
+		gjToastManager = new GJToastManager();
+		addChild(gjToastManager);
 
 		#if !web
 		fpsVar = new FPS(10, 3, 0xFFFFFF);

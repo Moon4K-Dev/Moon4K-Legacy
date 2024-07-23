@@ -49,6 +49,9 @@
 	<haxelib name="SScript"/>
 	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>
+	<!-- GameJolt Stuff -->
+	<haxelib name="tentools" />
+	<haxelib name="systools" />
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->

@@ -6,3 +6,4 @@ converter/bopeebo.json
 converter/bopeebo_converted.json
 converter/2hot_converted.json
 converter/2hot.json
+source/api/gamejolt/GJKeys.hx

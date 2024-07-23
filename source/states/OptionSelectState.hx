@@ -20,7 +20,7 @@ class OptionSelectState extends SwagState {
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 
-	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], ["Buddies"], ["Controls"], ["Exit"]];
+	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], ["GameJolt Login"], ["Buddies"], ["Controls"], ["Exit"]];
 	var menuItems:FlxTypedGroup<OptionSelectBox>;
 
 	override public function create() {
@@ -114,6 +114,8 @@ class OptionSelectState extends SwagState {
 					openSubState(new BaseOptionsSubState());
 				case 'UI Skin':
 					transitionState(new SkinState());
+				case 'GameJolt Login':
+					transitionState(new api.gamejolt.GameJoltLogin());
 				case 'Buddies':
 					// "title", "desc", "save", "type", []
 					BaseOptionsSubState.menuShit = [
