@@ -24,7 +24,7 @@ class OptionSelectState extends SwagState {
 	var menuItems:FlxTypedGroup<OptionSelectBox>;
 
 	override public function create() {
-		FlxG.stage.window.title = "YA4KRG Demo - OptionsState";
+		FlxG.stage.window.title = "YA4KRG - OptionsState";
 		Discord.changePresence("Changing Options!", null);
 
 		super.create();

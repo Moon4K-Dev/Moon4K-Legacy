@@ -24,7 +24,7 @@ class OnlineDLState extends SwagState {
     var fileTexts:Array<FlxText>;
 
     override public function create() {
-        FlxG.stage.window.title = "YA4KRG Demo - OnlineDLState";
+        FlxG.stage.window.title = "YA4KRG - OnlineDLState";
         Discord.changePresence("Downloading files...", null);
 
         var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);

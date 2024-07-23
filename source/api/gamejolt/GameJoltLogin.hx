@@ -18,8 +18,6 @@ using StringTools;
 
 class GameJoltLogin extends SwagState
 {
-    var gamejoltText1:FlxText;
-    var gamejoltText2:FlxText;
     var loginTexts:FlxTypedGroup<FlxText>;
     var loginBoxes:FlxTypedGroup<FlxUIInputText>;
     var loginButtons:FlxTypedGroup<FlxButton>;
@@ -47,6 +45,8 @@ class GameJoltLogin extends SwagState
 
     override function create()
     {
+        FlxG.stage.window.title = "YA4KRG - GameJolt Login!";
+		Discord.changePresence("Logging into GameJolt!", null);
         trace(FlxGameJolt.initialized);
         FlxG.mouse.visible = true;
         
@@ -54,18 +54,6 @@ class GameJoltLogin extends SwagState
 		coolBackdrop.velocity.set(50, 30);
 		coolBackdrop.alpha = 0.7;
 		add(coolBackdrop);
-
-        gamejoltText1 = new FlxText(0, 25, 0, "GameJolt + FNF Integration", 16);
-        gamejoltText1.screenCenter(X);
-        gamejoltText1.x += baseX;
-        gamejoltText1.color = FlxColor.fromRGB(84,155,149);
-        add(gamejoltText1);
-
-        gamejoltText2 = new FlxText(0, 45, 0, Date.now().toString(), 16);
-        gamejoltText2.screenCenter(X);
-        gamejoltText2.x += baseX;
-        gamejoltText2.color = FlxColor.fromRGB(84,155,149);
-        add(gamejoltText2);
 
         funnyText = new FlxText(5, FlxG.height - 40, 0, GJInfo.textArray[FlxG.random.int(0, GJInfo.textArray.length - 1)]+ " -Phlox", 12);
         add(funnyText);
@@ -182,9 +170,6 @@ class GameJoltLogin extends SwagState
 
         if(GJInfo.font != null)
         {       
-            // Stupid block of code >:(
-            gamejoltText1.font = GJInfo.font;
-            gamejoltText2.font = GJInfo.font;
             funnyText.font = GJInfo.font;
             versionText.font = GJInfo.font;
             username1.font = GJInfo.font;
@@ -200,8 +185,6 @@ class GameJoltLogin extends SwagState
 
     override function update(elapsed:Float)
     {
-        gamejoltText2.text = Date.now().toString();
-
         var colorDir:Int = 0;
 
         if (bgred == 255) {

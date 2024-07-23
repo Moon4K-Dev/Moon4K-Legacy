@@ -98,7 +98,7 @@ class PlayState extends SwagState {
 	}
 
 	override public function create() {
-		FlxG.stage.window.title = "YA4KRG Demo - PlayState";
+		FlxG.stage.window.title = "YA4KRG - PlayState";
 
 		//FlxG.camera.bgColor = 0xFF333333;
 		checkAndSetBackground();

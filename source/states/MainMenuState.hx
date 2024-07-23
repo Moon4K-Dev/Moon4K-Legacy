@@ -18,7 +18,7 @@ import flixel.ui.FlxButton;
 class MainMenuState extends SwagState {
 	override public function create() {
 		FlxG.mouse.visible = true;
-		FlxG.stage.window.title = "YA4KRG Demo - MainMenuState";
+		FlxG.stage.window.title = "YA4KRG - MainMenuState";
 		Discord.changePresence("In the Main Menu!", null);
 
 		var swagbg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/bg'));

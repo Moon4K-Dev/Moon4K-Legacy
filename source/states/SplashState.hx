@@ -37,7 +37,7 @@ class SplashState extends SwagState {
 
 	override public function create() {
 		FlxG.camera.bgColor = 0xFF000000;
-		FlxG.stage.window.title = "YA4KRG Demo - SplashState";
+		FlxG.stage.window.title = "YA4KRG - SplashState";
 		Discord.changePresence("Just booted the game :D", null);
 
 		HighScoreManager.init();

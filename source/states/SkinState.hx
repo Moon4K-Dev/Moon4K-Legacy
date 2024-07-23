@@ -35,7 +35,7 @@ class SkinState extends SwagState {
 	var strumNotes:FlxTypedGroup<StrumNote>;
 
 	override public function create() {
-		FlxG.stage.window.title = "YA4KRG Demo - SkinState";
+		FlxG.stage.window.title = "YA4KRG - SkinState";
 		Discord.changePresence("Selecting a Note skin...", null);
 
 		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
