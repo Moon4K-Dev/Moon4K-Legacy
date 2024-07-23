@@ -53,7 +53,6 @@ class PlayState extends SwagState {
 	public var songScore:Int = 0;
 	public var misses:Int = 0;
 
-	var rating:FlxSprite = new FlxSprite();
 	// swag
 	var startedCountdown:Bool = false;
 	private var generatedMusic:Bool = false;
@@ -271,7 +270,8 @@ class PlayState extends SwagState {
 	function endSong():Void {
 		FlxG.sound.music.stop();
 		video.stop();
-        HighScoreManager.saveHighScore(curSong, songScore, misses);
+		if (!Options.getData('botplay'))
+        	HighScoreManager.saveHighScore(curSong, songScore, misses);
 		transitionState(new ResultsState());
 	}
 
@@ -394,10 +394,6 @@ class PlayState extends SwagState {
 			}
 		}
 
-		FlxTween.tween(rating, {alpha: 0}, 0.2, {
-			startDelay: Conductor.crochet * 0.001
-		});
-
 		if (FlxG.keys.justPressed.BACKSPACE)
 			transitionState(new MainMenuState());
 
@@ -455,6 +451,24 @@ class PlayState extends SwagState {
 	var justPressed:Array<Bool> = [];
 	var pressed:Array<Bool> = [];
 	var released:Array<Bool> = [];
+
+	function rateNoteHit(noteMs:Float):Int {
+		var rating:Int = 0;
+		if (Math.abs(noteMs) < 50) {
+			rating = 350;
+			trace("SWAGGER");
+		} else if (Math.abs(noteMs) < 100) {
+			rating = 300;
+			trace("GOOD");
+		} else if (Math.abs(noteMs) < 200) {
+			rating = 50;
+			trace("SHIT");
+		} else {
+			rating = 0;
+			trace("Nuh uh!");
+		}
+		return rating;
+	}
 
 	function inputFunction() {
 		var binds:Array<String> = Options.getData('keybinds')[keyCount - 1];
@@ -520,48 +534,8 @@ class PlayState extends SwagState {
 					var roundedDecimalNoteMs:Float = FlxMath.roundDecimal(noteMs, 3);
 					var noteDiff:Float = Math.abs(Conductor.songPosition);
 
-					// curRating = "marvelous";
-
-					var score:Int = 350;
-					var daRating:String = "sick";
-
-					if (noteDiff > Conductor.safeZoneOffset * 1) {
-						daRating = "sick";
-						trace("sick!");
-						score = 350;
-					}
-					if (noteDiff > Conductor.safeZoneOffset * 0.9) {
-						daRating = "good";
-						trace("good!");
-						score = 200;
-					} else if (noteDiff > Conductor.safeZoneOffset * 0.7) {
-						daRating = "bad";
-						trace("BAD");
-						score = 100;
-					} else if (noteDiff > Conductor.safeZoneOffset * 0.9) {
-						daRating = "shit";
-						trace("SHIT");
-						score = 50;
-					}
+					var score:Int = rateNoteHit(noteMs);
 					songScore += score;
-
-					var placement:String = "my balls hurt";
-					var coolText:FlxText = new FlxText(0, 0, 0, placement, 32);
-					coolText.screenCenter();
-					coolText.x = FlxG.width * 0.55;
-
-					rating.loadGraphic('assets/images/' + daRating + ".png");
-					rating.screenCenter(X);
-					rating.x = coolText.x - 40;
-					rating.y -= 60;
-					rating.acceleration.y = 550;
-					rating.velocity.y -= FlxG.random.int(140, 175);
-					rating.setGraphicSize(Std.int(rating.width * 0.7));
-					rating.updateHitbox();
-					rating.antialiasing = true;
-					rating.velocity.x -= FlxG.random.int(0, 10);
-					add(rating);
-					rating.updateHitbox();
 
 					noteDataTimes[note.direction] = note.strum;
 					doNotHit[note.direction] = true;
