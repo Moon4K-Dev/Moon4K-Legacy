@@ -1,0 +1,54 @@
+{
+	"sectionLengths": [],
+	"keyCount": 4,
+	"song": "Test",
+	"notes": [
+		{
+			"sectionNotes": [],
+			"timeScale": [
+				4,
+				4
+			],
+			"changeTimeScale": false,
+			"bpm": 100,
+			"changeBPM": false
+		},
+		{
+			"sectionNotes": [],
+			"timeScale": [
+				4,
+				4
+			],
+			"changeTimeScale": false,
+			"bpm": 100,
+			"changeBPM": false
+		},
+		{
+			"sectionNotes": [],
+			"timeScale": [
+				4,
+				4
+			],
+			"changeTimeScale": false,
+			"bpm": 200,
+			"changeBPM": false
+		},
+		{
+			"changeTimeScale": false,
+			"sectionNotes": [],
+			"bpm": 200,
+			"changeBPM": false,
+			"timeScale": [
+				4,
+				4
+			]
+		}
+	],
+	"timescale": [
+		4,
+		4
+	],
+	"sections": 0,
+	"bpm": 200,
+	"speed": 2.3
+}
