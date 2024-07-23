@@ -35,16 +35,10 @@ class GJInfo
      * Random quotes I got from other people. Nothing more, nothing less. Just for funny.
      */
     public static var textArray:Array<String> = [
-        "I should probably push my commits...",
-        "Where is my apple cider?",
-        "Mario be like wahoo!",
+        "Chud fnf Darnell week 8 leak",
         "127.0.0.1 - be scared,",
-        "I love Camellia mod",
-        "I forgot to remove the IP grabber...",
-        "*Spontaniously combusts*",
-        "What you know about rollin down in the deep",
-        "no not the null reference :(",
-        "Thank you BrightFyre for your help :)",
+        "Ily ninjamuffin99...",
+        "mm chez burger...",
         "Thank you Firubii for the notification code :)"
     ];
 }

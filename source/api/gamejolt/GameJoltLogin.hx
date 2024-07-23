@@ -11,7 +11,6 @@ import flixel.FlxG;
 import lime.system.System;
 import api.gamejolt.GameJoltAPI;
 import api.gamejolt.GJInfo;
-import game.Conductor;
 import flixel.addons.display.FlxBackdrop;
 import states.SwagState;
 
@@ -50,8 +49,6 @@ class GameJoltLogin extends SwagState
     {
         trace(FlxGameJolt.initialized);
         FlxG.mouse.visible = true;
-
-        Conductor.changeBPM(102);
         
 		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
 		coolBackdrop.velocity.set(50, 30);
@@ -70,7 +67,7 @@ class GameJoltLogin extends SwagState
         gamejoltText2.color = FlxColor.fromRGB(84,155,149);
         add(gamejoltText2);
 
-        funnyText = new FlxText(5, FlxG.height - 40, 0, GJInfo.textArray[FlxG.random.int(0, GJInfo.textArray.length - 1)]+ " -Tenta", 12);
+        funnyText = new FlxText(5, FlxG.height - 40, 0, GJInfo.textArray[FlxG.random.int(0, GJInfo.textArray.length - 1)]+ " -Phlox", 12);
         add(funnyText);
 
         versionText = new FlxText(5, FlxG.height - 22, 0, "Game ID: " + GJInfo.id + " API: " + GJInfo.version, 12);
@@ -145,11 +142,8 @@ class GameJoltLogin extends SwagState
         cancelBox = new FlxButton(0,625, "Not Right Now", function()
         {
             FlxG.save.flush();
-            FlxG.sound.play(Paths.sound('confirmMenu'), 0.7, false, null, true, function(){
-                FlxG.save.flush();
-                FlxG.sound.music.stop();
-                transitionState(new states.OptionSelectState());
-            });
+            FlxG.sound.music.stop();
+            transitionState(new states.OptionSelectState());
         });
 
         if(!GameJoltAPI.getStatus())
@@ -226,17 +220,11 @@ class GameJoltLogin extends SwagState
             bgblue -= 1;
         }
        
-
-        bg.color = FlxColor.fromRGB(bgred, bggreen, bgblue);
-
         if (GameJoltAPI.getStatus())
         {
             helpBox.text = "Leaderboards:\n" + (GameJoltAPI.leaderboardToggle ? "Enabled" : "Disabled");
             helpBox.color = (GameJoltAPI.leaderboardToggle ? FlxColor.GREEN : FlxColor.RED);
         }
-
-        if (FlxG.sound.music != null)
-            Conductor.songPosition = FlxG.sound.music.time;
 
         if (FlxG.keys.justPressed.ESCAPE)
         {
