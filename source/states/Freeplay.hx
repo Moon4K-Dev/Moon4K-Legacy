@@ -10,6 +10,7 @@ import flixel.addons.display.FlxBackdrop;
 import haxe.Json;
 import sys.io.File;
 import sys.FileSystem;
+import game.HighScoreManager;
 
 class Freeplay extends SwagState {
 	var grpSongs:FlxTypedGroup<FlxText>;
@@ -18,6 +19,7 @@ class Freeplay extends SwagState {
 	public var curSelected:Int = 0;
 
 	var scoreText:FlxText;
+	var missText:FlxText;
 	var diffText:FlxText;
 
 	public var selectedSong:String;
@@ -65,18 +67,31 @@ class Freeplay extends SwagState {
 		updateSongList();
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
-		scoreText.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, RIGHT);
-		add(scoreText);
+		scoreText.setFormat(Paths.font("vcr.ttf"), 22, FlxColor.WHITE, RIGHT);
+
+		missText = new FlxText(FlxG.width * 0.7, 40, 0, "", 32); 
+		missText.setFormat(Paths.font("vcr.ttf"), 22, FlxColor.WHITE, RIGHT);
 
 		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText.font = scoreText.font;
 		add(diffText);
 
+		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
+		scoreBG.alpha = 0.6;
+		add(scoreBG);
+		add(scoreText);
+		add(missText);
+
 		changeSelection();
 		super.create();
 	}
 
-	override public function update(elapsed:Float) {
+	override public function update(elapsed:Float)
+	{
+		var highScoreData = HighScoreManager.getHighScoreForSong(selectedSong);
+		scoreText.text = "SCORE: " + highScoreData.score;
+		missText.text = "MISSES: " + highScoreData.misses;
+
 		if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE) {
 			transitionState(new states.MainMenuState());
 		}
@@ -165,7 +180,7 @@ class Freeplay extends SwagState {
 		if (songs.length == 0) {
 			if (noSongsText == null) {
 				noSongsText = new FlxText(0, FlxG.height / 2 - 10, FlxG.width, "There's no songs in the songs folder!", 24);
-				noSongsText.setFormat("assets/fonts/vcr.ttf", 24, FlxColor.RED, CENTER);
+				noSongsText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.RED, CENTER);
 				add(noSongsText);
 			}
 		} else {
@@ -175,7 +190,7 @@ class Freeplay extends SwagState {
 			}
 			for (i in 0...songs.length) {
 				var songTxt:FlxText = new FlxText(0, 50 + (i * songHeight), FlxG.width, songs[i], 32);
-				songTxt.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, CENTER);
+				songTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 				songTxt.scrollFactor.set();
 				songTxt.ID = i;
 				grpSongs.add(songTxt);

@@ -40,6 +40,7 @@ class SplashState extends SwagState {
 		FlxG.stage.window.title = "YA4KRG Demo - SplashState";
 		Discord.changePresence("Just booted the game :D", null);
 
+		HighScoreManager.init();
 		Options.init();
 		optionsInitialized = true;
 

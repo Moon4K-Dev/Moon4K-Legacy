@@ -105,7 +105,13 @@ class OnlineDLState extends SwagState {
 
     function downloadFile(fileUrl:String):Void {
         var http = new Http(fileUrl);
-    
+        
+        // Adding more headers to mimic a real browser request
+        http.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
+        http.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+        http.setHeader("Accept-Language", "en-US,en;q=0.5");
+        http.setHeader("Connection", "keep-alive");
+
         http.onData = function(data:String) {
             trace("Download complete: " + fileUrl);
             saveFile(fileUrl, data);
@@ -135,6 +141,7 @@ class OnlineDLState extends SwagState {
     
         try {
             var file = sys.io.File.write(filePath, false);
+            file.write(bytes); // Writing the actual data
             file.close(); 
             trace("File saved to: " + filePath);
         } catch (e:Dynamic) {

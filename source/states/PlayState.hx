@@ -269,9 +269,9 @@ class PlayState extends SwagState {
 	}
 
 	function endSong():Void {
-		if (FlxG.sound.music != null)
-			FlxG.sound.music.stop();
+		FlxG.sound.music.stop();
 		video.stop();
+        HighScoreManager.saveHighScore(curSong, songScore, misses);
 		transitionState(new ResultsState());
 	}
 
@@ -418,16 +418,14 @@ class PlayState extends SwagState {
 		}
 
 		if (FlxG.keys.justPressed.SEVEN) {
-			if (FlxG.sound.music != null)
-				FlxG.sound.music.stop();
+			FlxG.sound.music.stop();
 			video.stop();
 			transitionState(new ChartingState());
 			ChartingState.instance.song = song;
 		}
 
 		if (FlxG.keys.justPressed.EIGHT) {
-			if (FlxG.sound.music != null)
-				FlxG.sound.music.stop();
+			FlxG.sound.music.stop();
 			video.stop();
 			transitionState(new ResultsState());
 		}
