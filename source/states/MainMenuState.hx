@@ -14,13 +14,14 @@ import lime.system.System;
 import options.Controls;
 import options.Options;
 import flixel.ui.FlxButton;
-import sys.io.Process;
 
 class MainMenuState extends SwagState {
 	override public function create() {
 		FlxG.mouse.visible = true;
 		FlxG.stage.window.title = "YA4KRG - MainMenuState";
+		#if desktop
 		Discord.changePresence("In the Main Menu!", null);
+		#end
 
 		var swagbg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/bg'));
 		swagbg.setGraphicSize(Std.int(swagbg.width * 1.1));

@@ -8,9 +8,13 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import flixel.addons.display.FlxBackdrop;
 import haxe.Json;
-import sys.io.File;
-import sys.FileSystem;
+import lime.utils.Assets;
+import openfl.utils.Assets;
 import game.HighScoreManager;
+#if desktop
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class Freeplay extends SwagState {
 	var grpSongs:FlxTypedGroup<FlxText>;
@@ -42,7 +46,9 @@ class Freeplay extends SwagState {
 
 	override public function create() {
 		FlxG.stage.window.title = "YA4KRG - FreeplayState";
+		#if desktop
 		Discord.changePresence("Selecting a song...", null);
+		#end
 
 		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
 		coolBackdrop.velocity.set(50, 30);
@@ -86,8 +92,7 @@ class Freeplay extends SwagState {
 		super.create();
 	}
 
-	override public function update(elapsed:Float)
-	{
+	override public function update(elapsed:Float) {
 		var highScoreData = HighScoreManager.getHighScoreForSong(selectedSong);
 		scoreText.text = "SCORE: " + highScoreData.score;
 		missText.text = "MISSES: " + highScoreData.misses;
@@ -148,29 +153,48 @@ class Freeplay extends SwagState {
 
 	function loadSongInfoJson(songName:String):Void {
 		var path = "assets/charts/" + songName + "/songInfo.json";
+		#if web
+		if (Assets.exists(path)) {
+			var jsonContent:String = Assets.getText(path);
+			songInfoData = Json.parse(jsonContent);
+			trace("Loaded from assets: " + path);
+		}
+		#else
 		var jsonContent:String = File.getContent(path);
 		songInfoData = Json.parse(jsonContent);
 		trace("Loaded from assets: " + path);
+		#end
 	}
 
 	function loadSongJson(songName:String):Void {
 		var path = "assets/charts/" + songName + "/" + songName + ".json";
+		#if web
+		if (Assets.exists(path)) {
+			var jsonContent:String = Assets.getText(path);
+			songData = Json.parse(jsonContent);
+			trace("Loaded from assets: " + path);
+		}
+		#else
 		var jsonContent:String = File.getContent(path);
 		songData = Json.parse(jsonContent);
 		trace("Loaded from assets: " + path);
+		#end
 	}
 
 	function loadSongs():Void {
 		songs = [];
 		var dataDir:String = "assets/charts/";
+		#if web
+		songs = ["bopeebo"];
+		#else
 		var directories:Array<String> = FileSystem.readDirectory(dataDir);
-
 		for (dir in directories) {
 			var fullPath:String = dataDir + dir;
 			if (FileSystem.isDirectory(fullPath)) {
 				songs.push(dir);
 			}
 		}
+		#end
 	}
 
 	function updateSongList():Void {

@@ -47,7 +47,9 @@ class ResultsState extends SwagState {
 
 	override function create() {
 		FlxG.sound.music.stop();
+		#if desktop
 		Discord.changePresence("Viewing their results!", null);
+		#end
 
 		background = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		background.scrollFactor.set();

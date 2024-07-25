@@ -1,5 +1,5 @@
 package;
-
+#if desktop
 import hxdiscord_rpc.Discord as RichPresence;
 import hxdiscord_rpc.Types;
 import openfl.Lib;
@@ -72,3 +72,4 @@ class Discord {
 		// spammed with """errors"""
 	}
 }
+#end

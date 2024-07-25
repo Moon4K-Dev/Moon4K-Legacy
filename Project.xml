@@ -41,15 +41,16 @@
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel" />
-	<haxelib name="flixel-addons" />
-	<haxelib name="flixel-ui" />
-	<haxelib name="hxdiscord_rpc"/>
-	<haxelib name="hxCodec" if="desktop || mobile" />
+	<haxelib name="flixel"/>
+	<haxelib name="flixel-addons"/>
+	<haxelib name="flixel-ui"/>
+	<haxelib name="hxdiscord_rpc" if="desktop"/>
+	<haxelib name="hxCodec" if="desktop || mobile"/>
 	<haxelib name="SScript"/>
 	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>
-	<haxelib name="hxcpp-debug-server" />
+	<haxelib name="hxcpp-debug-server"/>
+	<haxelib name="newgrounds"/>
 	<!-- GameJolt Stuff -->
 	<haxelib name="tentools" />
 	<haxelib name="systools" />

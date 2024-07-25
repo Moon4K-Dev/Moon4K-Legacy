@@ -23,8 +23,10 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
+#if desktop
 import sys.FileSystem;
 import hxcodec.flixel.FlxVideo;
+#end
 import tea.SScript;
 
 class PlayState extends SwagState {
@@ -72,7 +74,9 @@ class PlayState extends SwagState {
 	var iconRPC:String = "";
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
+	#if desktop
 	public var video:FlxVideo = new FlxVideo();
+	#end
 	// Buddies shit
 	public static var reimu:FlxSprite;
 	public static var boyfriend:FlxSprite;
@@ -100,8 +104,17 @@ class PlayState extends SwagState {
 	override public function create() {
 		FlxG.stage.window.title = "YA4KRG - PlayState";
 
-		//FlxG.camera.bgColor = 0xFF333333;
+		#if desktop
 		checkAndSetBackground();
+		#else
+		var swagbg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/bg'));
+		swagbg.setGraphicSize(Std.int(swagbg.width * 1.1));
+		swagbg.updateHitbox();
+		swagbg.screenCenter();
+		swagbg.visible = true;
+		swagbg.antialiasing = true;
+		add(swagbg);
+		#end
 
 		// Buddies shit
         reimu = new FlxSprite(0, 0).loadGraphic(Paths.image('buddies/reimu/reimu'));
@@ -199,9 +212,12 @@ class PlayState extends SwagState {
 		startingSong = true;
 		startCountdown();
 		generateNotes(song.song);
+		#if desktop
 		checkandrunscripts();
+		#end
 	}
 
+	#if desktop
 	function checkandrunscripts():Void {
 		//var songscript:SScript = new SScript("script.hx");
 		var daSongswagg = song.song;
@@ -232,6 +248,7 @@ class PlayState extends SwagState {
 			video.play(bgVideoPath, true); // location:String, shouldLoop:Bool = false
 		}
 	}
+	#end
 
 	function startSong():Void {
 		previousFrameTime = FlxG.game.ticks;
@@ -269,7 +286,9 @@ class PlayState extends SwagState {
 
 	function endSong():Void {
 		FlxG.sound.music.stop();
+		#if desktop
 		video.stop();
+		#end
 		if (!Options.getData('botplay'))
         	HighScoreManager.saveHighScore(curSong, songScore, misses);
 		transitionState(new ResultsState());
@@ -286,11 +305,13 @@ class PlayState extends SwagState {
 
 	override public function update(elapsed:Float) 
 	{
+		#if desktop
 		if (!Options.getData('botplay')) {
 			Discord.changePresence("Playing: " + curSong + " with " + songScore + " Score and " + misses + " Misses!");
 		} else {
 			Discord.changePresence("Playing: " + curSong + " with Botplay!");
 		}
+		#end
 
 		if (!Options.getData('reimulol')) 
 		{        
@@ -401,8 +422,10 @@ class PlayState extends SwagState {
 		if (FlxG.keys.anyJustPressed([ENTER, ESCAPE]) && startedCountdown) {
 			var pauseSubState = new substates.PauseSubstate();
 			paused = true;
+			#if desktop
 			video.pause();
 			Discord.changePresence("Paused on: " + curSong);
+			#end
 			openSubState(pauseSubState);
 		}
 		#end
@@ -415,14 +438,18 @@ class PlayState extends SwagState {
 
 		if (FlxG.keys.justPressed.SEVEN) {
 			FlxG.sound.music.stop();
+			#if desktop
 			video.stop();
 			transitionState(new ChartingState());
 			ChartingState.instance.song = song;
+			#end
 		}
 
 		if (FlxG.keys.justPressed.EIGHT) {
 			FlxG.sound.music.stop();
+			#if desktop
 			video.stop();
+			#end
 			transitionState(new ResultsState());
 		}
 

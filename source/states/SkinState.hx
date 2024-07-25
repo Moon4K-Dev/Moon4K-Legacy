@@ -36,7 +36,9 @@ class SkinState extends SwagState {
 
 	override public function create() {
 		FlxG.stage.window.title = "YA4KRG - SkinState";
+		#if desktop
 		Discord.changePresence("Selecting a Note skin...", null);
+		#end
 
 		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
 		coolBackdrop.velocity.set(50, 30);

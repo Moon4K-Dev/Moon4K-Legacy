@@ -1,5 +1,6 @@
 package api.gamejolt;
 
+#if desktop
 import flixel.ui.FlxButton;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUIInputText;
@@ -46,7 +47,9 @@ class GameJoltLogin extends SwagState
     override function create()
     {
         FlxG.stage.window.title = "YA4KRG - GameJolt Login!";
+        #if desktop
 		Discord.changePresence("Logging into GameJolt!", null);
+        #end
         trace(FlxGameJolt.initialized);
         FlxG.mouse.visible = true;
         
@@ -228,3 +231,4 @@ class GameJoltLogin extends SwagState
         #end
     }
 }
+#end

@@ -70,15 +70,21 @@ class PauseSubstate extends SwagSubState {
 			switch (daSelected) {
 				case "Resume":
 					close();
+					#if desktop
 					PlayState.instance.video.resume();
+					#end
 				case "Restart Song":
 					var newPlayState = new PlayState();
 					newPlayState.song = lastSong;
+					#if desktop
 					PlayState.instance.video.stop();
+					#end
 					transitionState(newPlayState);
 				case "Exit to menu":
 					transitionState(new states.Freeplay());
+					#if desktop
 					PlayState.instance.video.stop();
+					#end
 			}
 		}
 	}

@@ -20,12 +20,14 @@ class OptionSelectState extends SwagState {
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 
-	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], ["GameJolt Login"], ["Buddies"], ["Controls"], ["Exit"]];
+	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], #if newgrounds ["Newgrounds Login"],#end #if !web ["GameJolt Login"],#end ["Buddies"], ["Controls"], ["Exit"]];
 	var menuItems:FlxTypedGroup<OptionSelectBox>;
 
 	override public function create() {
 		FlxG.stage.window.title = "YA4KRG - OptionsState";
+		#if desktop
 		Discord.changePresence("Changing Options!", null);
+		#end
 
 		super.create();
 
@@ -114,8 +116,14 @@ class OptionSelectState extends SwagState {
 					openSubState(new BaseOptionsSubState());
 				case 'UI Skin':
 					transitionState(new SkinState());
+				#if newgrounds	
+				case 'Newgrounds Login':
+					transitionState(new api.newgrounds.NGLogin());	
+				#end		
+				#if desktop
 				case 'GameJolt Login':
 					transitionState(new api.gamejolt.GameJoltLogin());
+				#end	
 				case 'Buddies':
 					// "title", "desc", "save", "type", []
 					BaseOptionsSubState.menuShit = [

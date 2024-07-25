@@ -80,7 +80,9 @@ class ChartingState extends SwagState {
 
 	override public function create() {
 		FlxG.stage.window.title = "YA4KRG - ChartingState";
+		#if desktop
 		Discord.changePresence("Charting: " + song.song, null);
+		#end
 
 		super.create();
 

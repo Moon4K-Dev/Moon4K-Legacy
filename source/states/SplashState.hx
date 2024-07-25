@@ -14,7 +14,6 @@ class SplashState extends SwagState {
 	var funnyText:FlxText;
 
 	static public var titleStarted:Bool = false;
-
 	var curWacky:String;
 	private var ptc:FlxText;
 
@@ -37,14 +36,17 @@ class SplashState extends SwagState {
 	override public function create() {
 		FlxG.camera.bgColor = 0xFF000000;
 		FlxG.stage.window.title = "YA4KRG - SplashState";
+		#if desktop
 		Discord.changePresence("Just booted the game :D", null);
-
+		#end
 		HighScoreManager.init();
 		Options.init();
 		optionsInitialized = true;
 
+		#if desktop
 		GameJoltAPI.connect();
 		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+		#end
 
 		super.create();
 

@@ -1,0 +1,1043 @@
+{
+    "keyCount": 4,
+    "sectionLengths": [
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+    ],
+    "timescale": [
+        4,
+        4
+    ],
+    "notes": [
+        {
+            "sectionNotes": [],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": false,
+            "bpm": 100
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 1200,
+                    "noteData": 3,
+                    "noteSus": 600
+                },
+                {
+                    "noteStrum": 600,
+                    "noteData": 3,
+                    "noteSus": 450
+                },
+                {
+                    "noteStrum": 0,
+                    "noteData": 2,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 3600,
+                    "noteData": 3,
+                    "noteSus": 600
+                },
+                {
+                    "noteStrum": 3000,
+                    "noteData": 3,
+                    "noteSus": 450
+                },
+                {
+                    "noteStrum": 2400,
+                    "noteData": 2,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 4800,
+                    "noteData": 1,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 5400,
+                    "noteData": 0,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 6000,
+                    "noteData": 3,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 7200,
+                    "noteData": 1,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 7800,
+                    "noteData": 0,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 8400,
+                    "noteData": 3,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 9600,
+                    "noteData": 1,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 10200,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 10500,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 10800,
+                    "noteData": 1,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 12000,
+                    "noteData": 1,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 12600,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 12900,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 13200,
+                    "noteData": 1,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 14400,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 14700,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 15300,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 15600,
+                    "noteData": 2,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 16800,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 17100,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 17700,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 18000,
+                    "noteData": 2,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 19200,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 19500,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 19800,
+                    "noteData": 1,
+                    "noteSus": 900
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 21600,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 21900,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 22200,
+                    "noteData": 1,
+                    "noteSus": 900
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 24000,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 24300,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 24600,
+                    "noteData": 0,
+                    "noteSus": 900
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 26400,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 26700,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 27000,
+                    "noteData": 0,
+                    "noteSus": 900
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 28800,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 29100,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 29400,
+                    "noteData": 0,
+                    "noteSus": 1200
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 31200,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 31500,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 31800,
+                    "noteData": 0,
+                    "noteSus": 1200
+                },
+                {
+                    "noteStrum": 33300,
+                    "noteData": 6,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 33600,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 33900,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 34500,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 34800,
+                    "noteData": 1,
+                    "noteSus": 600
+                },
+                {
+                    "noteStrum": 35700,
+                    "noteData": 6,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 36000,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 36300,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 36900,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 37200,
+                    "noteData": 1,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 38400,
+                    "noteData": 2,
+                    "noteSus": 450
+                },
+                {
+                    "noteStrum": 39000,
+                    "noteData": 3,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 39600,
+                    "noteData": 0,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 40800,
+                    "noteData": 2,
+                    "noteSus": 450
+                },
+                {
+                    "noteStrum": 41400,
+                    "noteData": 3,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 42000,
+                    "noteData": 0,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 43200,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 43800,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 44400,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 44550,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 44700,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 45000,
+                    "noteData": 2,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 45600,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 46200,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 46800,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 46950,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 47100,
+                    "noteData": 1,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 47400,
+                    "noteData": 2,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 48000,
+                    "noteData": 2,
+                    "noteSus": 450
+                },
+                {
+                    "noteStrum": 48600,
+                    "noteData": 3,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 49200,
+                    "noteData": 0,
+                    "noteSus": 450
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 50400,
+                    "noteData": 2,
+                    "noteSus": 450
+                },
+                {
+                    "noteStrum": 51000,
+                    "noteData": 3,
+                    "noteSus": 300
+                },
+                {
+                    "noteStrum": 51600,
+                    "noteData": 0,
+                    "noteSus": 450
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 52800,
+                    "noteData": 3,
+                    "noteSus": 1800
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 55200,
+                    "noteData": 3,
+                    "noteSus": 1800
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 57600,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 57900,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 58200,
+                    "noteData": 0,
+                    "noteSus": 1200
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 60000,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 60300,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 60600,
+                    "noteData": 0,
+                    "noteSus": 1200
+                },
+                {
+                    "noteStrum": 62100,
+                    "noteData": 6,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 62400,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 62700,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 63300,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 63600,
+                    "noteData": 1,
+                    "noteSus": 600
+                },
+                {
+                    "noteStrum": 64500,
+                    "noteData": 6,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 64800,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 65100,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 65700,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 66000,
+                    "noteData": 1,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 67200,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 67500,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 67800,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 68100,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 68400,
+                    "noteData": 1,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 69600,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 69900,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 70200,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 70500,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 70800,
+                    "noteData": 1,
+                    "noteSus": 600
+                },
+                {
+                    "noteStrum": 71700,
+                    "noteData": 6,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 72000,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 72300,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 72900,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 73200,
+                    "noteData": 1,
+                    "noteSus": 600
+                },
+                {
+                    "noteStrum": 74100,
+                    "noteData": 6,
+                    "noteSus": 0
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [
+                {
+                    "noteStrum": 74400,
+                    "noteData": 0,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 74700,
+                    "noteData": 3,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 75300,
+                    "noteData": 2,
+                    "noteSus": 0
+                },
+                {
+                    "noteStrum": 75600,
+                    "noteData": 1,
+                    "noteSus": 600
+                }
+            ],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": null,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": false,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": false,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": false,
+            "bpm": 0
+        },
+        {
+            "sectionNotes": [],
+            "changeTimeScale": false,
+            "timeScale": [
+                4,
+                4
+            ],
+            "changeBPM": false,
+            "bpm": 100
+        }
+    ],
+    "song": "Bopeebo",
+    "sections": 0,
+    "speed": 1,
+    "bpm": 100
+}
