@@ -426,7 +426,7 @@ class PlayState extends SwagState {
 			transitionState(new ResultsState());
 		}
 
-		if (!Options.getData('botplay')) {inputFunction();} else {}
+		inputFunction();
 	}
 
 	override function openSubState(SubState:FlxSubState) {

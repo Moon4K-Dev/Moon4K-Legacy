@@ -193,7 +193,7 @@ class OptionBox extends FlxTypedGroup<FlxText> {
 				titleY = 50;
 
 				valueText = new FlxText(x + titleX, y + 150, 0, "", 24);
-				valueText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT);
+				valueText.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, LEFT);
 				valueText.antialiasing = Options.getData('antialiasing');
 				add(valueText);
 
@@ -204,12 +204,12 @@ class OptionBox extends FlxTypedGroup<FlxText> {
 		}
 
 		titleText = new FlxText(x + titleX, y + titleY, 0, title, 32);
-		titleText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT);
+		titleText.setFormat(Paths.font("vcr.ttf"), 22, FlxColor.WHITE, LEFT);
 		titleText.antialiasing = Options.getData('antialiasing');
 		add(titleText);
 
 		descText = new FlxText(titleText.x, titleText.y + 50, 0, desc + "\n", 24);
-		descText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT);
+		descText.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, LEFT);
 		descText.antialiasing = Options.getData('antialiasing');
 		add(descText);
 

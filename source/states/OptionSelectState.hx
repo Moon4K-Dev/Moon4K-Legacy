@@ -170,14 +170,14 @@ class OptionSelectBox extends FlxTypedGroup<FlxText> {
 		super();
 
 		var titleText:FlxText = new FlxText(x, y, 0, title, 32);
-		titleText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+		titleText.setFormat(Paths.font("vcr.ttf"), 22, FlxColor.WHITE, CENTER);
 		titleText.screenCenter(X);
 		titleText.antialiasing = Options.getData('antialiasing');
 		titleText.ID = id; // Set the ID for titleText
 		add(titleText);
 
 		var descText:FlxText = new FlxText(x, y + 50, 0, desc, 24);
-		descText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER);
+		descText.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, CENTER);
 		descText.screenCenter(X);
 		descText.antialiasing = Options.getData('antialiasing');
 		descText.ID = id; // Set the ID for descText
