@@ -45,7 +45,7 @@ class Discord {
 			discordPresence.state = state;
 
 		discordPresence.largeImageKey = "rpcicon";
-		discordPresence.largeImageText = '${Utils.VERSION}';
+		discordPresence.largeImageText = 'Game by @yophlox';
 		discordPresence.smallImageKey = smallImageKey;
 		discordPresence.startTimestamp = Std.int(startTimestamp / 1000);
 		discordPresence.endTimestamp = Std.int(endTimestamp / 1000);

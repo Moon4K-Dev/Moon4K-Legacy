@@ -14,6 +14,7 @@ import lime.system.System;
 import options.Controls;
 import options.Options;
 import flixel.ui.FlxButton;
+import sys.io.Process;
 
 class MainMenuState extends SwagState {
 	override public function create() {
@@ -37,9 +38,21 @@ class MainMenuState extends SwagState {
 		singlePlayerButton.loadGraphic(buttonGraphic.graphic, false, 80, 20);
 		singlePlayerButton.label.setFormat(Paths.font('vcr.ttf'), 14, FlxColor.PURPLE, "center", FlxColor.PURPLE);
 		singlePlayerButton.label.text = "Solo";
-		singlePlayerButton.x = (FlxG.width / 2) - singlePlayerButton.width - 50;
+		singlePlayerButton.x = (FlxG.width / 2) - singlePlayerButton.width - 120;
 		singlePlayerButton.y = FlxG.height / 1.3 - singlePlayerButton.height / 1.3;
 		add(singlePlayerButton);
+
+		/*
+		var downloadSongsButton:FlxButton = new FlxButton(0, 0, "", function() {
+			transitionState(new states.OnlineDLState());
+		});
+		downloadSongsButton.loadGraphic(buttonGraphic.graphic, false, 80, 20);
+		downloadSongsButton.label.setFormat(Paths.font('vcr.ttf'), 14, FlxColor.PURPLE, "center", FlxColor.PURPLE);
+		downloadSongsButton.label.text = "Download Songs";
+		downloadSongsButton.x = (FlxG.width / 2) - downloadSongsButton.width / 2;
+		downloadSongsButton.y = FlxG.height / 1.3 - downloadSongsButton.height / 1.3;
+		add(downloadSongsButton);
+		*/
 
 		var optionsButton:FlxButton = new FlxButton(0, 0, "", function() {
 			transitionState(new states.OptionSelectState());
@@ -47,7 +60,7 @@ class MainMenuState extends SwagState {
 		optionsButton.loadGraphic(buttonGraphic.graphic, false, 80, 20);
 		optionsButton.label.setFormat(Paths.font('vcr.ttf'), 14, FlxColor.PURPLE, "center", FlxColor.PURPLE);
 		optionsButton.label.text = "Settings";
-		optionsButton.x = (FlxG.width / 2) + 50;
+		optionsButton.x = (FlxG.width / 2) + 115; 
 		optionsButton.y = FlxG.height / 1.3 - optionsButton.height / 1.3;
 		add(optionsButton);
 
