@@ -46,6 +46,7 @@ class ResultsState extends SwagState {
 	public var accuracy:String;
 
 	override function create() {
+		FlxG.sound.music.stop();
 		Discord.changePresence("Viewing their results!", null);
 
 		background = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -96,13 +97,9 @@ class ResultsState extends SwagState {
 	var frames = 0;
 
 	override function update(elapsed:Float) {
-		if (music != null)
-			if (music.volume < 0.5)
-				music.volume += 0.01 * elapsed;
-
-		// keybinds
-
+		FlxG.sound.music.stop();
 		if (FlxG.keys.justPressed.ENTER) {
+			FlxG.sound.music.stop();
 			FlxG.switchState(new Freeplay());
 		}
 		super.update(elapsed);

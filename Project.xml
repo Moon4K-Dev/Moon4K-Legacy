@@ -49,6 +49,7 @@
 	<haxelib name="SScript"/>
 	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>
+	<haxelib name="hxcpp-debug-server" />
 	<!-- GameJolt Stuff -->
 	<haxelib name="tentools" />
 	<haxelib name="systools" />

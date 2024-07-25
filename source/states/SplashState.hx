@@ -26,11 +26,10 @@ class SplashState extends SwagState {
 		"Swag Swag Cool Shit",
 		"I love ninjamuffin99",
 		"FNF chart support coming never",
-		"I love Ellen Joe Zenless Zone Zero",
+		"I love Ellen Joe Zenless Zone Zero - Phlox",
 		"Follow yophlox on twitter!",
 		"Inspired by FNF and OSU!Mania",
-		"https://example.com",
-		"Slide the weed homie.."
+		"https://example.com"
 	];
 
 	private var timer:FlxTimer;
