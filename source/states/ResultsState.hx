@@ -94,6 +94,12 @@ class ResultsState extends SwagState {
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
 		super.create();
+
+		if (PlayState.instance.misses == 0)
+		{
+			Main.gjToastManager.createToast(null, "A Full Combo???", "You got a full combo on any song!");
+			GameJoltAPI.getTrophy(240116);
+		}	
 	}
 
 	var frames = 0;
@@ -102,11 +108,6 @@ class ResultsState extends SwagState {
 		FlxG.sound.music.stop();
 		if (FlxG.keys.justPressed.ENTER) {
 			FlxG.sound.music.stop();
-			if (PlayState.instance.misses == 0)
-			{
-				Main.gjToastManager.createToast(null, "A Full Combo???", "You got a full combo on any song!");
-				GameJoltAPI.getTrophy(240116);
-			}	
 			FlxG.switchState(new Freeplay());
 		}
 		super.update(elapsed);

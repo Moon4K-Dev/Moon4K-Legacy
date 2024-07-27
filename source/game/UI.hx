@@ -27,16 +27,18 @@ class UI extends FlxSpriteGroup {
 		missTxt.scrollFactor.set();
 		add(missTxt);
 
-		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('game/healthBar'));
+		healthBarBG = new FlxSprite(!FlxG.save.data.quaverbar ? 0 : FlxG.width, !FlxG.save.data.quaverbar ? FlxG.height * 0.88 : 0).loadGraphic(Paths.image('game/healthBar'));	
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
-		// add(healthBarBG);
-
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
+		healthBarBG.angle = 90;
+		healthBarBG.x = -290;
+		healthBarBG.y = 340;
+		healthBar = new FlxBar(5, healthBarBG.y + 53, BOTTOM_TO_TOP, Std.int(healthBarBG.height - 8), Std.int(healthBarBG.width - 8), this, 'health', 0, 2);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
-		// add(healthBar);
+		healthBar.createFilledBar(0xFFFFFFFF, 0xFF66FF33);
+		add(healthBar);
+		add(healthBarBG);
+
 	}
 
 	override public function update(elapsed:Float) {
