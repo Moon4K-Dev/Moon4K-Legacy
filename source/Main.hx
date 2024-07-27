@@ -111,7 +111,7 @@ class Main extends Sprite {
 		dateNow = dateNow.replace(" ", "_");
 		dateNow = dateNow.replace(":", "'");
 
-		path = "./crash/" + "StrumShit_" + dateNow + ".txt";
+		path = "./crash/" + "YA4KRG_" + dateNow + ".txt";
 
 		for (stackItem in callStack) {
 			switch (stackItem) {
@@ -122,7 +122,7 @@ class Main extends Sprite {
 			}
 		}
 
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to TyDotCS (funkiin) on discord!";
+		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to Phlox (yophlox) on discord!";
 
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");

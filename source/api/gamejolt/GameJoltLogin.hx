@@ -141,12 +141,6 @@ class GameJoltLogin extends SwagState
         {
             loginButtons.add(signInBox);
         }
-        else
-        {
-            cancelBox.y = 475;
-            cancelBox.text = "Continue";
-            loginButtons.add(logOutBox);
-        }
         loginButtons.add(helpBox);
         loginButtons.add(cancelBox);
 

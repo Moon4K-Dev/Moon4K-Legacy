@@ -19,7 +19,7 @@ class GJInfo
     * 
     * Example: Paths.getLibraryPath("images/stepmania-icon.png")
     */
-    public static var imagePath:String = null; 
+    public static var imagePath:String = null;
 
     /* Other things that shouldn't be messed with are below this line! */
 

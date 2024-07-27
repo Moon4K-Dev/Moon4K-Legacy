@@ -102,6 +102,11 @@ class ResultsState extends SwagState {
 		FlxG.sound.music.stop();
 		if (FlxG.keys.justPressed.ENTER) {
 			FlxG.sound.music.stop();
+			if (PlayState.instance.misses == 0)
+			{
+				Main.gjToastManager.createToast(null, "A Full Combo???", "You got a full combo on any song!");
+				GameJoltAPI.getTrophy(240116);
+			}	
 			FlxG.switchState(new Freeplay());
 		}
 		super.update(elapsed);

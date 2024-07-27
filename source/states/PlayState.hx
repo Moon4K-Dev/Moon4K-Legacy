@@ -80,6 +80,8 @@ class PlayState extends SwagState {
 	// Buddies shit
 	public static var reimu:FlxSprite;
 	public static var boyfriend:FlxSprite;
+	// GameJolt Achievement crap
+	var achievementget:Bool = false;
 
 	override public function new() {
 		super();
@@ -291,6 +293,16 @@ class PlayState extends SwagState {
 		#end
 		if (!Options.getData('botplay'))
         	HighScoreManager.saveHighScore(curSong, songScore, misses);
+
+		#if desktop
+		if (curSong == 'run-insane' && !Options.getData('botplay'))
+		{
+			Main.gjToastManager.createToast(GJInfo.imagePath, "You outran him....", "Beat Run-Insane");
+			GameJoltAPI.getTrophy(240114);
+			achievementget = true;
+		}	
+		#end
+
 		transitionState(new ResultsState());
 	}
 

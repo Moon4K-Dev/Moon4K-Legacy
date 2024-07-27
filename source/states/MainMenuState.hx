@@ -70,6 +70,14 @@ class MainMenuState extends SwagState {
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
+		// taken from indie cross lol 
+		#if desktop
+		if (GameJoltAPI.getStatus())
+		{
+			Main.gjToastManager.createToast(null, 'Signed in as ' + GameJoltAPI.getUserInfo(), 'Connected to GameJolt', false);
+		}
+		#end
+
 		super.create();
 	}
 
