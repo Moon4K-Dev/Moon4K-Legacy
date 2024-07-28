@@ -69,9 +69,7 @@ class PlayState extends SwagState {
 	static public var healthGain:Float = 10;
 	static public var healthLoss:Float = -10;
 
-	public var health:Float = 100;
-	public var minHealth:Float = 0;
-	public var maxHealth:Float = 100;
+	public var health:Float = 1;
 
 	var healthBarBG:FlxSprite;
 	var healthBar:FlxBar;
@@ -219,7 +217,7 @@ class PlayState extends SwagState {
 		healthBarBG.x = -290;
 		healthBarBG.y = 340;
 
-		healthBar = new FlxBar(5, healthBarBG.y - 287.5, BOTTOM_TO_TOP, Std.int(healthBarBG.height - 8), Std.int(healthBarBG.width - 8), this, 'health', 0, 2);
+		healthBar = new FlxBar(5, healthBarBG.y - 287.5, BOTTOM_TO_TOP, Std.int(healthBarBG.height - 8), Std.int(healthBarBG.width - 8), this, 'health', 0, 1);
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(0xFFFFFFFF, 0xFF66FF33);
 		add(healthBar);
