@@ -54,6 +54,11 @@ class PlayState extends SwagState {
 
 	public var songScore:Int = 0;
 	public var misses:Int = 0;
+	public var accuracy:Float = 0.00;
+	private var totalNotesHit:Float = 0;
+	private var totalPlayed:Int = 0;
+	private var ss:Bool = false;
+	public var rank:String = "P";
 
 	// swag
 	var startedCountdown:Bool = false;
@@ -207,7 +212,22 @@ class PlayState extends SwagState {
 		hud = new UI();
 		add(hud);
 
+		healthBarBG = new FlxSprite(!FlxG.save.data.quaverbar ? 0 : FlxG.width, !FlxG.save.data.quaverbar ? FlxG.height * 0.88 : 0).loadGraphic(Paths.image('game/healthBar'));	
+		healthBarBG.screenCenter(X);
+		healthBarBG.scrollFactor.set();
+		healthBarBG.angle = 90;
+		healthBarBG.x = -290;
+		healthBarBG.y = 340;
+
+		healthBar = new FlxBar(5, healthBarBG.y - 287.5, BOTTOM_TO_TOP, Std.int(healthBarBG.height - 8), Std.int(healthBarBG.width - 8), this, 'health', 0, 2);
+		healthBar.scrollFactor.set();
+		healthBar.createFilledBar(0xFFFFFFFF, 0xFF66FF33);
+		add(healthBar);
+		add(healthBarBG);
+
 		hud.cameras = [camHUD];
+		healthBar.cameras = [camHUD];
+		healthBarBG.cameras = [camHUD];
 		strumNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 
@@ -217,6 +237,29 @@ class PlayState extends SwagState {
 		#if desktop
 		checkandrunscripts();
 		#end
+	}
+
+	function updateAccuracy()
+	{
+		totalPlayed += 1;
+		accuracy = totalNotesHit / totalPlayed * 100;
+		if (accuracy >= 100.00)
+		{
+			if (ss && misses == 0)
+				accuracy = 100.00;
+			else
+			{
+				accuracy = 99.98;
+				ss = false;
+			}
+		}
+	}
+	
+	function truncateFloat( number : Float, precision : Int): Float {
+		var num = number;
+		num = num * Math.pow(10, precision);
+		num = Math.round( num ) / Math.pow(10, precision);
+		return num;
 	}
 
 	#if desktop
@@ -325,6 +368,19 @@ class PlayState extends SwagState {
 		}
 		#end
 
+		if (health > 2)
+			health = 2;
+
+		if (health <= 0)
+		{
+			persistentUpdate = false;
+			persistentDraw = false;
+			paused = true;
+			FlxG.sound.music.stop();
+			//openSubState(new GameOverSubstate());
+			transitionState(new Freeplay());
+		}
+
 		if (!Options.getData('reimulol')) 
 		{        
 			// no reimu input :(
@@ -407,7 +463,9 @@ class PlayState extends SwagState {
 				notes.remove(note);
 				note.kill();
 				note.destroy();
+				updateAccuracy();
 				misses++;
+				health -= 0.04;
 				songScore -= 25;
 
 				if (Options.getData('bffunky')) 
@@ -495,16 +553,25 @@ class PlayState extends SwagState {
 		var rating:Int = 0;
 		if (Math.abs(noteMs) < 50) {
 			rating = 350;
+			totalNotesHit += 1;
+			health += 0.023;
 			trace("SWAGGER");
 		} else if (Math.abs(noteMs) < 100) {
 			rating = 300;
+			totalNotesHit += 0.65;
+			health += 0.004;
+			ss = false;
 			trace("GOOD");
 		} else if (Math.abs(noteMs) < 200) {
 			rating = 50;
+			ss = false;
+			totalNotesHit += 0.05;
 			trace("SHIT");
 		} else {
 			rating = 0;
-			trace("Nuh uh!");
+			ss = false;
+			totalNotesHit += 0;
+			trace("Nuh uh!");			
 		}
 		return rating;
 	}
@@ -600,6 +667,7 @@ class PlayState extends SwagState {
 					notes.remove(note);
 					note.kill();
 					note.destroy();
+					updateAccuracy();
 				}
 			}
 
