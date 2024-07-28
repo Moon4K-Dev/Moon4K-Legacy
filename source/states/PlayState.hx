@@ -28,6 +28,7 @@ import sys.FileSystem;
 import hxcodec.flixel.FlxVideo;
 #end
 import tea.SScript;
+import flixel.math.FlxRandom;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -57,8 +58,8 @@ class PlayState extends SwagState {
 	public var accuracy:Float = 0.00;
 	private var totalNotesHit:Float = 0;
 	private var totalPlayed:Int = 0;
-	private var ss:Bool = false;
-	public var rank:String = "P";
+	private var pfc:Bool = false;
+	public var curRank:String = "P";
 
 	// swag
 	var startedCountdown:Bool = false;
@@ -243,14 +244,30 @@ class PlayState extends SwagState {
 		accuracy = totalNotesHit / totalPlayed * 100;
 		if (accuracy >= 100.00)
 		{
-			if (ss && misses == 0)
+			if (pfc && misses == 0)
 				accuracy = 100.00;
 			else
 			{
 				accuracy = 99.98;
-				ss = false;
+				pfc = false;
 			}
 		}
+	}
+	
+	function updateRank()
+	{
+		if (accuracy == 100.00) // Straight 100% accuracy the whole song
+			curRank = "P";
+		else if (accuracy >= 90.00) // 90 or higher up to 99.9
+			curRank = "A";
+		else if (accuracy >= 80.00) // 80 or higher (up to 89.9)
+			curRank = "B";
+		else if (accuracy >= 70.00) // 80 or higher (up to 79.9)
+			curRank = "C";
+		else if (accuracy >= 60.00) // 60 or higher (up to 69.9)
+			curRank = "D";
+		else
+			curRank = "F"; // yeah u suck lol!
 	}
 	
 	function truncateFloat( number : Float, precision : Int): Float {
@@ -355,7 +372,7 @@ class PlayState extends SwagState {
 	var previousFrameTime:Int = 0;
 	var lastReportedPlayheadPosition:Int = 0;
 	var songTime:Float = 0;
-
+	
 	override public function update(elapsed:Float) 
 	{
 		#if desktop
@@ -462,6 +479,7 @@ class PlayState extends SwagState {
 				note.kill();
 				note.destroy();
 				updateAccuracy();
+				updateRank();
 				misses++;
 				health -= 0.04;
 				songScore -= 25;
@@ -558,16 +576,16 @@ class PlayState extends SwagState {
 			rating = 300;
 			totalNotesHit += 0.65;
 			health += 0.004;
-			ss = false;
+			pfc = false;
 			trace("GOOD");
 		} else if (Math.abs(noteMs) < 200) {
 			rating = 50;
-			ss = false;
+			pfc = false;
 			totalNotesHit += 0.05;
 			trace("SHIT");
 		} else {
 			rating = 0;
-			ss = false;
+			pfc = false;
 			totalNotesHit += 0;
 			trace("Nuh uh!");			
 		}
@@ -666,6 +684,7 @@ class PlayState extends SwagState {
 					note.kill();
 					note.destroy();
 					updateAccuracy();
+					updateRank();
 				}
 			}
 

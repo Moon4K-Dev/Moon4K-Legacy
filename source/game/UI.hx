@@ -35,6 +35,11 @@ class UI extends FlxSpriteGroup {
 		accTxt.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		accTxt.scrollFactor.set();
 		add(accTxt);
+
+		rankTxt = new FlxText(FlxG.width - textWidth - 10, 110, textWidth, "Rank: F", 20);
+		rankTxt.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		rankTxt.scrollFactor.set();
+		add(rankTxt);
 	}
 
 	override public function update(elapsed:Float) {
@@ -46,5 +51,6 @@ class UI extends FlxSpriteGroup {
 		scoreTxt.text = "Score: " + PlayState.instance.songScore;
 		missTxt.text = "Misses: " + PlayState.instance.misses;
 		accTxt.text = "Accuracy: " + PlayState.instance.accuracy;
+		rankTxt.text = "Rank: " + PlayState.instance.curRank;
 	}
 }

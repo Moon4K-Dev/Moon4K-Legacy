@@ -74,6 +74,20 @@ class ResultsState extends SwagState {
 		comboText.scrollFactor.set();
 		add(comboText);
 
+		var accuracylol:FlxText = new FlxText(20, -105, 0, 'Accuracy: ' + PlayState.instance.accuracy);
+		accuracylol.size = 28;
+		accuracylol.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
+		accuracylol.color = FlxColor.WHITE;
+		accuracylol.scrollFactor.set();
+		add(accuracylol);
+
+		var totalhit:FlxText = new FlxText(20, -125, 0, 'Total Notes Hit: ' + PlayState.instance.totalNotesHit);
+		totalhit.size = 28;
+		totalhit.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
+		comboText.color = FlxColor.WHITE;
+		totalhit.scrollFactor.set();
+		add(totalhit);
+
 		contText = new FlxText(FlxG.width - 475, FlxG.height + 50, 0, 'Press ENTER to continue.');
 		contText.size = 28;
 		contText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
@@ -100,6 +114,10 @@ class ResultsState extends SwagState {
 			Main.gjToastManager.createToast(null, "A Full Combo???", "You got a full combo on any song!");
 			GameJoltAPI.getTrophy(240116);
 		}	
+
+		if (PlayState.instance.misses == 0 && PlayState.instance.pfc == true && PlayState.instance.curSong == 'run-insane' && !Options.getData('botplay'))
+			Main.gjToastManager.createToast(null, "How the fuck.", "You got a perfect full combo on Run Insane....");
+			//GameJoltAPI.getTrophy(); // todo: make trophy for dis lol!
 	}
 
 	var frames = 0;
