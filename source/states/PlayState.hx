@@ -153,6 +153,10 @@ class PlayState extends SwagState {
 
 		super.create();
 
+		SScript.superClassInstances["PlayState"] = this;
+		var scripts:Array<SScript> = SScript.listScripts('assets/scripts/'); // Every script with a class extending PlayState will use 'this' instance
+		var songscripts:Array<SScript> = SScript.listScripts('assets/charts/' + song.song + "/"); // Every script with a class extending PlayState will use 'this' instance
+
 		laneOffset = Options.getData('lane-offset');
 
 		strumArea = new FlxSprite(0, 50);
@@ -280,7 +284,8 @@ class PlayState extends SwagState {
 		var scriptPath:String = 'assets/charts/' + daSongswagg + '/script.hx';
 		if (FileSystem.exists(scriptPath)) 
 		{
-			trace("TODO: Add PROPER SScript lol!");
+			var songscript:SScript = new SScript("assets/charts/" + daSongswagg + "/script.hx");
+			var scriptCall:String = songscript.call('songFunction').calledFunction;
 		}	
 		else {trace("no script found for the current song");} // probably the most disgusting thing I've ever wrote...
 	}
@@ -736,5 +741,7 @@ class PlayState extends SwagState {
 	override function destroy()
 	{
 		super.destroy();
+
+		SScript.superClassInstances.clear(); // May cause memory leaks if not cleared
 	}
 }
