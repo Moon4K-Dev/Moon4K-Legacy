@@ -47,6 +47,7 @@
 	<haxelib name="hxdiscord_rpc" if="desktop"/>
 	<haxelib name="hxCodec" if="desktop || mobile"/>
 	<haxelib name="SScript"/>
+	<haxelib name="hxcpp-debug-server" />
 	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>
 	<haxelib name="hxcpp-debug-server"/>
