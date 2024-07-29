@@ -1,9 +1,10 @@
-import Math;
+import Paths;
+import flixel.FlxG;
+import flixel.FlxSprite;
 
-function returnRandom()
+var sprite:FlxSprite;
+function create()
 {
-    return Math.floor(Math.random() * 100);
+    sprite = new FlxSprite().loadGraphic(Paths.image('splash/notelogo'));
+    add(sprite);
 }
-
-var s:Int = returnRandom();
-trace(s);

@@ -48,7 +48,7 @@ class PlayState extends SwagState {
 	var notes:FlxTypedGroup<Note>;
 
 	static public var strumY:Float = 0;
-	public static var curSong:String = '';
+	public var curSong:String = '';
 
 	var hud:UI;
 	private var camHUD:FlxCamera;
@@ -56,9 +56,9 @@ class PlayState extends SwagState {
 	public var songScore:Int = 0;
 	public var misses:Int = 0;
 	public var accuracy:Float = 0.00;
-	private var totalNotesHit:Float = 0;
+	public var totalNotesHit:Float = 0;
 	private var totalPlayed:Int = 0;
-	private var pfc:Bool = false;
+	public var pfc:Bool = false;
 	public var curRank:String = "P";
 
 	// swag
@@ -218,9 +218,9 @@ class PlayState extends SwagState {
 		healthBarBG.x = -290;
 		healthBarBG.y = 340;
 
-		healthBar = new FlxBar(5, healthBarBG.y - 287.5, BOTTOM_TO_TOP, Std.int(healthBarBG.height - 8), Std.int(healthBarBG.width - 8), this, 'health', 0, 1);
+		healthBar = new FlxBar(5, healthBarBG.y - 287.5, BOTTOM_TO_TOP, Std.int(healthBarBG.height - 6.5), Std.int(healthBarBG.width - 8), this, 'health', 0, 1);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFFFFFF, 0xFF66FF33);
+		healthBar.createFilledBar(0x0027E240, 0xFFFFFFFF);
 		add(healthBar);
 		add(healthBarBG);
 
@@ -285,7 +285,7 @@ class PlayState extends SwagState {
 		if (FileSystem.exists(scriptPath)) 
 		{
 			var songscript:SScript = new SScript("assets/charts/" + daSongswagg + "/script.hx");
-			var randomNumber:Float = songscript.call('returnRandom').returnValue;
+			var scriptCall:String = songscript.call('songFunction').calledFunction;
 		}	
 		else {trace("no script found for the current song");} // probably the most disgusting thing I've ever wrote...
 	}
