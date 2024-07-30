@@ -18,6 +18,8 @@
 
 * Phlox (me!) - Mmmm... video game
 
+* AD1340 - Beta Tester
+
 * Funkin' Crew - Boyfriend from the hit game Friday Night Funkin' (& 2Hot, Bopeebo)
 
 * ZUN - Reimu from the hit series Touhou

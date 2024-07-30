@@ -2,9 +2,7 @@
 /export
 index.html
 style.css
-converter/bopeebo.json
-converter/bopeebo_converted.json
-converter/2hot_converted.json
+converter/*.json
 converter/2hot.json
 source/api/gamejolt/GJKeys.hx
 source/api/newgrounds/APIStuff.hx
