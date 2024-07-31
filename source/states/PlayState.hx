@@ -27,7 +27,7 @@ import flixel.util.FlxTimer;
 import sys.FileSystem;
 import hxcodec.flixel.FlxVideo;
 #end
-import tea.SScript;
+import hscript.Hscript;
 import flixel.math.FlxRandom;
 
 class PlayState extends SwagState {
@@ -86,6 +86,8 @@ class PlayState extends SwagState {
 	public static var boyfriend:FlxSprite;
 	// GameJolt Achievement crap
 	var achievementget:Bool = false;
+	// HSCRIPT
+	public var script:Hscript = new Hscript();
 
 	override public function new() {
 		super();
@@ -139,6 +141,8 @@ class PlayState extends SwagState {
 		boyfriend.animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
 		boyfriend.animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
 		boyfriend.animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+		boyfriend.animation.addByPrefix('hey', 'BF HEY', 24, false);
+
 		if (!Options.getData('bffunky')) {  boyfriend.visible = false;} else {boyfriend.visible = true;}  
         boyfriend.animation.play('idle', true, false);
 		boyfriend.animation.finishCallback = function(name:String)
@@ -151,6 +155,12 @@ class PlayState extends SwagState {
 		camHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(camHUD);
 
+		script.interp.variables.set("add", function(value:Dynamic)
+		{
+			add(value);
+		});
+
+		script.call("onCreate"); // Stuff may or may NOT work properly lol.
 		super.create();
 
 		laneOffset = Options.getData('lane-offset');
@@ -232,6 +242,8 @@ class PlayState extends SwagState {
 		#if desktop
 		checkandrunscripts();
 		#end
+
+		script.call("createPost");
 	}
 
 	function updateAccuracy()
@@ -275,22 +287,22 @@ class PlayState extends SwagState {
 
 	#if desktop
 	function checkandrunscripts():Void {
-		//var songscript:SScript = new SScript("script.hx");
 		var daSongswagg = song.song;
 		var scriptPath:String = 'assets/charts/' + daSongswagg + '/script.hx';
-		if (FileSystem.exists(scriptPath)) 
-		{
-			trace("TODO: Add PROPER SScript lol!");
-		}	
-		else {trace("no script found for the current song");} // probably the most disgusting thing I've ever wrote...
-	}
+		if (sys.FileSystem.exists(scriptPath)) {
+			var scriptContent = sys.io.File.getContent(scriptPath);
+			script.loadScript(scriptContent);
+			trace("SCRIPT FOUND AND RUNNING LOL!");
+		} else {
+			trace("no script found for the current song");
+		}
+	}	
 	function checkAndSetBackground():Void {
 		var daSongswag = song.song;
 		var bgImagePath:String = 'assets/charts/' + daSongswag + '/image.png';
-		trace(bgImagePath);
 		var bgVideoPath:String = 'assets/charts/' + daSongswag + '/video.mp4';
-		trace(bgVideoPath);
 		if (FileSystem.exists(bgImagePath)) {
+			trace(bgImagePath);
 			var songbg:FlxSprite = new FlxSprite(-80).loadGraphic(Util.getchartImage(daSongswag + '/image'));
 			songbg.setGraphicSize(Std.int(songbg.width * 1.1));
 			songbg.updateHitbox();
@@ -300,6 +312,7 @@ class PlayState extends SwagState {
 			add(songbg);
 		}
 		else if (FileSystem.exists(bgVideoPath)) {
+			trace(bgVideoPath);
 			video.play(bgVideoPath, true); // location:String, shouldLoop:Bool = false
 		}
 	}
@@ -445,6 +458,7 @@ class PlayState extends SwagState {
 			// Conductor.lastSongPos = FlxG.sound.music.time;
 		}
 
+		script.call("update", [elapsed]);
 		super.update(elapsed);
 
 		if (FlxG.sound.music != null && FlxG.sound.music.active && FlxG.sound.music.playing)
@@ -475,6 +489,7 @@ class PlayState extends SwagState {
 				note.destroy();
 				updateAccuracy();
 				updateRank();
+				script.call("noteMiss", [note.direction]);
 				misses++;
 				health -= 0.04;
 				songScore -= 25;
@@ -535,6 +550,7 @@ class PlayState extends SwagState {
 		}
 
 		inputFunction();
+		script.call("updatePost", [elapsed]);
 	}
 
 	override function openSubState(SubState:FlxSubState) {
@@ -566,23 +582,23 @@ class PlayState extends SwagState {
 			rating = 350;
 			totalNotesHit += 1;
 			health += 0.023;
-			trace("SWAGGER");
+			//trace("SWAGGER");
 		} else if (Math.abs(noteMs) < 100) {
 			rating = 300;
 			totalNotesHit += 0.65;
 			health += 0.004;
 			pfc = false;
-			trace("GOOD");
+			//trace("GOOD");
 		} else if (Math.abs(noteMs) < 200) {
 			rating = 50;
 			pfc = false;
 			totalNotesHit += 0.05;
-			trace("SHIT");
+			//trace("SHIT");
 		} else {
 			rating = 0;
 			pfc = false;
 			totalNotesHit += 0;
-			trace("Nuh uh!");			
+			//trace("Nuh uh!");			
 		}
 		return rating;
 	}
@@ -653,6 +669,7 @@ class PlayState extends SwagState {
 
 					var score:Int = rateNoteHit(noteMs);
 					songScore += score;
+					script.call("goodNoteHit", [note]);
 
 					noteDataTimes[note.direction] = note.strum;
 					doNotHit[note.direction] = true;
