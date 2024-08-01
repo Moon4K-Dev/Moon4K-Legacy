@@ -24,6 +24,8 @@ import openfl.Assets;
 import sys.FileSystem;
 import sys.io.File;
 import options.Options;
+import flixel.system.FlxAssets.FlxShader;
+import flixel.addons.display.FlxBackdrop;
 
 using StringTools;
 
@@ -57,6 +59,7 @@ class Hscript
 		interp.variables.set("FlxGraphic", FlxGraphic);
 		interp.variables.set("FlxTween", FlxTween);
 		interp.variables.set("FlxCamera", FlxCamera);
+		interp.variables.set("FlxShader", FlxShader);
 		interp.variables.set("File", File);
 		interp.variables.set("Assets", Assets);
 		interp.variables.set("FileSystem", FileSystem);
@@ -69,7 +72,7 @@ class Hscript
 		interp.variables.set("Song", Song);
 		interp.variables.set("Conductor", Conductor);
         interp.variables.set("Options", Options);
-
+		interp.variables.set("FlxBackdrop", FlxBackdrop);
 
 		interp.allowStaticVariables = interp.allowPublicVariables = true;
 

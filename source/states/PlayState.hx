@@ -29,6 +29,7 @@ import hxcodec.flixel.FlxVideo;
 #end
 import hscript.Hscript;
 import flixel.math.FlxRandom;
+import flixel.system.FlxAssets.FlxShader;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
