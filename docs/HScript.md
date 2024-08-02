@@ -39,10 +39,10 @@ function onCreate(){
 
 function createPost(){        
     trace("Script Initialized.");
+    PlayState.instance.song.keyCount = 6; // 1-9 key, make sure to restart the song so the extra keys can work
 }
 
 function update(elapsed){
-    PlayState.instance.keyCount = 6; // 1-9 key, also extra keys is buggy as fuck so use at your own risk
 }
 
 function updatePost(elapsed){
