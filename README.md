@@ -1,8 +1,8 @@
-# Yet Another 4K Rhythm Game! (YAK4KRG)
+# Moon4K
 
 * Funny 4k rhythm game
 
-* Make sure to check out the [docs!](https://github.com/yophlox/YA4KRG/tree/main/docs) to learn how to do custom stuff!
+* Make sure to check out the [docs!](https://github.com/yophlox/Moon4K/tree/main/docs) to learn how to do custom stuff!
 
 # Features
 
@@ -10,7 +10,7 @@
 
 * Easy modding (song adding)
 
-* [HScript support!](https://github.com/yophlox/YA4KRG/tree/main/docs/HScript.md)
+* [HScript support!](https://github.com/yophlox/Moon4K/tree/main/docs/HScript.md)
 
 * FNF Chart support (technically!)
 
