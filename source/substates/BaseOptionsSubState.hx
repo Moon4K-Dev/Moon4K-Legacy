@@ -26,7 +26,7 @@ class BaseOptionsSubState extends SwagSubState {
 	var menuItems:FlxTypedGroup<OptionBox>;
 
 	override public function create() {
-		FlxG.stage.window.title = "YA4KRG Demo - OptionsSubState";
+		FlxG.stage.window.title = "Moon4K - OptionsSubState";
 
 		super.create();
 

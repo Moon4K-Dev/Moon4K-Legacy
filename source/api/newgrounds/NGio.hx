@@ -83,7 +83,7 @@ class NGio
 			if (sessionId != null)
 				trace("found web session id");
 			
-			#if (debug)
+			#if (debug && web)
 			if (sessionId == null && APIStuff.SESSION != null)
 			{
 				trace("using debug session id");

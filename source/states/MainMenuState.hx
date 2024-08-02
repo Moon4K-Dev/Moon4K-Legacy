@@ -18,7 +18,7 @@ import flixel.ui.FlxButton;
 class MainMenuState extends SwagState {
 	override public function create() {
 		FlxG.mouse.visible = true;
-		FlxG.stage.window.title = "YA4KRG - MainMenuState";
+		FlxG.stage.window.title = "Moon4K - MainMenuState";
 		#if desktop
 		Discord.changePresence("In the Main Menu!", null);
 		#end
@@ -65,7 +65,7 @@ class MainMenuState extends SwagState {
 		optionsButton.y = FlxG.height / 1.3 - optionsButton.height / 1.3;
 		add(optionsButton);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "YA4KRG" + Utils.VERSION, 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Moon4K" + Utils.VERSION, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);

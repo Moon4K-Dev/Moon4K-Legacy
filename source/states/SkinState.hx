@@ -35,7 +35,7 @@ class SkinState extends SwagState {
 	var strumNotes:FlxTypedGroup<StrumNote>;
 
 	override public function create() {
-		FlxG.stage.window.title = "YA4KRG - SkinState";
+		FlxG.stage.window.title = "Moon4K - SkinState";
 		#if desktop
 		Discord.changePresence("Selecting a Note skin...", null);
 		#end

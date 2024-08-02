@@ -35,7 +35,7 @@ class SplashState extends SwagState {
 
 	override public function create() {
 		FlxG.camera.bgColor = 0xFF000000;
-		FlxG.stage.window.title = "YA4KRG - SplashState";
+		FlxG.stage.window.title = "Moon4K - SplashState";
 		#if desktop
 		Discord.changePresence("Just booted the game :D", null);
 		#end
@@ -61,7 +61,7 @@ class SplashState extends SwagState {
 			arrowsexylogo.alpha = 0;
 			add(arrowsexylogo);
 
-			funnyText = new FlxText(0, 0, 0, "Welcome to YA4KRG (Yet Another 4K Rhythm Game)!!", 24);
+			funnyText = new FlxText(0, 0, 0, "Welcome to Moon4K (Yet Another 4K Rhythm Game)!!", 24);
 			funnyText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, CENTER);
 			funnyText.screenCenter();
 			funnyText.alpha = 0;

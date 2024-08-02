@@ -26,8 +26,8 @@ import flixel.util.FlxTimer;
 #if desktop
 import sys.FileSystem;
 import hxcodec.flixel.FlxVideo;
-#end
 import hscript.Hscript;
+#end
 import flixel.math.FlxRandom;
 import flixel.system.FlxAssets.FlxShader;
 
@@ -88,7 +88,9 @@ class PlayState extends SwagState {
 	// GameJolt Achievement crap
 	var achievementget:Bool = false;
 	// HSCRIPT
+	#if desktop
 	public var script:Hscript = new Hscript();
+	#end
 
 	override public function new() {
 		super();
@@ -111,7 +113,7 @@ class PlayState extends SwagState {
 	}
 
 	override public function create() {
-		FlxG.stage.window.title = "YA4KRG - PlayState";
+		FlxG.stage.window.title = "Moon4K - PlayState";
 
 		#if desktop
 		checkAndSetBackground();
@@ -156,12 +158,14 @@ class PlayState extends SwagState {
 		camHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(camHUD);
 
+		#if desktop
 		script.interp.variables.set("add", function(value:Dynamic)
 		{
 			add(value);
 		});
 
 		script.call("onCreate"); // Stuff may or may NOT work properly lol.
+		#end
 		super.create();
 
 		laneOffset = Options.getData('lane-offset');
@@ -242,9 +246,8 @@ class PlayState extends SwagState {
 		generateNotes(song.song);
 		#if desktop
 		checkandrunscripts();
-		#end
-
 		script.call("createPost");
+		#end
 	}
 
 	function updateAccuracy()
@@ -459,7 +462,9 @@ class PlayState extends SwagState {
 			// Conductor.lastSongPos = FlxG.sound.music.time;
 		}
 
+		#if desktop
 		script.call("update", [elapsed]);
+		#end
 		super.update(elapsed);
 
 		if (FlxG.sound.music != null && FlxG.sound.music.active && FlxG.sound.music.playing)
@@ -490,7 +495,9 @@ class PlayState extends SwagState {
 				note.destroy();
 				updateAccuracy();
 				updateRank();
+				#if desktop
 				script.call("noteMiss", [note.direction]);
+				#end
 				misses++;
 				health -= 0.04;
 				songScore -= 25;
@@ -551,7 +558,9 @@ class PlayState extends SwagState {
 		}
 
 		inputFunction();
+		#if desktop
 		script.call("updatePost", [elapsed]);
+		#end
 	}
 
 	override function openSubState(SubState:FlxSubState) {
@@ -606,40 +615,40 @@ class PlayState extends SwagState {
 
 	function inputFunction() {
 		var binds:Array<String> = Options.getData('keybinds')[keyCount - 1];
-
+	
 		justPressed = [];
 		pressed = [];
 		released = [];
-
+	
 		for (i in 0...keyCount) {
 			justPressed.push(false);
 			pressed.push(false);
 			released.push(false);
 		}
-
+	
 		for (i in 0...binds.length) {
 			justPressed[i] = FlxG.keys.checkStatus(FlxKey.fromString(binds[i]), FlxInputState.JUST_PRESSED);
 			pressed[i] = FlxG.keys.checkStatus(FlxKey.fromString(binds[i]), FlxInputState.PRESSED);
 			released[i] = FlxG.keys.checkStatus(FlxKey.fromString(binds[i]), FlxInputState.RELEASED);
 		}
-
+	
 		for (i in 0...justPressed.length) {
 			if (justPressed[i]) {
 				strumNotes.members[i].playAnim("press", true);
 			}
 		}
-
+	
 		for (i in 0...released.length) {
 			if (released[i]) {
 				strumNotes.members[i].playAnim("static");
 			}
 		}
-
+	
 		var possibleNotes:Array<Note> = [];
-
+	
 		for (note in notes) {
 			note.calculateCanBeHit();
-
+	
 			if (!Options.getData('botplay')) {
 				if (note.canBeHit && !note.tooLate && !note.isSustainNote)
 					possibleNotes.push(note);
@@ -648,35 +657,37 @@ class PlayState extends SwagState {
 					possibleNotes.push(note);
 			}
 		}
-
+	
 		possibleNotes.sort((a, b) -> Std.int(a.strum - b.strum));
-
+	
 		var doNotHit:Array<Bool> = [false, false, false, false];
 		var noteDataTimes:Array<Float> = [-1, -1, -1, -1];
-
+	
 		if (possibleNotes.length > 0) {
 			for (i in 0...possibleNotes.length) {
 				var note = possibleNotes[i];
-
+	
 				if (((justPressed[note.direction] && !doNotHit[note.direction]) && !Options.getData('botplay'))
 					|| Options.getData('botplay')) {
 					var noteMs = (Conductor.songPosition - note.strum) / songMultiplier;
-
+	
 					if (Options.getData('botplay'))
 						noteMs = 0;
-
+	
 					var roundedDecimalNoteMs:Float = FlxMath.roundDecimal(noteMs, 3);
 					var noteDiff:Float = Math.abs(Conductor.songPosition);
-
+	
 					var score:Int = rateNoteHit(noteMs);
 					songScore += score;
+					#if desktop
 					script.call("goodNoteHit", [note]);
-
+					#end
+	
 					noteDataTimes[note.direction] = note.strum;
 					doNotHit[note.direction] = true;
-
+	
 					strumNotes.members[note.direction].playAnim("confirm", true);
-
+	
 					if (Options.getData('bffunky'))
 					{
 						switch (note.direction) 
@@ -691,7 +702,7 @@ class PlayState extends SwagState {
 								boyfriend.animation.play('singRIGHT', true, false);
 						}
 					}
-
+	
 					note.active = false;
 					notes.remove(note);
 					note.kill();
@@ -700,11 +711,11 @@ class PlayState extends SwagState {
 					updateRank();
 				}
 			}
-
+	
 			if (possibleNotes.length > 0) {
 				for (i in 0...possibleNotes.length) {
 					var note = possibleNotes[i];
-
+	
 					if (note.strum == noteDataTimes[note.direction] && doNotHit[note.direction]) {
 						note.active = false;
 						notes.remove(note);
@@ -715,6 +726,8 @@ class PlayState extends SwagState {
 			}
 		}
 	}
+	
+	
 
 	function generateNotes(dataPath:String):Void {
 		for (section in song.notes) {

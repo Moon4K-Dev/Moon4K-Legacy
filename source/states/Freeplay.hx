@@ -45,7 +45,7 @@ class Freeplay extends SwagState {
 	}
 
 	override public function create() {
-		FlxG.stage.window.title = "YA4KRG - FreeplayState";
+		FlxG.stage.window.title = "Moon4K - FreeplayState";
 		#if desktop
 		Discord.changePresence("Selecting a song...", null);
 		#end
