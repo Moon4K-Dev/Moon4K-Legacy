@@ -614,7 +614,7 @@ class PlayState extends SwagState {
 	}
 
 	function inputFunction() {
-		var binds:Array<String> = Options.getData('keybinds')[keyCount - 1];
+		var binds:Array<String> = ['A', 'S', 'K', 'L'];
 	
 		justPressed = [];
 		pressed = [];
@@ -727,8 +727,6 @@ class PlayState extends SwagState {
 		}
 	}
 	
-	
-
 	function generateNotes(dataPath:String):Void {
 		for (section in song.notes) {
 			Conductor.recalculateStuff(songMultiplier);

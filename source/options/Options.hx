@@ -29,7 +29,6 @@ class Options {
 
 	// variables
 	static public var defaultOptions:Array<Array<Dynamic>> = [
-		["keybinds", [["A", "S", "K", "L"]]],
 		[
 			"uibinds",
 			[
