@@ -7,11 +7,9 @@ function createPost(){
 }
 
 function update(elapsed){
-    trace("update lol!");
 }
 
 function updatePost(elapsed){
-    trace("update post lol!");
 }
 
 function noteMiss(direction:Int = 0){
