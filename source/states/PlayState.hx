@@ -394,6 +394,7 @@ class PlayState extends SwagState {
 			Discord.changePresence("Playing: " + curSong + " with Botplay!");
 		}
 		#end
+		inputFunction();
 
 		if (health > 2)
 			health = 2;
@@ -557,7 +558,6 @@ class PlayState extends SwagState {
 			transitionState(new ResultsState());
 		}
 
-		inputFunction();
 		#if desktop
 		script.call("updatePost", [elapsed]);
 		#end

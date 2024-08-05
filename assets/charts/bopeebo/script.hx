@@ -3,7 +3,7 @@ function onCreate(){
 }
 
 function createPost(){        
-    trace("Script Initialized.");
+    PlayState.instance.circleMode = true;
 }
 
 function update(elapsed){
