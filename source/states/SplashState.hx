@@ -90,7 +90,7 @@ class SplashState extends SwagState {
 				}
 			});
 		}
-		timer = new FlxTimer();
+		var timer:FlxTimer = new FlxTimer();
 		timer.start(5.5, onTimerComplete, 3);
 	}
 
