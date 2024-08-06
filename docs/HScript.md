@@ -29,28 +29,3 @@ function goodNoteHit(note:Int = 0){
     trace("Nice job! (Note Hit!)");
 }
 ```
-
-Extra Key Template:
-
-```haxe
-function onCreate(){
-    trace("90% sure onCreate shit don't work sooo...");
-}
-
-function createPost(){        
-    trace("Script Initialized.");
-    PlayState.instance.song.keyCount = 6; // 1-9 key, make sure to restart the song so the extra keys can work
-}
-
-function update(elapsed){
-}
-
-function updatePost(elapsed){
-}
-
-function noteMiss(direction:Int = 0){
-}
-
-function goodNoteHit(note:Int = 0){
-}
-```
