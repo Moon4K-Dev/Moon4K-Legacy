@@ -20,7 +20,7 @@ class OptionSelectState extends SwagState {
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 
-	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], #if newgrounds ["Newgrounds Login"],#end #if !web ["GameJolt Login"],#end ["Controls"], ["Exit"]];
+	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], #if web ["Newgrounds Login"],#end #if !web ["GameJolt Login"],#end ["Controls"], ["Exit"]];
 	var menuItems:FlxTypedGroup<OptionSelectBox>;
 
 	override public function create() {

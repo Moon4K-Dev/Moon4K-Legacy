@@ -24,8 +24,6 @@ class SplashState extends SwagState {
 		"Look Ma, I'm in a video game!",
 		"Swag Swag Cool Shit",
 		"I love ninjamuffin99",
-		"FNF chart support coming never",
-		"I love Ellen Joe Zenless Zone Zero - Phlox",
 		"Follow yophlox on twitter!",
 		"Inspired by FNF and OSU!Mania",
 		"https://example.com"
