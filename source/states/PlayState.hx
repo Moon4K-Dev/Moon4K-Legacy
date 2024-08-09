@@ -82,9 +82,6 @@ class PlayState extends SwagState {
 	#if desktop
 	public var video:FlxVideo = new FlxVideo();
 	#end
-	// Buddies shit
-	public static var reimu:FlxSprite;
-	public static var boyfriend:FlxSprite;
 	// GameJolt Achievement crap
 	var achievementget:Bool = false;
 	// HSCRIPT
@@ -126,33 +123,6 @@ class PlayState extends SwagState {
 		swagbg.antialiasing = true;
 		add(swagbg);
 		#end
-
-		// Buddies shit
-        reimu = new FlxSprite(0, 0).loadGraphic(Paths.image('buddies/reimu/reimu'));
-		if (!Options.getData('reimulol')) {  reimu.visible = false;} else {reimu.visible = true;}  
-		reimu.scale.set(0.5, 0.5);
-        add(reimu);
-
-        boyfriend = new FlxSprite(770, 450);
-        boyfriend.frames = Paths.getSparrowAtlas('buddies/bf/BOYFRIEND');
-        boyfriend.animation.addByPrefix('idle', 'BF idle dance', 24, false);
-		boyfriend.animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-		boyfriend.animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-		boyfriend.animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-		boyfriend.animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-		boyfriend.animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-		boyfriend.animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-		boyfriend.animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-		boyfriend.animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-		boyfriend.animation.addByPrefix('hey', 'BF HEY', 24, false);
-
-		if (!Options.getData('bffunky')) {  boyfriend.visible = false;} else {boyfriend.visible = true;}  
-        boyfriend.animation.play('idle', true, false);
-		boyfriend.animation.finishCallback = function(name:String)
-        {
-            boyfriend.animation.play('idle', true, false);
-        };
-        add(boyfriend);
 
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
@@ -409,35 +379,6 @@ class PlayState extends SwagState {
 			transitionState(new Freeplay());
 		}
 
-		if (!Options.getData('reimulol')) 
-		{        
-			// no reimu input :(
-		}
-		else
-		{
-			if (FlxG.keys.pressed.A)
-			{
-				reimu.x -= 10;
-				reimu.flipX = false;
-			}
-	
-			if (FlxG.keys.pressed.L)
-			{
-				reimu.x += 10;
-				reimu.flipX = true;
-			}
-	
-			if (FlxG.keys.pressed.K)
-			{
-				reimu.y -= 10;
-			}
-	
-			if (FlxG.keys.pressed.S)
-			{
-				reimu.y += 10;
-			}
-		}
-
 		if (startingSong) {
 			if (startedCountdown) {
 				Conductor.songPosition += FlxG.elapsed * 1000;
@@ -502,21 +443,6 @@ class PlayState extends SwagState {
 				misses++;
 				health -= 0.04;
 				songScore -= 25;
-
-				if (Options.getData('bffunky')) 
-				{
-					switch (note.direction) 
-					{
-						case 0:
-							boyfriend.animation.play('singLEFTmiss', true, false);
-						case 1:
-							boyfriend.animation.play('singDOWNmiss', true, false);
-						case 2:
-							boyfriend.animation.play('singUPmiss', true, false);
-						case 3:
-							boyfriend.animation.play('singRIGHTmiss', true, false);
-					}
-				}
 			}
 		}
 
@@ -687,21 +613,6 @@ class PlayState extends SwagState {
 					doNotHit[note.direction] = true;
 	
 					strumNotes.members[note.direction].playAnim("confirm", true);
-	
-					if (Options.getData('bffunky'))
-					{
-						switch (note.direction) 
-						{
-							case 0:
-								boyfriend.animation.play('singLEFT', true, false);
-							case 1:
-								boyfriend.animation.play('singDOWN', true, false);
-							case 2:
-								boyfriend.animation.play('singUP', true, false);
-							case 3:
-								boyfriend.animation.play('singRIGHT', true, false);
-						}
-					}
 	
 					note.active = false;
 					notes.remove(note);

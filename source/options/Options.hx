@@ -39,9 +39,6 @@ class Options {
 		// main
 		["downscroll", false],
 		["botplay", false],
-		// buddies :D
-		["reimulol", false],
-		["bffunky", false],
 		// back to main :((
 		["scroll-speed", 2],
 		["lane-offset", 100],
