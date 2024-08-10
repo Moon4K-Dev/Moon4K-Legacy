@@ -359,7 +359,7 @@ class PlayState extends SwagState {
 	{
 		#if desktop
 		if (!Options.getData('botplay')) {
-			Discord.changePresence("Playing: " + curSong + " with " + songScore + " Score and " + misses + " Misses!");
+			Discord.changePresence("Playing: " + curSong + " with " + songScore + " Score and " + misses + " Misses and " + accuracy + "Accuracy");
 		} else {
 			Discord.changePresence("Playing: " + curSong + " with Botplay!");
 		}
@@ -455,7 +455,7 @@ class PlayState extends SwagState {
 			paused = true;
 			#if desktop
 			video.pause();
-			Discord.changePresence("Paused on: " + curSong);
+			Discord.changePresence("Paused on: " + curSong + " with " + songScore + " Score and " + misses + " Misses and " + accuracy + "Accuracy");
 			#end
 			openSubState(pauseSubState);
 		}
@@ -539,8 +539,9 @@ class PlayState extends SwagState {
 		return rating;
 	}
 
-	function inputFunction() {
-		var binds:Array<String> = ['A', 'S', 'K', 'L'];
+	function inputFunction() 
+	{
+		var binds:Array<String> = ["A", "S", "K", "L"];
 	
 		justPressed = [];
 		pressed = [];
