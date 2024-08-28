@@ -18,22 +18,33 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
-
+import flixel.ui.FlxButton;
+import flixel.FlxSubState;
+import substates.SongInfoSubState;
 using StringTools;
 
+import openfl.net.URLRequest;
+import openfl.display.Loader;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+
 class OnlineDLState extends SwagState {
-    var files:Array<String>;
-    var curSelected:Int = 0;
-    var selectedFile:String;
-    var fileTexts:Array<FlxText>;
+    private var files:Array<Dynamic>;
+    private var beatmapGrid:FlxTypedGroup<BeatmapItem>;
+    private var pageSize:Int = 12;
+    private var currentPage:Int = 0;
+    private var totalPages:Int = 0;
+    private var pageText:FlxText;
     private var gridLines:FlxTypedGroup<FlxSprite>;
-    private var titleText:FlxText;
-    private var infoText:FlxText;
-    private var downloadProgress:FlxSprite;
 
     override public function create() {
-        FlxG.stage.window.title = "YA4KRG - OnlineDLState";
-        Discord.changePresence("Browsing Online Levels", null);
+        FlxG.stage.window.title = "Moon4K - OnlineDLState";
+		#if desktop
+		Discord.changePresence("Downloading Songs...", null);
+		#end
+        super.create();
+
+        FlxG.mouse.visible = true;
 
         gridLines = new FlxTypedGroup<FlxSprite>();
         for (i in 0...20) {
@@ -47,162 +58,103 @@ class OnlineDLState extends SwagState {
         }
         add(gridLines);
 
-        titleText = new FlxText(0, 20, FlxG.width, "ONLINE LEVELS");
-        titleText.setFormat(Paths.font('vcr.ttf'), 48, FlxColor.CYAN, CENTER);
-        titleText.setBorderStyle(OUTLINE, FlxColor.BLUE, 2);
-        add(titleText);
+        beatmapGrid = new FlxTypedGroup<BeatmapItem>();
+        add(beatmapGrid);
 
-        infoText = new FlxText(10, FlxG.height - 30, FlxG.width - 20, "↑↓: SELECT   ENTER: DOWNLOAD   ESC: BACK");
-        infoText.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.CYAN, RIGHT);
-        infoText.setBorderStyle(OUTLINE, FlxColor.BLUE, 1);
-        add(infoText);
+        pageText = new FlxText(0, FlxG.height - 40, FlxG.width, "Page 1 / 1");
+        pageText.setFormat(null, 16, FlxColor.WHITE, CENTER);
+        add(pageText);
 
-        downloadProgress = new FlxSprite(20, FlxG.height - 50).makeGraphic(FlxG.width - 40, 10, FlxColor.BLUE);
-        downloadProgress.scale.x = 0;
-        add(downloadProgress);
-
-        fetchDirectoryListing("https://raw.githubusercontent.com/yophlox/YA4kRG-OnlineMaps/main/maps.json");
-
-        super.create();
+        fetchDirectoryListing("https://raw.githubusercontent.com/yophlox/Moon4K-OnlineMaps/main/maps.json");
     }
 
     override public function update(elapsed:Float) {
-        super.update(elapsed);
-
         for (line in gridLines) {
             line.alpha = 0.2 + 0.1 * Math.sin(line.x + line.y + FlxG.game.ticks * 0.01);
         }
 
-        if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN) {
-            changeSelection(FlxG.keys.justPressed.UP ? -1 : 1);
-        }
+        super.update(elapsed);
 
-        if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE) {
+        if (FlxG.keys.justPressed.LEFT) prevPage();
+        if (FlxG.keys.justPressed.RIGHT) nextPage();
+
+        if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE)
             transitionState(new states.MainMenuState());
-        }
 
-        if (FlxG.keys.justPressed.ENTER && selectedFile != null) {
-            downloadFile(selectedFile);
+        if (FlxG.mouse.justPressed) {
+            for (item in beatmapGrid.members) {
+                if (item.overlapsPoint(FlxG.mouse.getWorldPosition())) {
+                    var mapInfo = files[item.index];
+                    openSubState(new SongInfoSubState(
+                        mapInfo.name,
+                        mapInfo.download,
+                        mapInfo.desc,
+                        mapInfo.author,
+                        mapInfo.image
+                    ));
+                    break;
+                }
+            }
         }
     }
 
     function fetchDirectoryListing(url:String):Void {
         var http = new Http(url);
         http.onData = function(data:String) {
-            trace("Data received: " + data);
-            parseDirectoryListing(data);
+            try {
+                parseDirectoryListing(data);
+            } catch (e:Dynamic) {
+                trace("Error parsing data: " + e);
+                showErrorMessage("Failed to load map list. Please try again later.");
+            }
         };
         http.onError = function(error:String) {
             trace("Failed to fetch directory listing: " + error);
+            showErrorMessage("Failed to fetch map list: " + error);
         };
         http.request(false);
     }
 
     function parseDirectoryListing(data:String):Void {
         var maps:Array<Dynamic> = Json.parse(data);
-        var yPosition = 100;
+        files = maps;
+        totalPages = Math.ceil(files.length / pageSize);
+        updatePage();
+    }
 
-        files = [];
-        fileTexts = [];
+    function updatePage():Void {
+        beatmapGrid.clear();
 
-        for (map in maps) {
-            var name = map.name;
-            var downloadUrl = map.download;
+        var startIndex = currentPage * pageSize;
+        var endIndex = Std.int(Math.min(startIndex + pageSize, files.length));
 
-            files.push(downloadUrl); 
-
-            var fileText = new FlxText(50, yPosition, FlxG.width - 100, name);
-            fileText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, "left");
-            fileText.setBorderStyle(OUTLINE, FlxColor.BLUE, 1);
-            add(fileText);
-            fileTexts.push(fileText);
-
-            yPosition += 40;
+        for (i in startIndex...endIndex) {
+            var map = files[i];
+            var item = new BeatmapItem(
+                Std.int((i % 3) * 210 + 20),
+                Std.int(Math.floor((i % pageSize) / 3) * 160 + 80),
+                map.name,
+                map.download,
+                map.image,
+                i
+            );
+            beatmapGrid.add(item);
         }
 
-        if (files.length > 0) {
-            selectedFile = files[0];
-            changeSelection(0);
+        pageText.text = 'Page ${currentPage + 1} / $totalPages';
+    }
+
+    function prevPage():Void {
+        if (currentPage > 0) {
+            currentPage--;
+            updatePage();
         }
     }
 
-    function changeSelection(change:Int = 0) {
-        curSelected += change;
-
-        if (curSelected < 0) curSelected = 0;
-        if (curSelected >= files.length) curSelected = files.length - 1;
-
-        for (i in 0...fileTexts.length) {
-            if (i == curSelected) {
-                fileTexts[i].color = FlxColor.YELLOW;
-                fileTexts[i].scale.set(1.1, 1.1);
-                FlxTween.color(fileTexts[i], 0.1, FlxColor.YELLOW, FlxColor.WHITE, {type: PINGPONG});
-            } else {
-                fileTexts[i].color = FlxColor.WHITE;
-                fileTexts[i].scale.set(1, 1);
-            }
-            fileTexts[i].updateHitbox();
-        }
-
-        selectedFile = files[curSelected];
-    }
-
-    function downloadFile(fileUrl:String):Void {
-        // Simulate download progress
-        FlxTween.tween(downloadProgress.scale, {x: 1}, 2, {
-            ease: FlxEase.linear,
-            onComplete: function(_) {
-                showSuccessMessage("File downloaded successfully!");
-                downloadProgress.scale.x = 0;
-            }
-        });
-
-        var http = new Http(fileUrl);
-        
-        http.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
-        http.setHeader("Accept", "*/*");
-        http.setHeader("Accept-Language", "en-US,en;q=0.5");
-        http.setHeader("Connection", "keep-alive");
-
-        http.onBytes = function(data:Bytes) {
-            trace("Download complete: " + fileUrl);
-            saveFile(fileUrl, data);
-        };
-
-        http.onError = function(error:String) {
-            trace("Failed to download file: " + error);
-            showErrorMessage("Download failed: " + error);
-        };
-
-        http.onStatus = function(status:Int) {
-            trace("HTTP Status: " + status);
-            if (status == 403) {
-                trace("Access forbidden. Please check if you have permission to access this file.");
-                showErrorMessage("Access forbidden (403). Please check if you have permission to access this file.");
-            }
-        };
-
-        http.cnxTimeout = 10;
-        http.request(false);
-    }
-
-    function saveFile(fileUrl:String, data:Bytes):Void {
-        var fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        var directoryPath = "assets/downloads/";
-
-        if (!FileSystem.exists(directoryPath)) {
-            FileSystem.createDirectory(directoryPath);
-        }
-
-        var filePath = directoryPath + fileName;
-
-        try {
-            File.saveBytes(filePath, data);
-            trace("File saved to: " + filePath);
-            showSuccessMessage("File downloaded successfully: " + fileName);
-        } catch (e:Dynamic) {
-            trace("Failed to save file: " + filePath + " - " + e);
-            showErrorMessage("Failed to save file: " + fileName);
+    function nextPage():Void {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            updatePage();
         }
     }
 
@@ -211,22 +163,59 @@ class OnlineDLState extends SwagState {
         errorText.setFormat(null, 16, FlxColor.RED, "center");
         errorText.screenCenter();
         add(errorText);
+    }
+}
 
-        FlxTween.tween(errorText, {alpha: 0}, 1, {startDelay: 2, onComplete: function(_) {
-            remove(errorText);
-            errorText.destroy();
-        }});
+class BeatmapItem extends FlxSprite {
+    public var downloadUrl:String;
+    public var mapName:String;
+    public var index:Int;
+    private var nameText:FlxText;
+    private var thumbnail:FlxSprite;
+
+    public function new(x:Int, y:Int, mapName:String, downloadUrl:String, imageUrl:String, index:Int) {
+        super(x, y);
+        this.downloadUrl = downloadUrl;
+        this.mapName = mapName;
+        this.index = index;
+
+        makeGraphic(200, 150, FlxColor.BLACK);
+
+        thumbnail = new FlxSprite(x, y);
+        loadThumbnail(imageUrl);
+
+        nameText = new FlxText(x, y + 110, 200, mapName);
+        nameText.setFormat(null, 12, FlxColor.WHITE, CENTER);
     }
 
-    function showSuccessMessage(message:String):Void {
-        var successText = new FlxText(0, 0, FlxG.width, message);
-        successText.setFormat(null, 16, FlxColor.GREEN, "center");
-        successText.screenCenter();
-        add(successText);
+    private function loadThumbnail(imageUrl:String):Void {
+        var loader:Loader = new Loader();
+        loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onThumbnailLoaded);
+        loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onThumbnailError);
+        loader.load(new URLRequest(imageUrl));
+    }
 
-        FlxTween.tween(successText, {alpha: 0}, 1, {startDelay: 2, onComplete: function(_) {
-            remove(successText);
-            successText.destroy();
-        }});
+    private function onThumbnailLoaded(e:Event):Void {
+        var loader:Loader = cast(e.target.loader, Loader);
+        var bitmapData = cast(loader.content, openfl.display.Bitmap).bitmapData;
+        thumbnail.loadGraphic(bitmapData);
+        thumbnail.setGraphicSize(200, 110);
+        thumbnail.updateHitbox();
+    }
+
+    private function onThumbnailError(e:IOErrorEvent):Void {
+        trace('Failed to load thumbnail: ${e.text}');
+    }
+
+    override public function draw():Void {
+        super.draw();
+        thumbnail.draw();
+        nameText.draw();
+    }
+
+    override public function update(elapsed:Float):Void {
+        super.update(elapsed);
+        thumbnail.update(elapsed);
+        nameText.update(elapsed);
     }
 }
