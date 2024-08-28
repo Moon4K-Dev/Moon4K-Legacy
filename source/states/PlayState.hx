@@ -56,11 +56,13 @@ class PlayState extends SwagState {
 
 	public var songScore:Int = 0;
 	public var misses:Int = 0;
+	public var notesHit:Int = 0;
 	public var accuracy:Float = 0.00;
 	public var totalNotesHit:Float = 0;
 	private var totalPlayed:Int = 0;
 	public var pfc:Bool = false;
 	public var curRank:String = "P";
+	private var ratingText:FlxText;
 
 	// swag
 	var startedCountdown:Bool = false;
@@ -73,8 +75,6 @@ class PlayState extends SwagState {
 
 	public var health:Float = 1;
 
-	var healthBarBG:FlxSprite;
-	var healthBar:FlxBar;
 	// Discord RPC variables
 	var iconRPC:String = "";
 	var detailsText:String = "";
@@ -127,14 +127,16 @@ class PlayState extends SwagState {
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(camHUD);
-
+		hud = new UI();
+		add(hud);
+		
 		#if desktop
 		script.interp.variables.set("add", function(value:Dynamic)
 		{
 			add(value);
 		});
 
-		script.call("onCreate"); // Stuff may or may NOT work properly lol.
+		script.call("onCreate"); // Stuff may or NOT work properly lol.
 		#end
 		super.create();
 
@@ -189,25 +191,7 @@ class PlayState extends SwagState {
 			strumNotes.add(daStrum);
 		}
 
-		hud = new UI();
-		add(hud);
-
-		healthBarBG = new FlxSprite(!FlxG.save.data.quaverbar ? 0 : FlxG.width, !FlxG.save.data.quaverbar ? FlxG.height * 0.88 : 0).loadGraphic(Paths.image('game/healthBar'));	
-		healthBarBG.screenCenter(X);
-		healthBarBG.scrollFactor.set();
-		healthBarBG.angle = 90;
-		healthBarBG.x = -290;
-		healthBarBG.y = 340;
-
-		healthBar = new FlxBar(5, healthBarBG.y - 287.5, BOTTOM_TO_TOP, Std.int(healthBarBG.height - 6.5), Std.int(healthBarBG.width - 8), this, 'health', 0, 1);
-		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0x0027E240, 0xFFFFFFFF);
-		add(healthBar);
-		add(healthBarBG);
-
 		hud.cameras = [camHUD];
-		healthBar.cameras = [camHUD];
-		healthBarBG.cameras = [camHUD];
 		strumNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 
@@ -218,6 +202,12 @@ class PlayState extends SwagState {
 		checkandrunscripts();
 		script.call("createPost");
 		#end
+
+		ratingText = new FlxText(0, 0, 0, "", 26);
+		ratingText.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		ratingText.screenCenter();
+		ratingText.visible = false;
+		add(ratingText);
 	}
 
 	function updateAccuracy()
@@ -234,6 +224,7 @@ class PlayState extends SwagState {
 				pfc = false;
 			}
 		}
+		accuracy = FlxMath.roundDecimal(accuracy, 2);
 	}
 	
 	function updateRank()
@@ -386,7 +377,11 @@ class PlayState extends SwagState {
 					startSong();
 			}
 		} else {
-			Conductor.songPosition = FlxG.sound.music.time;
+			if (FlxG.sound.music != null && FlxG.sound.music.active && FlxG.sound.music.playing) {
+				Conductor.songPosition = FlxG.sound.music.time;
+			} else {
+				Conductor.songPosition += (FlxG.elapsed) * 1000;
+			}
 
 			if (!paused) {
 				songTime += FlxG.game.ticks - previousFrameTime;
@@ -408,11 +403,6 @@ class PlayState extends SwagState {
 		script.call("update", [elapsed]);
 		#end
 		super.update(elapsed);
-
-		if (FlxG.sound.music != null && FlxG.sound.music.active && FlxG.sound.music.playing)
-			Conductor.songPosition = FlxG.sound.music.time;
-		else
-			Conductor.songPosition += (FlxG.elapsed) * 1000;
 
 		if (spawnNotes[0] != null) {
 			while (spawnNotes.length > 0 && spawnNotes[0].strum - Conductor.songPosition < (1500 * songMultiplier)) {
@@ -441,6 +431,7 @@ class PlayState extends SwagState {
 				script.call("noteMiss", [note.direction]);
 				#end
 				misses++;
+				notesHit = 0;
 				health -= 0.04;
 				songScore -= 25;
 			}
@@ -512,30 +503,35 @@ class PlayState extends SwagState {
 	var pressed:Array<Bool> = [];
 	var released:Array<Bool> = [];
 
-	function rateNoteHit(noteMs:Float):Int {
+	function rateNoteHit(noteMs:Float):Int 
+	{
 		var rating:Int = 0;
 		if (Math.abs(noteMs) < 50) {
 			rating = 350;
 			totalNotesHit += 1;
 			health += 0.023;
-			//trace("SWAGGER");
+			ratingText.text = "SWAGGER";
 		} else if (Math.abs(noteMs) < 100) {
 			rating = 300;
 			totalNotesHit += 0.65;
 			health += 0.004;
 			pfc = false;
-			//trace("GOOD");
+			ratingText.text = "GOOD";
 		} else if (Math.abs(noteMs) < 200) {
 			rating = 50;
 			pfc = false;
 			totalNotesHit += 0.05;
-			//trace("SHIT");
+			ratingText.text = "SHIT!";
 		} else {
 			rating = 0;
 			pfc = false;
 			totalNotesHit += 0;
-			//trace("Nuh uh!");			
+			ratingText.text = "Nuh uh!";
 		}
+		
+		ratingText.visible = true;
+		ratingText.alpha = 1;
+		
 		return rating;
 	}
 
@@ -604,6 +600,7 @@ class PlayState extends SwagState {
 					var roundedDecimalNoteMs:Float = FlxMath.roundDecimal(noteMs, 3);
 					var noteDiff:Float = Math.abs(Conductor.songPosition);
 	
+					notesHit ++;
 					var score:Int = rateNoteHit(noteMs);
 					songScore += score;
 					#if desktop

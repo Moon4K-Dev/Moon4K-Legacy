@@ -10,11 +10,15 @@ import flixel.addons.display.FlxBackdrop;
 import haxe.Json;
 import lime.utils.Assets;
 import openfl.utils.Assets;
+import openfl.display.BitmapData;
 import game.HighScoreManager;
+import util.Util;
+import util.Cache;
 #if desktop
 import sys.FileSystem;
 import sys.io.File;
 #end
+import flixel.graphics.FlxGraphic;
 
 class Freeplay extends SwagState {
     var grpSongs:FlxTypedGroup<FlxText>;
@@ -36,6 +40,8 @@ class Freeplay extends SwagState {
 
     var songHeight:Int = 100;
     var noSongsText:FlxText;
+
+    var songImage:FlxSprite;
 
     public function new() {
         super();
@@ -59,7 +65,7 @@ class Freeplay extends SwagState {
         textBG.alpha = 0.6;
         add(textBG);
 
-        var leText:String = "Press R to scan the songs folder. // Press TAB to see the Song Info";
+        var leText:String = "Press R to scan the songs folder.";
         var size:Int = 18;
         var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
         text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
@@ -69,6 +75,10 @@ class Freeplay extends SwagState {
 
         grpSongs = new FlxTypedGroup<FlxText>();
         add(grpSongs);
+
+        songImage = new FlxSprite(FlxG.width * 0.5, 100);
+        songImage.makeGraphic(500, 300, FlxColor.BLACK);
+        add(songImage);
 
         updateSongList();
 
@@ -103,6 +113,7 @@ class Freeplay extends SwagState {
 
         if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN) {
             changeSelection(FlxG.keys.justPressed.UP ? -1 : 1);
+            updateSongImage();
         }
 
         if (FlxG.keys.justPressed.ENTER) {
@@ -110,13 +121,7 @@ class Freeplay extends SwagState {
             transitionState(new PlayState());
             PlayState.instance.song = songData;
         }
-
-        if (FlxG.keys.justPressed.TAB) {
-            loadSongInfoJson(selectedSong);
-            var infosubstate = new substates.SongInfoSubstate();
-            openSubState(infosubstate);
-        }
-
+        
         if (FlxG.keys.justPressed.R) {
             rescanSongs();
         }
@@ -128,9 +133,9 @@ class Freeplay extends SwagState {
         curSelected += change;
 
         if (curSelected < 0)
+            curSelected = songs.length - 1;
+        if (curSelected >= songs.length)
             curSelected = 0;
-        if (curSelected >= grpSongs.length)
-            curSelected = grpSongs.length - 1;
 
         var startY:Int = 50;
         var spacing:Int = 100;
@@ -140,6 +145,8 @@ class Freeplay extends SwagState {
         grpSongs.forEach((txt:FlxText) -> {
             txt.y = startY + (txt.ID * spacing) - offsetY;
             txt.color = FlxColor.WHITE;
+            txt.x = 20;
+            txt.alignment = FlxTextAlign.LEFT;
 
             if (txt.ID == curSelected) {
                 txt.size = 36;
@@ -151,6 +158,36 @@ class Freeplay extends SwagState {
         });
 
         selectedSong = songs[curSelected];
+        updateSongImage();
+    }
+
+    function updateSongImage():Void {
+        var imagePath = '${selectedSong}/image';
+        trace('Attempting to load image: $imagePath');
+
+        var loadedImage:FlxGraphic = Cache.getFromCache(imagePath, "image");
+        if (loadedImage == null) {
+            loadedImage = Util.getchartImage(imagePath);
+            if (loadedImage != null) {
+                Cache.addToCache(imagePath, loadedImage, "image");
+                trace('Successfully loaded and cached image: $imagePath');
+            } else {
+                trace('Image not found: $imagePath');
+            }
+        } else {
+            trace('Using cached image: $imagePath');
+        }
+
+        if (loadedImage != null) {
+            songImage.loadGraphic(loadedImage);
+        } else {
+            songImage.makeGraphic(400, 300, FlxColor.BLACK);
+        }
+
+        songImage.setGraphicSize(400, 300);
+        songImage.updateHitbox();
+        songImage.screenCenter(Y);
+        songImage.x = FlxG.width * 0.5;
     }
 
     function loadSongInfoJson(songName:String):Void {
@@ -215,13 +252,14 @@ class Freeplay extends SwagState {
                 noSongsText = null;
             }
             for (i in 0...songs.length) {
-                var songTxt:FlxText = new FlxText(0, 50 + (i * songHeight), FlxG.width, songs[i], 32);
-                songTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+                var songTxt:FlxText = new FlxText(20, 50 + (i * songHeight), FlxG.width * 0.6, songs[i], 32);
+                songTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT);
                 songTxt.scrollFactor.set();
                 songTxt.ID = i;
                 grpSongs.add(songTxt);
             }
             selectedSong = songs[curSelected];
+            updateSongImage();
         }
     }
 

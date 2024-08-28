@@ -26,7 +26,7 @@ class SplashState extends SwagState {
 		"I love ninjamuffin99",
 		"Follow yophlox on twitter!",
 		"Inspired by FNF and OSU!Mania",
-		"https://example.com"
+		"The first o in the Moon 4k logo stole government files, das why it's hidden lol!"
 	];
 
 	private var timer:FlxTimer;

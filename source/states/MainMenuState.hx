@@ -16,60 +16,19 @@ import options.Options;
 import flixel.ui.FlxButton;
 
 class MainMenuState extends SwagState {
+	private var buttons:Array<FlxText>;
+	private var titlesprite:FlxSprite;
+	private var moonSprite:FlxSprite;
+	private var stars:FlxTypedGroup<FlxSprite>;
+	private var currentSelection:Int = 0;
+	private var menuItems:Array<String> = ["Solo", "Online Levels", "Settings", "Exit"];
+
 	override public function create() {
-		FlxG.mouse.visible = true;
+		FlxG.mouse.visible = false;
 		FlxG.stage.window.title = "Moon4K - MainMenuState";
 		#if desktop
 		Discord.changePresence("In the Main Menu!", null);
 		#end
-
-		var swagbg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/bg'));
-		swagbg.setGraphicSize(Std.int(swagbg.width * 1.1));
-		swagbg.updateHitbox();
-		swagbg.screenCenter();
-		swagbg.visible = true;
-		swagbg.antialiasing = true;
-		add(swagbg);
-
-		var buttonGraphic:FlxSprite = new FlxSprite().loadGraphic("assets/images/mainmenu/button.png");
-
-		var singlePlayerButton:FlxButton = new FlxButton(0, 0, "", function() {
-			transitionState(new states.Freeplay());
-		});
-		singlePlayerButton.loadGraphic(buttonGraphic.graphic, false, 80, 20);
-		singlePlayerButton.label.setFormat(Paths.font('vcr.ttf'), 14, FlxColor.PURPLE, "center", FlxColor.PURPLE);
-		singlePlayerButton.label.text = "Solo";
-		singlePlayerButton.x = (FlxG.width / 2) - singlePlayerButton.width - 120;
-		singlePlayerButton.y = FlxG.height / 1.3 - singlePlayerButton.height / 1.3;
-		add(singlePlayerButton);
-
-		/*
-		var downloadSongsButton:FlxButton = new FlxButton(0, 0, "", function() {
-			transitionState(new states.OnlineDLState());
-		});
-		downloadSongsButton.loadGraphic(buttonGraphic.graphic, false, 80, 20);
-		downloadSongsButton.label.setFormat(Paths.font('vcr.ttf'), 14, FlxColor.PURPLE, "center", FlxColor.PURPLE);
-		downloadSongsButton.label.text = "Download Songs";
-		downloadSongsButton.x = (FlxG.width / 2) - downloadSongsButton.width / 2;
-		downloadSongsButton.y = FlxG.height / 1.3 - downloadSongsButton.height / 1.3;
-		add(downloadSongsButton);
-		*/
-
-		var optionsButton:FlxButton = new FlxButton(0, 0, "", function() {
-			transitionState(new states.OptionSelectState());
-		});
-		optionsButton.loadGraphic(buttonGraphic.graphic, false, 80, 20);
-		optionsButton.label.setFormat(Paths.font('vcr.ttf'), 14, FlxColor.PURPLE, "center", FlxColor.PURPLE);
-		optionsButton.label.text = "Settings";
-		optionsButton.x = (FlxG.width / 2) + 115; 
-		optionsButton.y = FlxG.height / 1.3 - optionsButton.height / 1.3;
-		add(optionsButton);
-
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Moon4K" + Utils.VERSION, 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
-
 		// taken from indie cross lol 
 		#if desktop
 		if (GameJoltAPI.getStatus())
@@ -78,15 +37,101 @@ class MainMenuState extends SwagState {
 		}
 		#end
 
+		stars = new FlxTypedGroup<FlxSprite>();
+		for (i in 0...100) {
+			var star = new FlxSprite(FlxG.random.float(0, FlxG.width), FlxG.random.float(0, FlxG.height));
+			star.makeGraphic(2, 2, FlxColor.WHITE);
+			star.alpha = FlxG.random.float(0.3, 1);
+			stars.add(star);
+		}
+		add(stars);
+
+		moonSprite = new FlxSprite(FlxG.width * 0.7, FlxG.height * 0.3).loadGraphic(Paths.image('mainmenu/moon'));
+		moonSprite.scale.set(0.5, 0.5);
+		moonSprite.updateHitbox();
+		moonSprite.antialiasing = true;
+		add(moonSprite);
+
+		titlesprite = new FlxSprite(0, -50).loadGraphic(Paths.image('sexylogobyhiro'));
+		titlesprite.scale.set(0.25, 0.25);
+		titlesprite.updateHitbox();
+		titlesprite.screenCenter(X);
+		add(titlesprite);
+
+		buttons = [];
+		for (i in 0...menuItems.length) {
+			var yPos = (FlxG.height * 0.5) + (i * 60);
+			var txt = new FlxText(0, yPos, FlxG.width, menuItems[i]);
+			txt.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, CENTER);
+			txt.ID = i;
+			txt.screenCenter(X);
+			buttons.push(txt);
+			add(txt);
+		}
+
+		FlxTween.tween(titlesprite, {y: 50}, 1, {ease: FlxEase.elasticOut});
+		FlxTween.tween(moonSprite, {y: FlxG.height * 0.25}, 2, {ease: FlxEase.sineInOut, type: PINGPONG});
+
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 37, 0, "Code by: @YoPhlox \nLogo by: @skdoobep", 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
+
+		changeSelection();
+
 		super.create();
 	}
 
 	override public function update(elapsed:Float) {
-
-		if (FlxG.keys.justPressed.SEVEN)
-		{
-			//transitionState(new states.OnlineDLState());
-		}
 		super.update(elapsed);
+
+		moonSprite.angle += elapsed * 10;
+
+		for (star in stars) {
+			if (FlxG.random.bool(1)) {
+				FlxTween.tween(star, {alpha: FlxG.random.float(0.3, 1)}, 0.5);
+			}
+		}
+
+		if (FlxG.keys.justPressed.UP) {
+			changeSelection(-1);
+		}
+		if (FlxG.keys.justPressed.DOWN) {
+			changeSelection(1);
+		}
+
+		if (FlxG.keys.justPressed.ENTER) {
+			switch (menuItems[currentSelection].toLowerCase()) {
+				case "solo":
+					transitionState(new states.Freeplay());
+				case "online levels":
+						transitionState(new states.OnlineDLState());
+				case "settings":
+					transitionState(new states.OptionSelectState());
+				case "exit":
+					System.exit(0);
+			}
+		}
+	}
+
+	function changeSelection(change:Int = 0) {
+		currentSelection += change;
+
+		if (currentSelection < 0)
+			currentSelection = menuItems.length - 1;
+		if (currentSelection >= menuItems.length)
+			currentSelection = 0;
+
+		for (i in 0...buttons.length) {
+			if (i == currentSelection) {
+				buttons[i].color = FlxColor.YELLOW;
+				buttons[i].scale.set(1.2, 1.2);
+			} else {
+				buttons[i].color = FlxColor.WHITE;
+				buttons[i].scale.set(1, 1);
+			}
+			buttons[i].updateHitbox();
+			buttons[i].screenCenter(X);
+		}
 	}
 }
