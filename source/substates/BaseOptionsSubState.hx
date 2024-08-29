@@ -39,7 +39,7 @@ class BaseOptionsSubState extends SwagSubState {
 		add(menuItems);
 
 		for (i in 0...menuShit.length) {
-			var option:OptionBox = new OptionBox(0, (100 * i), menuShit[i][0], menuShit[i][1], menuShit[i][2], menuShit[i][3], i);
+			var option:OptionBox = new OptionBox(50, (120 * i) + 100, menuShit[i][0], menuShit[i][1], menuShit[i][2], menuShit[i][3], i);
 			menuItems.add(option);
 		}
 
@@ -153,8 +153,12 @@ class BaseOptionsSubState extends SwagSubState {
 			var optionBox = menuItems.members[i];
 			for (text in optionBox.members) {
 				if (Std.is(text, FlxText)) {
-					var flxText = cast text;
-					flxText.color = (curSelected == i) ? FlxColor.YELLOW : FlxColor.WHITE;
+					var flxText = cast(text, FlxText);
+					if (curSelected == i) {
+						flxText.setFormat(Paths.font("vcr.ttf"), flxText.ID == 0 ? 26 : 18, FlxColor.YELLOW, LEFT);
+					} else {
+						flxText.setFormat(Paths.font("vcr.ttf"), flxText.ID == 0 ? 22 : 15, FlxColor.WHITE, LEFT);
+					}
 				}
 			}
 		}
@@ -180,38 +184,27 @@ class OptionBox extends FlxTypedGroup<FlxText> {
 
 		this.ID = id;
 
-		var titleX:Float = 0;
-		var titleY:Float = 0;
-
-		switch (type) {
-			case 'bool':
-				titleX = 200;
-				titleY = 50;
-
-			case 'string' | 'float' | 'int':
-				titleX = 200;
-				titleY = 50;
-
-				valueText = new FlxText(x + titleX, y + 150, 0, "", 24);
-				valueText.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, LEFT);
-				valueText.antialiasing = Options.getData('antialiasing');
-				add(valueText);
-
-				refreshValueText();
-			default:
-				titleX = 200;
-				titleY = 50;
-		}
-
-		titleText = new FlxText(x + titleX, y + titleY, 0, title, 32);
+		titleText = new FlxText(x, y, 0, title, 22);
 		titleText.setFormat(Paths.font("vcr.ttf"), 22, FlxColor.WHITE, LEFT);
 		titleText.antialiasing = Options.getData('antialiasing');
+		titleText.ID = 0;
 		add(titleText);
 
-		descText = new FlxText(titleText.x, titleText.y + 50, 0, desc + "\n", 24);
+		descText = new FlxText(x, y + 30, 0, desc + "\n", 15);
 		descText.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, LEFT);
 		descText.antialiasing = Options.getData('antialiasing');
+		descText.ID = 1;
 		add(descText);
+
+		if (type != 'bool' && type != 'menu') {
+			valueText = new FlxText(x, y + 60, 0, "", 18);
+			valueText.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT);
+			valueText.antialiasing = Options.getData('antialiasing');
+			valueText.ID = 2;
+			add(valueText);
+
+			refreshValueText();
+		}
 
 		if (type == 'string') {
 			if (Options.getData('$save-num') == null)

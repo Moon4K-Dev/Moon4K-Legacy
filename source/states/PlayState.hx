@@ -36,7 +36,7 @@ class PlayState extends SwagState {
 
 	static public var songMultiplier:Float = 1;
 
-	public var speed:Float = 2.5;
+	public var speed:Float = 1;
 	public var song:SwagSong;
 
 	var strumNotes:FlxTypedGroup<StrumNote>;
@@ -168,7 +168,7 @@ class PlayState extends SwagState {
 		else
 			keyCount = 4;
 
-		speed = song.speed;
+		speed = Options.getData('scroll-speed');
 
 		speed /= songMultiplier;
 

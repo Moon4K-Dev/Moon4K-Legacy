@@ -40,7 +40,7 @@ class OptionSelectState extends SwagState {
 		add(menuItems);
 
 		for (i in 0...menuShit.length) {
-			var option:OptionSelectBox = new OptionSelectBox(0, (100 * i), menuShit[i][0], menuShit[i][1], i);
+			var option:OptionSelectBox = new OptionSelectBox(0, (120 * i) + 100, menuShit[i][0], menuShit[i][1], i);
 			menuItems.add(option);
 		}
 
@@ -109,6 +109,14 @@ class OptionSelectState extends SwagState {
 							"float",
 							[-1000, 1000],
 							0.1
+						],
+						[
+							"Scroll Speed",
+							"Adjust the speed at which notes scroll.",
+							"scroll-speed",
+							"float",
+							[0.5, 20.0],
+							0.1
 						]
 					];
 
@@ -141,20 +149,19 @@ class OptionSelectState extends SwagState {
 			curSelected = 0;
 
 		var startY = 100;
-		var spacing = 50;
+		var spacing = 120;
 
 		for (i in 0...menuItems.length) {
 			var optionBox = menuItems.members[i];
 			for (j in 0...optionBox.length) {
 				var txt = optionBox.members[j];
 				txt.y = startY + (i * spacing);
-				txt.color = FlxColor.WHITE;
 
 				if (i == curSelected) {
-					txt.size = 36;
+					txt.setFormat(Paths.font("vcr.ttf"), txt.ID == 0 ? 40 : 20, FlxColor.YELLOW, CENTER);
 					txt.alpha = 1.0;
 				} else {
-					txt.size = 32;
+					txt.setFormat(Paths.font("vcr.ttf"), txt.ID == 0 ? 32 : 16, FlxColor.WHITE, CENTER);
 					txt.alpha = 0.7;
 				}
 			}
@@ -170,17 +177,17 @@ class OptionSelectBox extends FlxTypedGroup<FlxText> {
 		super();
 
 		var titleText:FlxText = new FlxText(x, y, 0, title, 32);
-		titleText.setFormat(Paths.font("vcr.ttf"), 22, FlxColor.WHITE, CENTER);
+		titleText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		titleText.screenCenter(X);
 		titleText.antialiasing = Options.getData('antialiasing');
-		titleText.ID = id; // Set the ID for titleText
+		titleText.ID = 0; // Set the ID for titleText
 		add(titleText);
 
-		var descText:FlxText = new FlxText(x, y + 50, 0, desc, 24);
-		descText.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, CENTER);
+		var descText:FlxText = new FlxText(x, y + 40, 0, desc, 16);
+		descText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
 		descText.screenCenter(X);
 		descText.antialiasing = Options.getData('antialiasing');
-		descText.ID = id; // Set the ID for descText
+		descText.ID = 1; // Set the ID for descText
 		add(descText);
 	}
 

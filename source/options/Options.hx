@@ -36,11 +36,9 @@ class Options {
 				["ESCAPE", "SPACE", "A", "S", "W", "D"]
 			]
 		],
-		// main
 		["downscroll", false],
 		["botplay", false],
-		// back to main :((
-		["scroll-speed", 2],
+		["scroll-speed", 1.0],
 		["lane-offset", 100],
 		["note-offset", 0],
 		["fps-cap", 120],
