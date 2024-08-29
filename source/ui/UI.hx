@@ -36,25 +36,25 @@ class UI extends FlxSpriteGroup {
 		add(healthBar);
 
 		scoreTxt = new FlxText(FlxG.width - textWidth - textPadding, textStartY, textWidth, "Score: 0", 20);
-		scoreTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.wordWrap = false;
 		add(scoreTxt);
 
 		notesHitTXT = new FlxText(FlxG.width - textWidth - textPadding, textStartY + 30, textWidth, "0x", 20);
-		notesHitTXT.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		notesHitTXT.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		notesHitTXT.scrollFactor.set();
 		notesHitTXT.wordWrap = false;
 		add(notesHitTXT);
 
 		accTxt = new FlxText(FlxG.width - textWidth - textPadding, textStartY + 60, textWidth, "Accuracy: 0%", 20);
-		accTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		accTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		accTxt.scrollFactor.set();
 		accTxt.wordWrap = false;
 		add(accTxt);
 
 		songTimerTxt = new FlxText(FlxG.width - textWidth - textPadding, FlxG.height - 30, textWidth, "0:00 / 0:00", 20);
-		songTimerTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songTimerTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		songTimerTxt.scrollFactor.set();
 		songTimerTxt.wordWrap = false;
 		add(songTimerTxt);

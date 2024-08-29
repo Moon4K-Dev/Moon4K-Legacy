@@ -43,31 +43,21 @@ class SongInfoSubState extends FlxSubState {
         var overlay = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0x88000000);
         add(overlay);
 
-        var titleText = new FlxText(0, 20, FlxG.width, "Song Info");
-        titleText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
-        add(titleText);
-
-        thumbnail = new FlxSprite(20, 80);
-        thumbnail.makeGraphic(150, 150, FlxColor.BLACK);
+        thumbnail = new FlxSprite(0, 80);
+        thumbnail.makeGraphic(500, 300, FlxColor.BLACK);
+        thumbnail.screenCenter(X);
         loadThumbnail(imageUrl);
         add(thumbnail);
 
-        var infoText = new FlxText(190, 80, FlxG.width - 210, 'Song: $songName\nAuthor: $author\n\nDescription: $description');
-        infoText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT);
+        var infoText = new FlxText(0, thumbnail.y + thumbnail.height + 20, FlxG.width, 'Song: $songName\nAuthor: $author\n\nDescription: $description');
+        infoText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
         add(infoText);
-
-        var downloadButton = new FlxButton(0, FlxG.height - 60, "Download", downloadFile);
-        downloadButton.screenCenter(X);
-        add(downloadButton);
 
         downloadProgress = new FlxSprite(20, FlxG.height - 90).makeGraphic(FlxG.width - 40, 10, FlxColor.BLUE);
         downloadProgress.scale.x = 0;
         add(downloadProgress);
 
-        var closeButton = new FlxButton(FlxG.width - 100, 20, "Close", close);
-        add(closeButton);
-
-        var instructionText = new FlxText(0, FlxG.height - 40, FlxG.width, "Press ESC to close");
+        var instructionText = new FlxText(0, FlxG.height - 80, FlxG.width, "Press Enter to download \nPress ESC to close");
         instructionText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
         add(instructionText);
     }
@@ -83,8 +73,9 @@ class SongInfoSubState extends FlxSubState {
         var loader:Loader = cast(e.target.loader, Loader);
         var bitmapData = cast(loader.content, Bitmap).bitmapData;
         thumbnail.loadGraphic(bitmapData);
-        thumbnail.setGraphicSize(150, 150);
+        thumbnail.setGraphicSize(500, 300);
         thumbnail.updateHitbox();
+        thumbnail.screenCenter(X);
     }
 
     private function onThumbnailError(e:IOErrorEvent):Void {
@@ -221,8 +212,11 @@ class SongInfoSubState extends FlxSubState {
 
     override public function update(elapsed:Float) {
         super.update(elapsed);
-        if (FlxG.keys.justPressed.ESCAPE) {
+        if (FlxG.keys.justPressed.ESCAPE || FlxG.keys.justPressed.BACKSPACE) {
             close();
+        }
+        if (FlxG.keys.justPressed.ENTER) {
+            downloadFile();
         }
     }
 }

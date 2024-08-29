@@ -18,7 +18,7 @@ import flixel.ui.FlxButton;
 class MainMenuState extends SwagState {
 	private var buttons:Array<FlxText>;
 	private var titlesprite:FlxSprite;
-	private var moonSprite:FlxSprite;
+	private var randomhaxesprite:FlxSprite;
 	private var stars:FlxTypedGroup<FlxSprite>;
 	private var currentSelection:Int = 0;
 	private var menuItems:Array<String> = ["Solo", "Browse Online Levels", "Settings", "Exit"];
@@ -46,11 +46,11 @@ class MainMenuState extends SwagState {
 		}
 		add(stars);
 
-		moonSprite = new FlxSprite(FlxG.width * 0.7, FlxG.height * 0.3).loadGraphic(Paths.image('mainmenu/moon'));
-		moonSprite.scale.set(0.5, 0.5);
-		moonSprite.updateHitbox();
-		moonSprite.antialiasing = true;
-		add(moonSprite);
+		randomhaxesprite = new FlxSprite(FlxG.width * 0.7, FlxG.height * 0.3).loadGraphic(Paths.image(''));
+		randomhaxesprite.scale.set(0.5, 0.5);
+		randomhaxesprite.updateHitbox();
+		randomhaxesprite.antialiasing = true;
+		add(randomhaxesprite);
 
 		titlesprite = new FlxSprite(0, -50).loadGraphic(Paths.image('sexylogobyhiro'));
 		titlesprite.scale.set(0.25, 0.25);
@@ -70,11 +70,16 @@ class MainMenuState extends SwagState {
 		}
 
 		FlxTween.tween(titlesprite, {y: 50}, 1, {ease: FlxEase.elasticOut});
-		FlxTween.tween(moonSprite, {y: FlxG.height * 0.25}, 2, {ease: FlxEase.sineInOut, type: PINGPONG});
+		FlxTween.tween(randomhaxesprite, {y: FlxG.height * 0.25}, 2, {ease: FlxEase.sineInOut, type: PINGPONG});
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 37, 0, "Code by: @YoPhlox & @Hoshino-2Git \nLogo by: @skdoobep", 12);
+		var devcred:FlxText = new FlxText(5, FlxG.height - 37, 0, "Code by: @YoPhlox & @Hoshino-2Git \nLogo by: @skdoobep", 12);
+		devcred.scrollFactor.set();
+		devcred.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
+		add(devcred);
+		
+		var versionShit:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width - 5, "Moon4K" + Utils.VERSION, 12);
 		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		add(versionShit);
 
 		changeSelection();
@@ -85,7 +90,7 @@ class MainMenuState extends SwagState {
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
 
-		moonSprite.angle += elapsed * 10;
+		randomhaxesprite.angle += elapsed * 10;
 
 		for (star in stars) {
 			if (FlxG.random.bool(1)) {
