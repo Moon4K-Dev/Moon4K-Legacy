@@ -63,11 +63,11 @@ def main():
 
     transformed_data = transform_json(input_data)
 
-    output_file_path = os.path.splitext(input_file_path)[0] + '_converted.json'
+    output_file_path = os.path.splitext(input_file_path)[0] + '.moon'
     with open(output_file_path, 'w') as file:
         json.dump(transformed_data, file, indent=4)
 
-    print(f"Converted JSON saved to: {output_file_path}")
+    print(f"Converted chart saved to: {output_file_path}")
 
 if __name__ == "__main__":
     main()

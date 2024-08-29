@@ -190,23 +190,8 @@ class Freeplay extends SwagState {
         songImage.x = FlxG.width * 0.5;
     }
 
-    function loadSongInfoJson(songName:String):Void {
-        var path = "assets/charts/" + songName + "/songInfo.json";
-        #if web
-        if (Assets.exists(path)) {
-            var jsonContent:String = Assets.getText(path);
-            songInfoData = Json.parse(jsonContent);
-            trace("Loaded from assets: " + path);
-        }
-        #else
-        var jsonContent:String = File.getContent(path);
-        songInfoData = Json.parse(jsonContent);
-        trace("Loaded from assets: " + path);
-        #end
-    }
-
     function loadSongJson(songName:String):Void {
-        var path = "assets/charts/" + songName + "/" + songName + ".json";
+        var path = "assets/charts/" + songName + "/" + songName + ".moon";
         #if web
         if (Assets.exists(path)) {
             var jsonContent:String = Assets.getText(path);
