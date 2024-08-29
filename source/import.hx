@@ -3,7 +3,7 @@ import options.Options;
 import util.Util;
 import states.SwagState;
 #if desktop
-import Discord;
+import api.dc.Discord;
 #end
 import game.HighScoreManager;
 #if desktop

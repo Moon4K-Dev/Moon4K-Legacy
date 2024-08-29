@@ -1,4 +1,4 @@
-package;
+package api.dc;
 #if desktop
 import hxdiscord_rpc.Discord as RichPresence;
 import hxdiscord_rpc.Types;

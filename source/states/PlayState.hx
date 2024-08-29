@@ -16,7 +16,7 @@ import flixel.util.FlxSort;
 import game.Conductor;
 import game.Song;
 import util.Util;
-import game.UI;
+import ui.UI;
 import flixel.FlxCamera;
 import flixel.FlxSubState;
 import flixel.tweens.FlxEase;

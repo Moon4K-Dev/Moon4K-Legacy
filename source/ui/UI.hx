@@ -1,4 +1,4 @@
-package game;
+package ui;
 
 import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
@@ -7,6 +7,7 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import states.PlayState;
+import game.Note;
 
 class UI extends FlxSpriteGroup {
 	private var scoreTxt:FlxText;
@@ -15,7 +16,7 @@ class UI extends FlxSpriteGroup {
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
 	private var songTimerTxt:FlxText;
-	private var swagbgthinggray:FlxSprite;
+	private var laneUnderlay:FlxSprite;
 
 	public function new() {
 		super();
@@ -58,13 +59,14 @@ class UI extends FlxSpriteGroup {
 		songTimerTxt.wordWrap = false;
 		add(songTimerTxt);
 
-		swagbgthinggray = new FlxSprite(FlxG.width / 2 - 50, 0);
-		swagbgthinggray.makeGraphic(100, FlxG.height, 0xA4000000);
-		swagbgthinggray.scrollFactor.set();
-		add(swagbgthinggray);
+		laneUnderlay = new FlxSprite(0,0);
+		laneUnderlay.makeGraphic(Std.int(Note.swagWidth * 4), FlxG.height, 0xA4000000);
+		laneUnderlay.scrollFactor.set();
+		laneUnderlay.screenCenter(X);
+		add(laneUnderlay);
 
-		members.remove(swagbgthinggray);
-		members.insert(0, swagbgthinggray);
+		members.remove(laneUnderlay);
+		members.insert(0, laneUnderlay);
 	}
 
 	override public function update(elapsed:Float) {
