@@ -366,8 +366,7 @@ class PlayState extends SwagState {
 			persistentDraw = false;
 			paused = true;
 			FlxG.sound.music.stop();
-			//openSubState(new GameOverSubstate());
-			transitionState(new Freeplay());
+			transitionState(new states.Freeplay());
 		}
 
 		if (startingSong) {

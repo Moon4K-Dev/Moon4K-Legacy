@@ -28,7 +28,7 @@ import haxe.zip.Uncompress;
 
 using StringTools;
 
-class SongInfoSubState extends FlxSubState {
+class SongInfoSubState extends SwagSubState {
     private var thumbnail:FlxSprite;
     private var downloadProgress:FlxSprite;
     private var downloadUrl:String;
