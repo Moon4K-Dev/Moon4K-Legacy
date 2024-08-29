@@ -21,7 +21,7 @@ class MainMenuState extends SwagState {
 	private var moonSprite:FlxSprite;
 	private var stars:FlxTypedGroup<FlxSprite>;
 	private var currentSelection:Int = 0;
-	private var menuItems:Array<String> = ["Solo", "Online Levels", "Settings", "Exit"];
+	private var menuItems:Array<String> = ["Solo", "Browse Online Levels", "Settings", "Exit"];
 
 	override public function create() {
 		FlxG.mouse.visible = false;
@@ -104,7 +104,7 @@ class MainMenuState extends SwagState {
 			switch (menuItems[currentSelection].toLowerCase()) {
 				case "solo":
 					transitionState(new states.Freeplay());
-				case "online levels":
+				case "browse online levels":
 						transitionState(new states.OnlineDLState());
 				case "settings":
 					transitionState(new states.OptionSelectState());
