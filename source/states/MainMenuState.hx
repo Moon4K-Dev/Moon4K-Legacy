@@ -72,7 +72,7 @@ class MainMenuState extends SwagState {
 		FlxTween.tween(titlesprite, {y: 50}, 1, {ease: FlxEase.elasticOut});
 		FlxTween.tween(moonSprite, {y: FlxG.height * 0.25}, 2, {ease: FlxEase.sineInOut, type: PINGPONG});
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 37, 0, "Code by: @YoPhlox \nLogo by: @skdoobep", 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 37, 0, "Code by: @YoPhlox & @Hoshino-2Git \nLogo by: @skdoobep", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
