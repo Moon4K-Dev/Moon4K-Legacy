@@ -7,7 +7,6 @@ import flixel.FlxSubState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import options.Controls;
 import options.Options;
 import substates.BaseOptionsSubState;
 import util.Util;
@@ -68,16 +67,16 @@ class OptionSelectState extends SwagState {
 		var lerpVal:Float = Util.boundTo(elapsed * 5.6, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 
-		if (Controls.BACK)
+		if (FlxG.keys.justPressed.ESCAPE || FlxG.keys.justPressed.BACKSPACE)
 			transitionState(new MainMenuState());
 
-		if (Controls.UI_UP)
+		if (FlxG.keys.justPressed.UP)
 			changeSelection(-1);
 
-		if (Controls.UI_DOWN)
+		if (FlxG.keys.justPressed.DOWN)
 			changeSelection(1);
 
-		if (Controls.ACCEPT) {
+		if (FlxG.keys.justPressed.ENTER) {
 			switch (menuShit[curSelected][0]) {
 				case 'Graphics':
 					// "title", "desc", "save", "type", []
@@ -133,6 +132,7 @@ class OptionSelectState extends SwagState {
 					transitionState(new api.gamejolt.GameJoltLogin());
 				#end		
 				case 'Controls':
+					transitionState(new states.ControlsOptionsState());
 				case 'Exit':
 					transitionState(new MainMenuState());
 			}

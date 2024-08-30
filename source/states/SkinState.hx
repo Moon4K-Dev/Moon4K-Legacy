@@ -11,7 +11,6 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.system.System;
-import options.Controls;
 import options.Options;
 import ui.StrumNote;
 import util.Util;
@@ -84,16 +83,16 @@ class SkinState extends SwagState {
 		if (gridDir > 360)
 			gridDir = 0;
 
-		if (Controls.BACK) {
+		if (FlxG.keys.justPressed.ESCAPE) {
 			Options.saveData('ui-skin', curSelected);
 			transitionState(new OptionSelectState());
 		}
 
-		if (Controls.UI_LEFT) {
+		if (FlxG.keys.justPressed.LEFT) {
 			changeSelection(-1);
 		}
 
-		if (Controls.UI_RIGHT) {
+		if (FlxG.keys.justPressed.RIGHT) {
 			changeSelection(1);
 		}
 

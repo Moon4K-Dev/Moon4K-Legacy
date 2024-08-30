@@ -4,7 +4,6 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import options.Controls;
 import options.Options;
 import states.OptionSelectState;
 import states.SkinState;
@@ -60,15 +59,15 @@ class BaseOptionsSubState extends SwagSubState {
 		var lerpVal:Float = Util.boundTo(elapsed * 5.6, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 
-		if (Controls.UI_UP)
+		if (FlxG.keys.justPressed.UP)
 			changeSelection(-1);
 
-		if (Controls.UI_DOWN)
+		if (FlxG.keys.justPressed.DOWN)
 			changeSelection(1);
 
 		switch (menuShit[curSelected][3]) {
 			case 'bool':
-				if (Controls.ACCEPT) {
+				if (FlxG.keys.justPressed.ENTER) {
 					var saveName = menuShit[curSelected][2];
 					var save = Options.getData(saveName);
 
@@ -76,12 +75,12 @@ class BaseOptionsSubState extends SwagSubState {
 					trace(saveName, !save);
 				}
 			case 'float' | 'int':
-				if (Controls.UI_LEFT_P || Controls.UI_RIGHT_P) {
+				if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT) {
 					holdTime += elapsed;
 
-					if (holdTime > 0.5 || Controls.UI_LEFT || Controls.UI_RIGHT) {
+					if (holdTime > 0.5 || FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT) {
 						var saveName = menuShit[curSelected][2];
-						var multi:Float = Controls.UI_LEFT_P ? (menuShit[curSelected][5] * -1) : menuShit[curSelected][5];
+						var multi:Float = FlxG.keys.justPressed.LEFT ? (menuShit[curSelected][5] * -1) : menuShit[curSelected][5];
 						var value:Float = Options.getData(saveName);
 
 						if (menuShit[curSelected][3] == 'int')
@@ -101,12 +100,12 @@ class BaseOptionsSubState extends SwagSubState {
 				} else
 					holdTime = 0;
 			case 'string':
-				if (Controls.UI_LEFT_P || Controls.UI_RIGHT_P) {
+				if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT) {
 					holdTime += elapsed;
 
-					if (holdTime > 0.5 || Controls.UI_LEFT || Controls.UI_RIGHT) {
+					if (holdTime > 0.5 || FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT) {
 						var saveName = menuShit[curSelected][2];
-						var multi:Int = Controls.UI_LEFT_P ? -1 : 1;
+						var multi:Int = FlxG.keys.justPressed.LEFT ? -1 : 1;
 						var value:Float = Options.getData('$saveName-num');
 
 						value += multi;
@@ -124,7 +123,7 @@ class BaseOptionsSubState extends SwagSubState {
 				} else
 					holdTime = 0;
 			case 'menu':
-				if (Controls.ACCEPT) {
+				if (FlxG.keys.justPressed.ENTER) {
 					switch (menuShit[curSelected][0]) {
 						case 'UI Skin':
 							transitionState(new SkinState());
@@ -132,7 +131,7 @@ class BaseOptionsSubState extends SwagSubState {
 				}
 		}
 
-		if (Controls.BACK)
+		if (FlxG.keys.justPressed.ESCAPE)
 			exitMenu();
 	}
 

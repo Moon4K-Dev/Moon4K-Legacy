@@ -12,7 +12,6 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import game.Conductor;
-import options.Controls;
 import options.Options;
 import states.SplashState;
 
@@ -35,23 +34,15 @@ class SwagSubState extends FlxUISubState {
 
 		FlxG.stage.frameRate = Options.getData('fps-cap');
 
-		if (SplashState.optionsInitialized)
-			Controls.refreshControls();
-
 		super.update(elapsed);
 	}
 
 	public function transitionState(state:FlxState, ?noTransition:Bool = false) {
-		if (SplashState.optionsInitialized)
-			Controls.refreshControls();
-
 		FlxTransitionableState.skipNextTransIn = noTransition;
 		FlxTransitionableState.skipNextTransOut = noTransition;
 
 		FlxG.switchState(state);
 
-		if (SplashState.optionsInitialized)
-			Controls.refreshControls();
 	}
 
 	private function updateBeat():Void {

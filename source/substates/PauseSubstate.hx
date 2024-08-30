@@ -53,9 +53,9 @@ class PauseSubstate extends SwagSubState {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		var upP = Controls.UI_UP;
-		var downP = Controls.UI_DOWN;
-		var accepted = Controls.ACCEPT;
+		var upP = FlxG.keys.justPressed.UP;
+		var downP = FlxG.keys.justPressed.DOWN;
+		var accepted = FlxG.keys.justPressed.ENTER;
 
 		if (upP) {
 			changeSelection(-1);

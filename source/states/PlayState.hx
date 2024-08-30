@@ -191,6 +191,8 @@ class PlayState extends SwagState {
 			strumNotes.add(daStrum);
 		}
 
+		Controls.init();
+
 		hud.cameras = [camHUD];
 		strumNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -350,7 +352,7 @@ class PlayState extends SwagState {
 	{
 		#if desktop
 		if (!Options.getData('botplay')) {
-			Discord.changePresence("Playing: " + curSong + " with " + songScore + " Score and " + misses + " Misses and " + accuracy + "Accuracy");
+			Discord.changePresence("Playing: " + curSong + " with " + songScore + " Score and " + misses + " Misses and " + accuracy + " Accuracy");
 		} else {
 			Discord.changePresence("Playing: " + curSong + " with Botplay!");
 		}
@@ -445,7 +447,7 @@ class PlayState extends SwagState {
 			paused = true;
 			#if desktop
 			video.pause();
-			Discord.changePresence("Paused on: " + curSong + " with " + songScore + " Score and " + misses + " Misses and " + accuracy + "Accuracy");
+			Discord.changePresence("Paused on: " + curSong + " with " + songScore + " Score and " + misses + " Misses and " + accuracy + " Accuracy");
 			#end
 			openSubState(pauseSubState);
 		}
@@ -536,41 +538,36 @@ class PlayState extends SwagState {
 
 	function inputFunction() 
 	{
-		var binds:Array<String> = ["A", "S", "K", "L"];
-	
 		justPressed = [];
 		pressed = [];
 		released = [];
-	
+
+		var actionKeys = ["left", "down", "up", "right"];
+
 		for (i in 0...keyCount) {
-			justPressed.push(false);
-			pressed.push(false);
-			released.push(false);
+			var action = actionKeys[i];
+			justPressed.push(Controls.getPressEvent(action, 'justPressed'));
+			pressed.push(Controls.getPressEvent(action, 'pressed'));
+			released.push(Controls.getPressEvent(action, 'justReleased'));
 		}
-	
-		for (i in 0...binds.length) {
-			justPressed[i] = FlxG.keys.checkStatus(FlxKey.fromString(binds[i]), FlxInputState.JUST_PRESSED);
-			pressed[i] = FlxG.keys.checkStatus(FlxKey.fromString(binds[i]), FlxInputState.PRESSED);
-			released[i] = FlxG.keys.checkStatus(FlxKey.fromString(binds[i]), FlxInputState.RELEASED);
-		}
-	
+
 		for (i in 0...justPressed.length) {
 			if (justPressed[i]) {
 				strumNotes.members[i].playAnim("press", true);
 			}
 		}
-	
+
 		for (i in 0...released.length) {
 			if (released[i]) {
 				strumNotes.members[i].playAnim("static");
 			}
 		}
-	
+
 		var possibleNotes:Array<Note> = [];
-	
+
 		for (note in notes) {
 			note.calculateCanBeHit();
-	
+
 			if (!Options.getData('botplay')) {
 				if (note.canBeHit && !note.tooLate && !note.isSustainNote)
 					possibleNotes.push(note);
@@ -579,38 +576,38 @@ class PlayState extends SwagState {
 					possibleNotes.push(note);
 			}
 		}
-	
+
 		possibleNotes.sort((a, b) -> Std.int(a.strum - b.strum));
-	
+
 		var doNotHit:Array<Bool> = [false, false, false, false];
 		var noteDataTimes:Array<Float> = [-1, -1, -1, -1];
-	
+
 		if (possibleNotes.length > 0) {
 			for (i in 0...possibleNotes.length) {
 				var note = possibleNotes[i];
-	
+
 				if (((justPressed[note.direction] && !doNotHit[note.direction]) && !Options.getData('botplay'))
 					|| Options.getData('botplay')) {
 					var noteMs = (Conductor.songPosition - note.strum) / songMultiplier;
-	
+
 					if (Options.getData('botplay'))
 						noteMs = 0;
-	
+
 					var roundedDecimalNoteMs:Float = FlxMath.roundDecimal(noteMs, 3);
 					var noteDiff:Float = Math.abs(Conductor.songPosition);
-	
-					notesHit ++;
+
+					notesHit++;
 					var score:Int = rateNoteHit(noteMs);
 					songScore += score;
 					#if desktop
 					script.call("goodNoteHit", [note]);
 					#end
-	
+
 					noteDataTimes[note.direction] = note.strum;
 					doNotHit[note.direction] = true;
-	
+
 					strumNotes.members[note.direction].playAnim("confirm", true);
-	
+
 					note.active = false;
 					notes.remove(note);
 					note.kill();
@@ -619,11 +616,11 @@ class PlayState extends SwagState {
 					updateRank();
 				}
 			}
-	
+
 			if (possibleNotes.length > 0) {
 				for (i in 0...possibleNotes.length) {
 					var note = possibleNotes[i];
-	
+
 					if (note.strum == noteDataTimes[note.direction] && doNotHit[note.direction]) {
 						note.active = false;
 						notes.remove(note);
@@ -670,8 +667,9 @@ class PlayState extends SwagState {
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strum, Obj2.strum);
 	}
 
-	override function destroy()
-	{
-		super.destroy();
-	}
+    override public function destroy():Void
+    {
+        super.destroy();
+        Controls.destroy();
+    }
 }

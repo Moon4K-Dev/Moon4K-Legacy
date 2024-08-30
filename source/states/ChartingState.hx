@@ -215,10 +215,10 @@ class ChartingState extends SwagState {
 		if (FlxG.keys.justPressed.ESCAPE)
 			transitionState(new MainMenuState());
 
-		if (Controls.UI_LEFT)
+		if (FlxG.keys.justPressed.LEFT)
 			changeSection(curSection - 1);
 
-		if (Controls.UI_RIGHT)
+		if (FlxG.keys.justPressed.RIGHT)
 			changeSection(curSection + 1);
 
 		if (FlxG.keys.justPressed.ENTER) {
