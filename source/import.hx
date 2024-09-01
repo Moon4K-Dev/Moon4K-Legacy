@@ -10,3 +10,4 @@ import game.HighScoreManager;
 import api.gamejolt.GameJoltAPI;
 import api.gamejolt.GJInfo;
 #end
+import substates.SongInfoSubState;

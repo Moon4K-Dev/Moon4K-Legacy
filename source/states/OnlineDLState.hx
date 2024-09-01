@@ -20,7 +20,6 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.ui.FlxButton;
 import flixel.FlxSubState;
-import substates.SongInfoSubState;
 using StringTools;
 
 import openfl.net.URLRequest;
