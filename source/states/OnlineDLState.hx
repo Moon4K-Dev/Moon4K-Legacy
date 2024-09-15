@@ -21,7 +21,7 @@ import flixel.math.FlxMath;
 import flixel.ui.FlxButton;
 import flixel.FlxSubState;
 using StringTools;
-
+import substates.SongInfoSubState;
 import openfl.net.URLRequest;
 import openfl.display.Loader;
 import openfl.events.Event;
