@@ -1,9 +1,3 @@
-echo Installing and Setting up Haxe!
-sudo add-apt-repository ppa:haxe/releases -y
-sudo apt-get update
-sudo apt-get install haxe -y
-mkdir ~/haxelib && haxelib setup ~/haxelib
-echo Haxe installed and properly set up!
 echo Installing needed libs for Moon4K!
 haxelib install lime 7.9.0
 haxelib install openfl
