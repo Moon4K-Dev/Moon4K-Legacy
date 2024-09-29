@@ -421,21 +421,6 @@ class PlayState extends SwagState {
 				note.y = strum.y + (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
 			else
 				note.y = strum.y - (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
-
-			if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null) {
-				notes.remove(note);
-				note.kill();
-				note.destroy();
-				updateAccuracy();
-				updateRank();
-				#if desktop
-				script.call("noteMiss", [note.direction]);
-				#end
-				misses++;
-				notesHit = 0;
-				health -= 0.04;
-				songScore -= 25;
-			}
 		}
 
 		if (FlxG.keys.justPressed.BACKSPACE)
@@ -568,70 +553,109 @@ class PlayState extends SwagState {
 		for (note in notes) {
 			note.calculateCanBeHit();
 
-			if (!Options.getData('botplay')) {
-				if (note.canBeHit && !note.tooLate && !note.isSustainNote)
-					possibleNotes.push(note);
-			} else {
-				if ((!note.isSustainNote ? note.strum : note.strum - 1) <= Conductor.songPosition)
-					possibleNotes.push(note);
-			}
+			if (note.canBeHit && !note.isSustainNote && !note.wasGoodHit)
+				possibleNotes.push(note);
 		}
 
 		possibleNotes.sort((a, b) -> Std.int(a.strum - b.strum));
 
-		var doNotHit:Array<Bool> = [false, false, false, false];
-		var noteDataTimes:Array<Float> = [-1, -1, -1, -1];
-
-		if (possibleNotes.length > 0) {
-			for (i in 0...possibleNotes.length) {
-				var note = possibleNotes[i];
-
-				if (((justPressed[note.direction] && !doNotHit[note.direction]) && !Options.getData('botplay'))
-					|| Options.getData('botplay')) {
-					var noteMs = (Conductor.songPosition - note.strum) / songMultiplier;
-
-					if (Options.getData('botplay'))
-						noteMs = 0;
-
-					var roundedDecimalNoteMs:Float = FlxMath.roundDecimal(noteMs, 3);
-					var noteDiff:Float = Math.abs(Conductor.songPosition);
-
-					notesHit++;
-					var score:Int = rateNoteHit(noteMs);
-					songScore += score;
-					#if desktop
-					script.call("goodNoteHit", [note]);
-					#end
-
-					noteDataTimes[note.direction] = note.strum;
-					doNotHit[note.direction] = true;
-
-					strumNotes.members[note.direction].playAnim("confirm", true);
-
-					note.active = false;
-					notes.remove(note);
-					note.kill();
-					note.destroy();
-					updateAccuracy();
-					updateRank();
+		for (i in 0...keyCount) {
+			if (justPressed[i]) {
+				var hitNotes:Array<Note> = [];
+				for (note in possibleNotes) {
+					if (note.direction == i && !note.wasGoodHit) {
+						hitNotes.push(note);
+					}
 				}
-			}
 
-			if (possibleNotes.length > 0) {
-				for (i in 0...possibleNotes.length) {
-					var note = possibleNotes[i];
+				if (hitNotes.length > 0) {
+					var closestNote:Note = hitNotes[0];
+					var noteMs = (Conductor.songPosition - closestNote.strum) / songMultiplier;
+					var hitResult = judgeNote(noteMs);
 
-					if (note.strum == noteDataTimes[note.direction] && doNotHit[note.direction]) {
-						note.active = false;
-						notes.remove(note);
-						note.kill();
-						note.destroy();
+					if (hitResult != "miss") {
+						closestNote.wasGoodHit = true;
+						strumNotes.members[i].playAnim("confirm", true);
+						noteHit(closestNote, hitResult);
 					}
 				}
 			}
 		}
+
+		for (note in possibleNotes) {
+			if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null) { 
+				noteMiss(note.direction);
+				notes.remove(note);
+				note.kill();
+				note.destroy();
+			}
+		}
+	}
+
+	function judgeNote(noteMs:Float):String {
+		var absNoteMs = Math.abs(noteMs);
+		if (absNoteMs <= 16) return "perfect";
+		if (absNoteMs <= 64) return "great";
+		if (absNoteMs <= 97) return "good";
+		if (absNoteMs <= 127) return "ok";
+		if (absNoteMs <= 151) return "meh";
+		if (absNoteMs <= 188) return "bad";
+		return "miss";
+	}
+
+	function noteMiss(direction:Int) {
+		health -= 0.04;
+		misses++;
+		songScore -= 10;
+		totalNotesHit += 0;
+		notesHit = 0;
+		updateAccuracy();
+		updateRank();
+		#if desktop
+		script.call("noteMiss", [direction]);
+		#end
 	}
 	
+	function noteHit(note:Note, judgment:String) {
+		var score:Int = 0;
+		var accuracy:Float = 0;
+
+		switch (judgment) {
+			case "perfect":
+				score = 350;
+				accuracy = 1;
+			case "great":
+				score = 300;
+				accuracy = 0.98;
+			case "good":
+				score = 200;
+				accuracy = 0.65;
+			case "ok":
+				score = 100;
+				accuracy = 0.25;
+			case "meh":
+				score = 50;
+				accuracy = 0.1;
+			case "bad":
+				score = 20;
+				accuracy = 0;
+		}
+
+		songScore += score;
+		totalNotesHit += accuracy;
+		notesHit++;
+		updateAccuracy();
+		updateRank();
+
+		#if desktop
+		script.call("goodNoteHit", [note, judgment]);
+		#end
+
+		notes.remove(note);
+		note.kill();
+		note.destroy();
+	}
+
 	function generateNotes(dataPath:String):Void {
 		for (section in song.notes) {
 			Conductor.recalculateStuff(songMultiplier);
