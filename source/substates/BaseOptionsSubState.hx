@@ -29,8 +29,7 @@ class BaseOptionsSubState extends SwagSubState {
 
 		super.create();
 
-		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), 0.2, 0, true, true);
-		coolBackdrop.velocity.set(50, 30);
+		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), XY, 0.2, 0);		coolBackdrop.velocity.set(50, 30);
 		coolBackdrop.alpha = 0.7;
 		add(coolBackdrop);
 

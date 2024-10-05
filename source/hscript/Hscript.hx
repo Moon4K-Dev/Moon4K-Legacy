@@ -62,7 +62,6 @@ class Hscript
 		interp.variables.set("FlxTween", FlxTween);
 		interp.variables.set("FlxCamera", FlxCamera);
 		interp.variables.set("FlxShader", FlxShader);
-		interp.variables.set("FlxPoint", FlxPoint);
 		interp.variables.set("File", File);
 		interp.variables.set("Assets", Assets);
 		interp.variables.set("FileSystem", FileSystem);

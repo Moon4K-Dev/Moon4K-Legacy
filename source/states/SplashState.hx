@@ -79,7 +79,7 @@ class SplashState extends SwagState {
 						startDelay: 1,
 						onComplete: function(twn:FlxTween) {
 							funnyText.text = curWacky;
-							funnyText.screenCenter(null);
+							funnyText.screenCenter(X);
 							FlxTween.tween(funnyText, {alpha: 1}, 1, {
 								ease: FlxEase.cubeOut
 							});

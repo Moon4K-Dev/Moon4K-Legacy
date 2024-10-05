@@ -18,6 +18,6 @@
 
 # Credits
 
-* YoPhlox - Main Developer
-
-* AD1340 - Beta Tester
+* YoPhlox - Main Programmer
+* Hoshino2Git - Helper (legit got the in-game dl working properly)
+* Skdoobep - Artist (Made the Moon4K logo)

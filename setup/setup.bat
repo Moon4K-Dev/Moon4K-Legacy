@@ -8,9 +8,9 @@ echo Installing haxelib libraries...
 cinst haxe --version 4.1.5 -y
 mkdir "%HAXELIB_ROOT%"
 haxelib setup "%HAXELIB_ROOT%"
-haxelib install lime 7.9.0
+haxelib install lime 
 haxelib install openfl
-haxelib --never install flixel 4.11.0
+haxelib --never install flixel
 haxelib run lime setup flixel
 haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
 haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc.git
@@ -20,13 +20,6 @@ haxelib git tentools https://github.com/TentaRJ/tentools
 haxelib git hxcpp https://github.com/yophlox/fxcpp
 haxelib run lime setup -y
 haxelib install flixel-tools
-haxelib install flixel-addons 2.11.0
+haxelib install flixel-addons
 haxelib install flixel-ui
-title Moon4K! Setup - Press anything to activate lime & flixel tools.
-cls
-echo Setting up lime...
-haxelib run lime setup
-haxelib set flixel 4.11.0
-haxelib set lime 7.9.0
-haxelib set flixel-addons 2.11.0
 cls
