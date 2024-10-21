@@ -58,7 +58,8 @@ class UI extends FlxSpriteGroup {
 		if (Options.getData('downscroll'))
 			timerY = 50;
 
-		songTimerTxt = new FlxText(FlxG.width - textWidth - textPadding, timerY, textWidth, "0:00 / 0:00", 20);		songTimerTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
+		songTimerTxt = new FlxText(FlxG.width - textWidth - textPadding, timerY, textWidth, "0:00 / 0:00", 20);
+		songTimerTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		songTimerTxt.scrollFactor.set();
 		songTimerTxt.wordWrap = false;
 		add(songTimerTxt);
