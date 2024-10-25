@@ -89,6 +89,8 @@ class PlayState extends SwagState {
 	public var script:Hscript = new Hscript();
 	#end
 
+	public var botPlay:Bool = false;
+
 	override public function new() {
 		super();
 
@@ -107,6 +109,8 @@ class PlayState extends SwagState {
 
 		curSong = Freeplay.instance.selectedSong;
 		instance = this;
+
+		botPlay = Options.getData('botplay');
 	}
 
 	override public function create() {
@@ -559,31 +563,42 @@ class PlayState extends SwagState {
 
 		possibleNotes.sort((a, b) -> Std.int(a.strum - b.strum));
 
-		for (i in 0...keyCount) {
-			if (justPressed[i]) {
-				var hitNotes:Array<Note> = [];
-				for (note in possibleNotes) {
-					if (note.direction == i && !note.wasGoodHit) {
-						hitNotes.push(note);
-					}
+		if (botPlay) {
+			// Botplay snazz
+			for (note in possibleNotes) {
+				if (Conductor.songPosition >= note.strum) {
+					noteHit(note, "perfect");
+					strumNotes.members[note.direction].playAnim("confirm", true);
 				}
+			}
+		} else {
+			// Player snazz
+			for (i in 0...keyCount) {
+				if (justPressed[i]) {
+					var hitNotes:Array<Note> = [];
+					for (note in possibleNotes) {
+						if (note.direction == i && !note.wasGoodHit) {
+							hitNotes.push(note);
+						}
+					}
 
-				if (hitNotes.length > 0) {
-					var closestNote:Note = hitNotes[0];
-					var noteMs = (Conductor.songPosition - closestNote.strum) / songMultiplier;
-					var hitResult = judgeNote(noteMs);
+					if (hitNotes.length > 0) {
+						var closestNote:Note = hitNotes[0];
+						var noteMs = (Conductor.songPosition - closestNote.strum) / songMultiplier;
+						var hitResult = judgeNote(noteMs);
 
-					if (hitResult != "miss") {
-						closestNote.wasGoodHit = true;
-						strumNotes.members[i].playAnim("confirm", true);
-						noteHit(closestNote, hitResult);
+						if (hitResult != "miss") {
+							closestNote.wasGoodHit = true;
+							strumNotes.members[i].playAnim("confirm", true);
+							noteHit(closestNote, hitResult);
+						}
 					}
 				}
 			}
 		}
 
 		for (note in possibleNotes) {
-			if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null) { 
+			if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null && !botPlay) { 
 				noteMiss(note.direction);
 				notes.remove(note);
 				note.kill();
