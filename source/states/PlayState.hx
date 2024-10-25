@@ -639,12 +639,15 @@ class PlayState extends SwagState {
 			case "perfect":
 				score = 350;
 				accuracy = 1;
+				health += 0.023;
 			case "great":
 				score = 300;
 				accuracy = 0.98;
+				health += 0.015;
 			case "good":
 				score = 200;
 				accuracy = 0.65;
+				health += 0.008;
 			case "ok":
 				score = 100;
 				accuracy = 0.25;

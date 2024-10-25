@@ -116,6 +116,7 @@ class Freeplay extends SwagState {
         }
 
         if (FlxG.keys.justPressed.ENTER) {
+            FlxG.sound.music.stop();
             loadSongJson(selectedSong);
             transitionState(new PlayState());
             PlayState.instance.song = songData;

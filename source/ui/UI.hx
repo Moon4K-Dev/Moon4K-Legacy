@@ -73,6 +73,7 @@ class UI extends FlxSpriteGroup {
 
 	override public function update(elapsed:Float) {
 		updateText();
+		updateHealthBar();
 		super.update(elapsed);
 	}
 
@@ -89,6 +90,12 @@ class UI extends FlxSpriteGroup {
 			songTimerTxt.text = "0:00 / 0:00";
 		}
 	}
+
+	public function updateHealthBar() {
+        if (PlayState.instance != null) {
+            healthBar.percent = PlayState.instance.health * 50; // Convert health to percentage
+        }
+    }
 
 	private function formatTime(seconds:Float):String {
 		var minutes:Int = Std.int(seconds / 60);
