@@ -105,6 +105,10 @@ class MainMenuState extends SwagState {
 			changeSelection(1);
 		}
 
+		if (FlxG.keys.justPressed.ESCAPE || FlxG.keys.justPressed.BACKSPACE) {
+			transitionState(new TitleState());
+		}
+
 		if (FlxG.keys.justPressed.ENTER) {
 			switch (menuItems[currentSelection].toLowerCase()) {
 				case "solo":

@@ -93,7 +93,7 @@ class SplashState extends SwagState {
 	}
 
 	private function onTimerComplete(timer:FlxTimer):Void {
-		transitionState(new MainMenuState());
+		transitionState(new TitleState());
 	}
 
 	override public function update(elapsed:Float) {

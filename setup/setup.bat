@@ -22,4 +22,7 @@ haxelib run lime setup -y
 haxelib install flixel-tools
 haxelib install flixel-addons
 haxelib install flixel-ui
+echo Installing the sexy visualizer known as funkVis...
+haxelib git funkin.vis https://github.com/FunkinCrew/funkVis
+haxelib git grig_audio https://gitlab.com/haxe-grig/grig.audio.git
 cls

@@ -51,6 +51,8 @@
 	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>
 	<haxelib name="newgrounds"/>
+	<haxelib name="funkin.vis"/>
+	<haxelib name="grig_audio"/>
 	<!-- GameJolt Stuff -->
 	<haxelib name="tentools" />
 	<haxelib name="systools" />

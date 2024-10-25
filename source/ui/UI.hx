@@ -23,9 +23,9 @@ class UI extends FlxSpriteGroup {
 
 		var textWidth:Int = 300;
 		var textPadding:Int = 10;
-		var textStartY:Int = 30;
+		var textStartY:Int = Options.getData('downscroll') ? FlxG.height - 120 : 30;
 
-		healthBarBG = new FlxSprite(FlxG.width - 160, textPadding);
+		healthBarBG = new FlxSprite(FlxG.width - 160, Options.getData('downscroll') ? FlxG.height - 30 : textPadding);
 		healthBarBG.makeGraphic(150, 10, FlxColor.BLACK);
 		healthBarBG.scrollFactor.set();
 		add(healthBarBG);
@@ -53,10 +53,7 @@ class UI extends FlxSpriteGroup {
 		accTxt.wordWrap = false;
 		add(accTxt);
 
-		var timerY:Float = FlxG.height - 30;
-
-		if (Options.getData('downscroll'))
-			timerY = 50;
+		var timerY:Float = Options.getData('downscroll') ? 50 : FlxG.height - 30;
 
 		songTimerTxt = new FlxText(FlxG.width - textWidth - textPadding, timerY, textWidth, "0:00 / 0:00", 20);
 		songTimerTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
