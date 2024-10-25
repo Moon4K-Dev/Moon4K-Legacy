@@ -352,9 +352,9 @@ class PlayState extends SwagState {
 	{
 		#if desktop
 		if (!Options.getData('botplay')) {
-			Discord.changePresence("Playing: " + curSong + " with " + songScore + " Score and " + misses + " Misses and " + accuracy + " Accuracy");
+			Discord.changePresence("Playing: " + curSong, "Score: " + songScore + " - " + accuracy + "% - " + notesHit + " combo");
 		} else {
-			Discord.changePresence("Playing: " + curSong + " with Botplay!");
+			Discord.changePresence("Playing: " + curSong, "Botplay!");
 		}
 		#end
 		inputFunction();
@@ -432,7 +432,7 @@ class PlayState extends SwagState {
 			paused = true;
 			#if desktop
 			video.pause();
-			Discord.changePresence("Paused on: " + curSong + " with " + songScore + " Score and " + misses + " Misses and " + accuracy + " Accuracy");
+			Discord.changePresence("Paused on: " + curSong, "Score: " + songScore + " - " + accuracy + "% - " + notesHit + " combo");
 			#end
 			openSubState(pauseSubState);
 		}
