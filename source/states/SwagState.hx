@@ -60,7 +60,6 @@ class SwagState extends FlxUIState {
 	}
 
 	public function transitionState(state:FlxState, ?noTransition:Bool = false) {
-
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 

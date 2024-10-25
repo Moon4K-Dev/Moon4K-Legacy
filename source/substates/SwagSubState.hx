@@ -42,7 +42,6 @@ class SwagSubState extends FlxUISubState {
 		FlxTransitionableState.skipNextTransOut = noTransition;
 
 		FlxG.switchState(state);
-
 	}
 
 	private function updateBeat():Void {

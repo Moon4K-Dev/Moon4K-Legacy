@@ -18,212 +18,199 @@ import flixel.util.FlxAxes;
 
 using StringTools;
 
-class GameJoltLogin extends SwagState
-{
-    var loginTexts:FlxTypedGroup<FlxText>;
-    var loginBoxes:FlxTypedGroup<FlxUIInputText>;
-    var loginButtons:FlxTypedGroup<FlxButton>;
-    var usernameText:FlxText;
-    var tokenText:FlxText;
-    var usernameBox:FlxUIInputText;
-    var tokenBox:FlxUIInputText;
-    var signInBox:FlxButton;
-    var helpBox:FlxButton;
-    var logOutBox:FlxButton;
-    var cancelBox:FlxButton;
-    var username1:FlxText;
-    var username2:FlxText;
-    var baseX:Int = -190;
-    var versionText:FlxText;
-    var funnyText:FlxText;
+class GameJoltLogin extends SwagState {
+	var loginTexts:FlxTypedGroup<FlxText>;
+	var loginBoxes:FlxTypedGroup<FlxUIInputText>;
+	var loginButtons:FlxTypedGroup<FlxButton>;
+	var usernameText:FlxText;
+	var tokenText:FlxText;
+	var usernameBox:FlxUIInputText;
+	var tokenBox:FlxUIInputText;
+	var signInBox:FlxButton;
+	var helpBox:FlxButton;
+	var logOutBox:FlxButton;
+	var cancelBox:FlxButton;
+	var username1:FlxText;
+	var username2:FlxText;
+	var baseX:Int = -190;
+	var versionText:FlxText;
+	var funnyText:FlxText;
 
-    var bgred:Int = 50;
-    var bggreen:Int = 50;
-    var bgblue:Int = 50;
+	var bgred:Int = 50;
+	var bggreen:Int = 50;
+	var bgblue:Int = 50;
 
-    var bg:FlxSprite;
+	var bg:FlxSprite;
 
-    public static var login:Bool = false;
+	public static var login:Bool = false;
 
-    override function create()
-    {
-        FlxG.stage.window.title = "YA4KRG - GameJolt Login!";
-        #if desktop
+	override function create() {
+		FlxG.stage.window.title = "YA4KRG - GameJolt Login!";
+		#if desktop
 		Discord.changePresence("Logging into GameJolt!", null);
-        #end
-        trace(FlxGameJolt.initialized);
-        FlxG.mouse.visible = true;
-        
-        var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), XY, 0.2, 0);
-        coolBackdrop.velocity.set(50, 30);
-        coolBackdrop.alpha = 0.7;
-        add(coolBackdrop);
+		#end
+		trace(FlxGameJolt.initialized);
+		FlxG.mouse.visible = true;
 
-        funnyText = new FlxText(5, FlxG.height - 40, 0, GJInfo.textArray[FlxG.random.int(0, GJInfo.textArray.length - 1)]+ " -Phlox", 12);
-        add(funnyText);
+		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), XY, 0.2, 0);
+		coolBackdrop.velocity.set(50, 30);
+		coolBackdrop.alpha = 0.7;
+		add(coolBackdrop);
 
-        versionText = new FlxText(5, FlxG.height - 22, 0, "Game ID: " + GJInfo.id + " API: " + GJInfo.version, 12);
-        add(versionText);
+		funnyText = new FlxText(5, FlxG.height - 40, 0, GJInfo.textArray[FlxG.random.int(0, GJInfo.textArray.length - 1)] + " -Phlox", 12);
+		add(funnyText);
 
-        loginTexts = new FlxTypedGroup<FlxText>(2);
-        add(loginTexts);
+		versionText = new FlxText(5, FlxG.height - 22, 0, "Game ID: " + GJInfo.id + " API: " + GJInfo.version, 12);
+		add(versionText);
 
-        usernameText = new FlxText(0, 125, 300, "Username:", 20);
+		loginTexts = new FlxTypedGroup<FlxText>(2);
+		add(loginTexts);
 
-        tokenText = new FlxText(0, 225, 300, "Token: (Not PW)", 20);
+		usernameText = new FlxText(0, 125, 300, "Username:", 20);
 
-        loginTexts.add(usernameText);
-        loginTexts.add(tokenText);
-        loginTexts.forEach(function(item:FlxText){
-            item.screenCenter(X);
-            item.x += baseX;
-            item.font = GJInfo.font;
-        });
+		tokenText = new FlxText(0, 225, 300, "Token: (Not PW)", 20);
 
-        loginBoxes = new FlxTypedGroup<FlxUIInputText>(2);
-        add(loginBoxes);
+		loginTexts.add(usernameText);
+		loginTexts.add(tokenText);
+		loginTexts.forEach(function(item:FlxText) {
+			item.screenCenter(X);
+			item.x += baseX;
+			item.font = GJInfo.font;
+		});
 
-        usernameBox = new FlxUIInputText(0, 175, 300, null, 32, FlxColor.BLACK, FlxColor.GRAY);
-        
-        tokenBox = new FlxUIInputText(0, 275, 300, null, 32, FlxColor.BLACK, FlxColor.GRAY);
+		loginBoxes = new FlxTypedGroup<FlxUIInputText>(2);
+		add(loginBoxes);
 
-        loginBoxes.add(usernameBox);
-        loginBoxes.add(tokenBox);
-        loginBoxes.forEach(function(item:FlxUIInputText){
-            item.screenCenter(X);
-            item.x += baseX;
-            item.font = GJInfo.font;
-        });
+		usernameBox = new FlxUIInputText(0, 175, 300, null, 32, FlxColor.BLACK, FlxColor.GRAY);
 
-        if(GameJoltAPI.getStatus())
-        {
-            remove(loginTexts);
-            remove(loginBoxes);
-        }
+		tokenBox = new FlxUIInputText(0, 275, 300, null, 32, FlxColor.BLACK, FlxColor.GRAY);
 
-        loginButtons = new FlxTypedGroup<FlxButton>(3);
-        add(loginButtons);
+		loginBoxes.add(usernameBox);
+		loginBoxes.add(tokenBox);
+		loginBoxes.forEach(function(item:FlxUIInputText) {
+			item.screenCenter(X);
+			item.x += baseX;
+			item.font = GJInfo.font;
+		});
 
-        signInBox = new FlxButton(0, 475, "Sign In", function()
-        {
-            trace(usernameBox.text);
-            trace(tokenBox.text);
-            GameJoltAPI.authDaUser(usernameBox.text,tokenBox.text,true);
-            GameJoltAPI.getTrophy(173515);
-        });
+		if (GameJoltAPI.getStatus()) {
+			remove(loginTexts);
+			remove(loginBoxes);
+		}
 
-        helpBox = new FlxButton(0, 550, "GameJolt Token", function()
-        {
-            if (!GameJoltAPI.getStatus())openLink('https://www.youtube.com/watch?v=T5-x7kAGGnE');
-            else
-                {
-                    GameJoltAPI.leaderboardToggle = !GameJoltAPI.leaderboardToggle;
-                    trace(GameJoltAPI.leaderboardToggle);
-                    FlxG.save.data.lbToggle = GameJoltAPI.leaderboardToggle;
-                    Main.gjToastManager.createToast(GJInfo.imagePath, "Score Submitting", "Score submitting is now " + (GameJoltAPI.leaderboardToggle ? "Enabled":"Disabled"), false);
-                }
-        });
-        helpBox.color = FlxColor.fromRGB(84,155,149);
+		loginButtons = new FlxTypedGroup<FlxButton>(3);
+		add(loginButtons);
 
-        logOutBox = new FlxButton(0, 625, "Log Out & Close", function()
-        {
-            GameJoltAPI.deAuthDaUser();
-        });
-        logOutBox.color = FlxColor.RED /*FlxColor.fromRGB(255,134,61)*/ ;
+		signInBox = new FlxButton(0, 475, "Sign In", function() {
+			trace(usernameBox.text);
+			trace(tokenBox.text);
+			GameJoltAPI.authDaUser(usernameBox.text, tokenBox.text, true);
+			GameJoltAPI.getTrophy(173515);
+		});
 
-        cancelBox = new FlxButton(0,625, "Not Right Now", function()
-        {
-            FlxG.save.flush();
-            FlxG.sound.music.stop();
-            transitionState(new states.OptionSelectState());
-        });
+		helpBox = new FlxButton(0, 550, "GameJolt Token", function() {
+			if (!GameJoltAPI.getStatus())
+				openLink('https://www.youtube.com/watch?v=T5-x7kAGGnE');
+			else {
+				GameJoltAPI.leaderboardToggle = !GameJoltAPI.leaderboardToggle;
+				trace(GameJoltAPI.leaderboardToggle);
+				FlxG.save.data.lbToggle = GameJoltAPI.leaderboardToggle;
+				Main.gjToastManager.createToast(GJInfo.imagePath, "Score Submitting",
+					"Score submitting is now " + (GameJoltAPI.leaderboardToggle ? "Enabled" : "Disabled"), false);
+			}
+		});
+		helpBox.color = FlxColor.fromRGB(84, 155, 149);
 
-        if(!GameJoltAPI.getStatus())
-        {
-            loginButtons.add(signInBox);
-        }
-        loginButtons.add(helpBox);
-        loginButtons.add(cancelBox);
+		logOutBox = new FlxButton(0, 625, "Log Out & Close", function() {
+			GameJoltAPI.deAuthDaUser();
+		});
+		logOutBox.color = FlxColor.RED /*FlxColor.fromRGB(255,134,61)*/;
 
-        loginButtons.forEach(function(item:FlxButton){
-            item.screenCenter(X);
-            item.setGraphicSize(Std.int(item.width) * 3);
-            item.x += baseX;
-        });
+		cancelBox = new FlxButton(0, 625, "Not Right Now", function() {
+			FlxG.save.flush();
+			FlxG.sound.music.stop();
+			transitionState(new states.OptionSelectState());
+		});
 
-        if(GameJoltAPI.getStatus())
-        {
-            username1 = new FlxText(0, 95, 0, "Signed in as:", 40);
-            username1.alignment = CENTER;
-            username1.screenCenter(X);
-            username1.x += baseX;
-            add(username1);
+		if (!GameJoltAPI.getStatus()) {
+			loginButtons.add(signInBox);
+		}
+		loginButtons.add(helpBox);
+		loginButtons.add(cancelBox);
 
-            username2 = new FlxText(0, 145, 0, "" + GameJoltAPI.getUserInfo(true) + "", 40);
-            username2.alignment = CENTER;
-            username2.screenCenter(X);
-            username2.x += baseX;
-            add(username2);
-        }
+		loginButtons.forEach(function(item:FlxButton) {
+			item.screenCenter(X);
+			item.setGraphicSize(Std.int(item.width) * 3);
+			item.x += baseX;
+		});
 
-        if(GJInfo.font != null)
-        {       
-            funnyText.font = GJInfo.font;
-            versionText.font = GJInfo.font;
-            username1.font = GJInfo.font;
-            username2.font = GJInfo.font;
-            loginBoxes.forEach(function(item:FlxUIInputText){
-                item.font = GJInfo.font;
-            });
-            loginTexts.forEach(function(item:FlxText){
-                item.font = GJInfo.font;
-            });
-        }
-    }
+		if (GameJoltAPI.getStatus()) {
+			username1 = new FlxText(0, 95, 0, "Signed in as:", 40);
+			username1.alignment = CENTER;
+			username1.screenCenter(X);
+			username1.x += baseX;
+			add(username1);
 
-    override function update(elapsed:Float)
-    {
-        var colorDir:Int = 0;
+			username2 = new FlxText(0, 145, 0, "" + GameJoltAPI.getUserInfo(true) + "", 40);
+			username2.alignment = CENTER;
+			username2.screenCenter(X);
+			username2.x += baseX;
+			add(username2);
+		}
 
-        if (bgred == 255) {
-            colorDir = 1;
-        } else if (bgred == 0) {
-            colorDir = 0;
-        }
+		if (GJInfo.font != null) {
+			funnyText.font = GJInfo.font;
+			versionText.font = GJInfo.font;
+			username1.font = GJInfo.font;
+			username2.font = GJInfo.font;
+			loginBoxes.forEach(function(item:FlxUIInputText) {
+				item.font = GJInfo.font;
+			});
+			loginTexts.forEach(function(item:FlxText) {
+				item.font = GJInfo.font;
+			});
+		}
+	}
 
-        if (colorDir == 0) {
-            bgred += 2;
-            bggreen += 3;
-            bgblue += 1;
-        } else if (colorDir == 1) {
-            bgred -= 2;
-            bggreen -= 3;
-            bgblue -= 1;
-        }
-       
-        if (GameJoltAPI.getStatus())
-        {
-            helpBox.text = "Leaderboards:\n" + (GameJoltAPI.leaderboardToggle ? "Enabled" : "Disabled");
-            helpBox.color = (GameJoltAPI.leaderboardToggle ? FlxColor.GREEN : FlxColor.RED);
-        }
+	override function update(elapsed:Float) {
+		var colorDir:Int = 0;
 
-        if (FlxG.keys.justPressed.ESCAPE)
-        {
-            FlxG.save.flush();
-            FlxG.mouse.visible = false;
-            transitionState(new states.OptionSelectState());
-        }
+		if (bgred == 255) {
+			colorDir = 1;
+		} else if (bgred == 0) {
+			colorDir = 0;
+		}
 
-        super.update(elapsed);
-    }
+		if (colorDir == 0) {
+			bgred += 2;
+			bggreen += 3;
+			bgblue += 1;
+		} else if (colorDir == 1) {
+			bgred -= 2;
+			bggreen -= 3;
+			bgblue -= 1;
+		}
 
-    function openLink(url:String)
-    {
-        #if linux
-        Sys.command('/usr/bin/xdg-open', [url, "&"]);
-        #else
-        FlxG.openURL(url);
-        #end
-    }
+		if (GameJoltAPI.getStatus()) {
+			helpBox.text = "Leaderboards:\n" + (GameJoltAPI.leaderboardToggle ? "Enabled" : "Disabled");
+			helpBox.color = (GameJoltAPI.leaderboardToggle ? FlxColor.GREEN : FlxColor.RED);
+		}
+
+		if (FlxG.keys.justPressed.ESCAPE) {
+			FlxG.save.flush();
+			FlxG.mouse.visible = false;
+			transitionState(new states.OptionSelectState());
+		}
+
+		super.update(elapsed);
+	}
+
+	function openLink(url:String) {
+		#if linux
+		Sys.command('/usr/bin/xdg-open', [url, "&"]);
+		#else
+		FlxG.openURL(url);
+		#end
+	}
 }
 #end

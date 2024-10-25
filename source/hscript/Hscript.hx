@@ -31,14 +31,12 @@ import ui.StrumNote;
 
 using StringTools;
 
-class Hscript
-{
+class Hscript {
 	public var interp = new Interp();
 	public var parser = new Parser();
 	public var script:hscript.Expr;
 
-	public function new()
-	{
+	public function new() {
 		parser.allowTypes = true;
 		parser.allowJSON = true;
 		parser.allowMetadata = true;
@@ -73,15 +71,14 @@ class Hscript
 		interp.variables.set("FlxAtlas", FlxAtlas);
 		interp.variables.set("Song", Song);
 		interp.variables.set("Conductor", Conductor);
-        interp.variables.set("Options", Options);
+		interp.variables.set("Options", Options);
 		interp.variables.set("FlxBackdrop", FlxBackdrop);
 		interp.variables.set("StrumNote", StrumNote);
 
 		interp.allowStaticVariables = interp.allowPublicVariables = true;
 
 		// regular ol' functions
-		interp.variables.set("trace", function(value:Dynamic)
-		{
+		interp.variables.set("trace", function(value:Dynamic) {
 			trace(value);
 		});
 
@@ -89,42 +86,34 @@ class Hscript
 			val.animation.play(val2, val3);
 		});*/
 
-		interp.variables.set("import", function(class_name:String)
-		{
+		interp.variables.set("import", function(class_name:String) {
 			var classes = class_name.split(".");
 
 			if (Type.resolveClass(class_name) != null)
 				interp.variables.set(classes[classes.length - 1], Type.resolveClass(class_name));
-			else if (Type.resolveEnum(class_name) != null)
-			{
+			else if (Type.resolveEnum(class_name) != null) {
 				var enum_new = {};
 				var good_enum = Type.resolveEnum(class_name);
 
-				for (constructor in good_enum.getConstructors())
-				{
+				for (constructor in good_enum.getConstructors()) {
 					Reflect.setField(enum_new, constructor, good_enum.createByName(constructor));
 				}
 
 				interp.variables.set(classes[classes.length - 1], enum_new);
-			}
-			else
+			} else
 				trace(class_name + " isn't a valid class or enum!");
 		});
 	}
 
-	public function call(funcName:String, ?args:Array<Dynamic>):Dynamic
-	{
+	public function call(funcName:String, ?args:Array<Dynamic>):Dynamic {
 		if (args == null)
 			args = [];
 
-		try
-		{
+		try {
 			var func:Dynamic = interp.variables.get(funcName);
 			if (func != null && Reflect.isFunction(func))
 				return Reflect.callMethod(null, func, args);
-		}
-		catch (e)
-		{
+		} catch (e) {
 			FlxG.log.add(e.details());
 		}
 
@@ -136,14 +125,13 @@ class Hscript
 	 * @param location Location of the Script (Root starts at 'data', you can't change this.)
 	 * @param scriptName name of Script.
 	 */
-    public function loadScript(scriptContent:String)
-    {
-        try {
-            var script = parser.parseString(scriptContent);
-            interp.execute(script);
-            trace(scriptContent);
-        } catch (e:Dynamic) {
-            trace('Hscript Error! ' + e);
-        }
-    }
+	public function loadScript(scriptContent:String) {
+		try {
+			var script = parser.parseString(scriptContent);
+			interp.execute(script);
+			trace(scriptContent);
+		} catch (e:Dynamic) {
+			trace('Hscript Error! ' + e);
+		}
+	}
 }

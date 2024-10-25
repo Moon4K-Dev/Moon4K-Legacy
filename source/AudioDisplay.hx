@@ -29,7 +29,6 @@ class AudioDisplay extends FlxSpriteGroup {
 			add(newLine);
 		}
 		_height = Height;
-		
 		@:privateAccess
 		if (snd._channel != null) {
 			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, line, 1, 5);

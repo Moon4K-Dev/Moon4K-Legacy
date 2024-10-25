@@ -31,10 +31,10 @@ class Cache {
 				return soundCache;
 			case "image":
 				return imageCache;
-			#if desktop	
+			#if desktop
 			case "video":
-					return vidyaCache;
-			#end		
+				return vidyaCache;
+			#end
 			default:
 				return new Map<String, String>();
 		}

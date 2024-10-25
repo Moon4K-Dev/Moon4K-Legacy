@@ -14,6 +14,7 @@ class SplashState extends SwagState {
 	var funnyText:FlxText;
 
 	static public var titleStarted:Bool = false;
+
 	var curWacky:String;
 	private var ptc:FlxText;
 

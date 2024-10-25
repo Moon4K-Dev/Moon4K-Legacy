@@ -3,18 +3,16 @@ package options;
 import flixel.FlxG;
 
 class Options {
-
 	public static var framerate(get, set):Int;
 
-	static function get_framerate():Int
-	{
+	static function get_framerate():Int {
 		return 60;
 	}
-  
-	static function set_framerate(value:Int):Int
-	{
-	  return 60;
+
+	static function set_framerate(value:Int):Int {
+		return 60;
 	}
+
 	// functions
 	static public function init() {
 		FlxG.save.bind("ya4krg", "TyDotCS");

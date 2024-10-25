@@ -61,7 +61,7 @@ class UI extends FlxSpriteGroup {
 		songTimerTxt.wordWrap = false;
 		add(songTimerTxt);
 
-		laneUnderlay = new FlxSprite(0,0);
+		laneUnderlay = new FlxSprite(0, 0);
 		laneUnderlay.makeGraphic(Std.int(Note.swagWidth * 4), FlxG.height, 0xA4000000);
 		laneUnderlay.scrollFactor.set();
 		laneUnderlay.screenCenter(X);
@@ -81,7 +81,7 @@ class UI extends FlxSpriteGroup {
 		scoreTxt.text = "Score: " + PlayState.instance.songScore;
 		notesHitTXT.text = PlayState.instance.notesHit + "x";
 		accTxt.text = "Accuracy: " + PlayState.instance.accuracy;
-		
+
 		if (FlxG.sound.music != null && FlxG.sound.music.playing) {
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
@@ -92,10 +92,10 @@ class UI extends FlxSpriteGroup {
 	}
 
 	public function updateHealthBar() {
-        if (PlayState.instance != null) {
-            healthBar.percent = PlayState.instance.health * 50; // Convert health to percentage
-        }
-    }
+		if (PlayState.instance != null) {
+			healthBar.percent = PlayState.instance.health * 50; // Convert health to percentage
+		}
+	}
 
 	private function formatTime(seconds:Float):String {
 		var minutes:Int = Std.int(seconds / 60);

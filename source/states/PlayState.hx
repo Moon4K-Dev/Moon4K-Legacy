@@ -49,6 +49,7 @@ class PlayState extends SwagState {
 	var notes:FlxTypedGroup<Note>;
 
 	static public var strumY:Float = 0;
+
 	public var curSong:String = '';
 
 	var hud:UI;
@@ -59,9 +60,12 @@ class PlayState extends SwagState {
 	public var notesHit:Int = 0;
 	public var accuracy:Float = 0.00;
 	public var totalNotesHit:Float = 0;
+
 	private var totalPlayed:Int = 0;
+
 	public var pfc:Bool = false;
 	public var curRank:String = "P";
+
 	private var ratingText:FlxText;
 
 	// swag
@@ -79,11 +83,14 @@ class PlayState extends SwagState {
 	var iconRPC:String = "";
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
+
 	#if desktop
 	public var video:FlxVideo = new FlxVideo();
 	#end
+
 	// GameJolt Achievement crap
 	var achievementget:Bool = false;
+
 	// HSCRIPT
 	#if desktop
 	public var script:Hscript = new Hscript();
@@ -133,10 +140,9 @@ class PlayState extends SwagState {
 		FlxG.cameras.add(camHUD);
 		hud = new UI();
 		add(hud);
-		
+
 		#if desktop
-		script.interp.variables.set("add", function(value:Dynamic)
-		{
+		script.interp.variables.set("add", function(value:Dynamic) {
 			add(value);
 		});
 
@@ -216,25 +222,21 @@ class PlayState extends SwagState {
 		add(ratingText);
 	}
 
-	function updateAccuracy()
-	{
+	function updateAccuracy() {
 		totalPlayed += 1;
 		accuracy = totalNotesHit / totalPlayed * 100;
-		if (accuracy >= 100.00)
-		{
+		if (accuracy >= 100.00) {
 			if (pfc && misses == 0)
 				accuracy = 100.00;
-			else
-			{
+			else {
 				accuracy = 99.98;
 				pfc = false;
 			}
 		}
 		accuracy = FlxMath.roundDecimal(accuracy, 2);
 	}
-	
-	function updateRank()
-	{
+
+	function updateRank() {
 		if (accuracy == 100.00) // Straight 100% accuracy the whole song
 			curRank = "P";
 		else if (accuracy >= 90.00) // 90 or higher up to 99.9
@@ -248,11 +250,11 @@ class PlayState extends SwagState {
 		else
 			curRank = "F"; // yeah u suck lol!
 	}
-	
-	function truncateFloat( number : Float, precision : Int): Float {
+
+	function truncateFloat(number:Float, precision:Int):Float {
 		var num = number;
 		num = num * Math.pow(10, precision);
-		num = Math.round( num ) / Math.pow(10, precision);
+		num = Math.round(num) / Math.pow(10, precision);
 		return num;
 	}
 
@@ -267,7 +269,8 @@ class PlayState extends SwagState {
 		} else {
 			trace("no script found for the current song");
 		}
-	}	
+	}
+
 	function checkAndSetBackground():Void {
 		var daSongswag = song.song;
 		var bgImagePath:String = 'assets/charts/' + daSongswag + '/image.png';
@@ -281,8 +284,7 @@ class PlayState extends SwagState {
 			songbg.visible = true;
 			songbg.antialiasing = true;
 			add(songbg);
-		}
-		else if (FileSystem.exists(bgVideoPath)) {
+		} else if (FileSystem.exists(bgVideoPath)) {
 			trace(bgVideoPath);
 			video.play(bgVideoPath, true); // location:String, shouldLoop:Bool = false
 		}
@@ -329,15 +331,14 @@ class PlayState extends SwagState {
 		video.stop();
 		#end
 		if (!Options.getData('botplay'))
-        	HighScoreManager.saveHighScore(curSong, songScore, misses);
+			HighScoreManager.saveHighScore(curSong, songScore, misses);
 
 		#if desktop
-		if (curSong == 'run-insane' && !Options.getData('botplay'))
-		{
+		if (curSong == 'run-insane' && !Options.getData('botplay')) {
 			Main.gjToastManager.createToast(GJInfo.imagePath, "You outran him....", "Beat Run-Insane");
 			GameJoltAPI.getTrophy(240114);
 			achievementget = true;
-		}	
+		}
 		#end
 
 		transitionState(new ResultsState());
@@ -351,9 +352,8 @@ class PlayState extends SwagState {
 	var previousFrameTime:Int = 0;
 	var lastReportedPlayheadPosition:Int = 0;
 	var songTime:Float = 0;
-	
-	override public function update(elapsed:Float) 
-	{
+
+	override public function update(elapsed:Float) {
 		#if desktop
 		if (!Options.getData('botplay')) {
 			Discord.changePresence("Playing: " + curSong, "Score: " + songScore + " - " + accuracy + "% - " + notesHit + " combo");
@@ -366,8 +366,7 @@ class PlayState extends SwagState {
 		if (health > 2)
 			health = 2;
 
-		if (health <= 0)
-		{
+		if (health <= 0) {
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
@@ -493,8 +492,7 @@ class PlayState extends SwagState {
 	var pressed:Array<Bool> = [];
 	var released:Array<Bool> = [];
 
-	function rateNoteHit(noteMs:Float):Int 
-	{
+	function rateNoteHit(noteMs:Float):Int {
 		var rating:Int = 0;
 		if (Math.abs(noteMs) < 50) {
 			rating = 350;
@@ -518,15 +516,14 @@ class PlayState extends SwagState {
 			totalNotesHit += 0;
 			ratingText.text = "Nuh uh!";
 		}
-		
+
 		ratingText.visible = true;
 		ratingText.alpha = 1;
-		
+
 		return rating;
 	}
 
-	function inputFunction() 
-	{
+	function inputFunction() {
 		justPressed = [];
 		pressed = [];
 		released = [];
@@ -598,7 +595,7 @@ class PlayState extends SwagState {
 		}
 
 		for (note in possibleNotes) {
-			if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null && !botPlay) { 
+			if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null && !botPlay) {
 				noteMiss(note.direction);
 				notes.remove(note);
 				note.kill();
@@ -609,12 +606,18 @@ class PlayState extends SwagState {
 
 	function judgeNote(noteMs:Float):String {
 		var absNoteMs = Math.abs(noteMs);
-		if (absNoteMs <= 16) return "perfect";
-		if (absNoteMs <= 64) return "great";
-		if (absNoteMs <= 97) return "good";
-		if (absNoteMs <= 127) return "ok";
-		if (absNoteMs <= 151) return "meh";
-		if (absNoteMs <= 188) return "bad";
+		if (absNoteMs <= 16)
+			return "perfect";
+		if (absNoteMs <= 64)
+			return "great";
+		if (absNoteMs <= 97)
+			return "good";
+		if (absNoteMs <= 127)
+			return "ok";
+		if (absNoteMs <= 151)
+			return "meh";
+		if (absNoteMs <= 188)
+			return "bad";
 		return "miss";
 	}
 
@@ -630,7 +633,7 @@ class PlayState extends SwagState {
 		script.call("noteMiss", [direction]);
 		#end
 	}
-	
+
 	function noteHit(note:Note, judgment:String) {
 		var score:Int = 0;
 		var accuracy:Float = 0;
@@ -709,9 +712,8 @@ class PlayState extends SwagState {
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strum, Obj2.strum);
 	}
 
-    override public function destroy():Void
-    {
-        super.destroy();
-        Controls.destroy();
-    }
+	override public function destroy():Void {
+		super.destroy();
+		Controls.destroy();
+	}
 }

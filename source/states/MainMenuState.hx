@@ -21,7 +21,7 @@ class MainMenuState extends SwagState {
 	private var randomhaxesprite:FlxSprite;
 	private var stars:FlxTypedGroup<FlxSprite>;
 	private var currentSelection:Int = 0;
-	private var menuItems:Array<String> = ["Solo", #if desktop "Browse Online Levels",#end "Settings", "Exit"];
+	private var menuItems:Array<String> = ["Solo", #if desktop "Browse Online Levels", #end "Settings", "Exit"];
 
 	override public function create() {
 		FlxG.mouse.visible = false;
@@ -29,10 +29,9 @@ class MainMenuState extends SwagState {
 		#if desktop
 		Discord.changePresence("In the Main Menu!", null);
 		#end
-		// taken from indie cross lol 
+		// taken from indie cross lol
 		#if desktop
-		if (GameJoltAPI.getStatus())
-		{
+		if (GameJoltAPI.getStatus()) {
 			Main.gjToastManager.createToast(null, 'Signed in as ' + GameJoltAPI.getUserInfo(), 'Connected to GameJolt', false);
 		}
 		#end
@@ -76,7 +75,7 @@ class MainMenuState extends SwagState {
 		devcred.scrollFactor.set();
 		devcred.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		add(devcred);
-		
+
 		var versionShit:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width - 5, "Moon4K" + Utils.VERSION, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
@@ -113,12 +112,12 @@ class MainMenuState extends SwagState {
 			switch (menuItems[currentSelection].toLowerCase()) {
 				case "solo":
 					transitionState(new states.Freeplay());
-				#if desktop	
+				#if desktop
 				case "browse online levels":
-						transitionState(new states.OnlineDLState());
+					transitionState(new states.OnlineDLState());
 				#else
 				trace("PROLLY ON A WEB PLATFORM, USE THE DESKTOP BUILD!");
-				#end		
+				#end
 				case "settings":
 					transitionState(new states.OptionSelectState());
 				case "exit":

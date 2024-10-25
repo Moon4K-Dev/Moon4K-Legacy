@@ -37,6 +37,7 @@ class Main extends Sprite {
 	var zoom:Float = -1;
 	var skipSplash:Bool = true;
 	var startFullscreen:Bool = false;
+
 	#if desktop
 	public static var gjToastManager:GJToastManager;
 	#end

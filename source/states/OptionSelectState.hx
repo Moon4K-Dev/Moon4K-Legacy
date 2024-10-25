@@ -19,7 +19,15 @@ class OptionSelectState extends SwagState {
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 
-	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], #if web ["Newgrounds Login"],#end #if !web ["GameJolt Login"],#end ["Controls"], ["Exit"]];
+	var menuShit:Array<Dynamic> = [
+		["Graphics"],
+		["Gameplay"],
+		["UI Skin"],
+		#if web ["Newgrounds Login"], #end
+		#if !web ["GameJolt Login"], #end
+		["Controls"],
+		["Exit"]
+	];
 	var menuItems:FlxTypedGroup<OptionSelectBox>;
 
 	override public function create() {
@@ -30,7 +38,8 @@ class OptionSelectState extends SwagState {
 
 		super.create();
 
-		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), XY, 0.2, 0);		coolBackdrop.velocity.set(50, 30);
+		var coolBackdrop:FlxBackdrop = new FlxBackdrop(Paths.image('mainmenu/menubglol'), XY, 0.2, 0);
+		coolBackdrop.velocity.set(50, 30);
 		coolBackdrop.alpha = 0.7;
 		add(coolBackdrop);
 
@@ -122,14 +131,14 @@ class OptionSelectState extends SwagState {
 					openSubState(new BaseOptionsSubState());
 				case 'UI Skin':
 					transitionState(new SkinState());
-				#if newgrounds	
+				#if newgrounds
 				case 'Newgrounds Login':
-					transitionState(new api.newgrounds.NGLogin());	
-				#end		
+					transitionState(new api.newgrounds.NGLogin());
+				#end
 				#if desktop
 				case 'GameJolt Login':
 					transitionState(new api.gamejolt.GameJoltLogin());
-				#end		
+				#end
 				case 'Controls':
 					transitionState(new states.ControlsOptionsState());
 				case 'Exit':
