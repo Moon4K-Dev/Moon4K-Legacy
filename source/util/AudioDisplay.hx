@@ -1,4 +1,4 @@
-package;
+package util;
 
 import flixel.group.FlxSpriteGroup;
 import funkin.vis.dsp.SpectralAnalyzer;

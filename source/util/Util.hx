@@ -201,25 +201,23 @@ class Util {
 	 * @param   customPath           Define a custom path for your sound. EX: `data/mySound`
 	 */
 	static public function getSound(path:String, ?music:Bool = false, ?customPath:Bool = false):Dynamic {
-		var base:String = "";
-
-		if (!customPath) {
-			base = music ? "music/" : "sounds/";
-		}
-
-		var gamingPath = base + path + soundExt;
+		var gamingPath = customPath ? path : (music ? "music/" : "sounds/") + path + soundExt;
+		
 		if (Cache.getFromCache(gamingPath, "sound") == null) {
 			var sound:Sound = null;
 			#if web
-			if (Assets.exists("assets/" + gamingPath)) {
-				sound = Assets.getSound("assets/" + gamingPath);
+			if (Assets.exists(gamingPath)) {
+				sound = Assets.getSound(gamingPath);
 			}
 			#else
-			sound = Sound.fromFile("assets/" + gamingPath);
+			if (sys.FileSystem.exists(gamingPath)) {
+				sound = Sound.fromFile(gamingPath);
+			}
 			#end
 			if (sound != null) {
 				Cache.addToCache(gamingPath, sound, "sound");
-				trace("Loaded sound from assets: " + gamingPath);
+			} else {
+				trace("Failed to load sound: " + gamingPath);
 			}
 		}
 
