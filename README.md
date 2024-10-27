@@ -8,13 +8,13 @@
 
 * Swag 4K Gameplay
 
-* Easy modding (song adding)
+* Easy way to add songs
+
+* StepMania Chart support
+
+* In-game Song Downloader
 
 * [HScript support!](https://github.com/Celestial-Studioz/Moon4K/tree/main/docs/HScript.md)
-
-* FNF Chart support (technically!)
-
-* Gamejolt login & Achivements (Achivements not implemented yet lol)
 
 # Credits
 

@@ -29,12 +29,6 @@ class MainMenuState extends SwagState {
 		#if desktop
 		Discord.changePresence("In the Main Menu!", null);
 		#end
-		// taken from indie cross lol
-		#if desktop
-		if (GameJoltAPI.getStatus()) {
-			Main.gjToastManager.createToast(null, 'Signed in as ' + GameJoltAPI.getUserInfo(), 'Connected to GameJolt', false);
-		}
-		#end
 
 		stars = new FlxTypedGroup<FlxSprite>();
 		for (i in 0...100) {

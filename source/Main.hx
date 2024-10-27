@@ -23,8 +23,6 @@ import sys.io.Process;
 import states.SplashState;
 #if desktop
 import hxdiscord_rpc.Discord as DiscordRPC;
-import api.gamejolt.GJToastManager;
-import api.gamejolt.GameJoltAPI;
 #end
 import options.Options;
 
@@ -38,9 +36,6 @@ class Main extends Sprite {
 	var skipSplash:Bool = true;
 	var startFullscreen:Bool = false;
 
-	#if desktop
-	public static var gjToastManager:GJToastManager;
-	#end
 	public static var fpsVar:FPS;
 
 	public static function main():Void {
@@ -81,8 +76,6 @@ class Main extends Sprite {
 		addChild(game);
 		#if desktop
 		Discord.load();
-		gjToastManager = new GJToastManager();
-		addChild(gjToastManager);
 		#end
 
 		#if !web

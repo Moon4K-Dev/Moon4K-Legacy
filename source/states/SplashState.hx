@@ -42,11 +42,6 @@ class SplashState extends SwagState {
 		Options.init();
 		optionsInitialized = true;
 
-		#if desktop
-		GameJoltAPI.connect();
-		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
-		#end
-
 		super.create();
 
 		curWacky = FlxG.random.getObject(introTexts);

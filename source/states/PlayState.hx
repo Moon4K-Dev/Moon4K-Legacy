@@ -347,14 +347,6 @@ class PlayState extends SwagState {
 		if (!Options.getData('botplay'))
 			HighScoreManager.saveHighScore(curSong, songScore, misses);
 
-		#if desktop
-		if (curSong == 'run-insane' && !Options.getData('botplay')) {
-			Main.gjToastManager.createToast(GJInfo.imagePath, "You outran him....", "Beat Run-Insane");
-			GameJoltAPI.getTrophy(240114);
-			achievementget = true;
-		}
-		#end
-
 		transitionState(new ResultsState());
 	}
 

@@ -108,20 +108,6 @@ class ResultsState extends SwagState {
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
 		super.create();
-
-		#if desktop
-		if (PlayState.instance.misses == 0) {
-			Main.gjToastManager.createToast(null, "A Full Combo???", "You got a full combo on any song!");
-			GameJoltAPI.getTrophy(240116);
-		}
-
-		if (PlayState.instance.misses == 0
-			&& PlayState.instance.pfc == true
-			&& PlayState.instance.curSong == 'run-insane'
-			&& !Options.getData('botplay'))
-			Main.gjToastManager.createToast(null, "How the fuck.", "You got a perfect full combo on Run Insane....");
-		// GameJoltAPI.getTrophy(); // todo: make trophy for dis lol!
-		#end
 	}
 
 	var frames = 0;

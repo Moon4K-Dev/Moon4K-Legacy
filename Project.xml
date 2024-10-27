@@ -50,12 +50,8 @@
 	<haxelib name="hxcpp-debug-server" if="debug" />
 	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>
-	<haxelib name="newgrounds"/>
 	<haxelib name="funkin.vis"/>
 	<haxelib name="grig_audio"/>
-	<!-- GameJolt Stuff -->
-	<haxelib name="tentools" />
-	<haxelib name="systools" />
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->

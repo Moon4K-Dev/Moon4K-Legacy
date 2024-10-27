@@ -23,8 +23,6 @@ class OptionSelectState extends SwagState {
 		["Graphics"],
 		["Gameplay"],
 		["UI Skin"],
-		#if web ["Newgrounds Login"], #end
-		#if !web ["GameJolt Login"], #end
 		["Controls"],
 		["Exit"]
 	];
@@ -131,14 +129,6 @@ class OptionSelectState extends SwagState {
 					openSubState(new BaseOptionsSubState());
 				case 'UI Skin':
 					transitionState(new SkinState());
-				#if newgrounds
-				case 'Newgrounds Login':
-					transitionState(new api.newgrounds.NGLogin());
-				#end
-				#if desktop
-				case 'GameJolt Login':
-					transitionState(new api.gamejolt.GameJoltLogin());
-				#end
 				case 'Controls':
 					transitionState(new states.ControlsOptionsState());
 				case 'Exit':
