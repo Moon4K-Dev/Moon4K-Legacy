@@ -203,14 +203,20 @@ class Freeplay extends SwagState {
 			trace("Loaded Moon format: " + moonPath);
 		} else {
 			var smPath = path + ".sm";
+			var smAltPath = path + ".ssc";
 			if (FileSystem.exists(smPath)) {
 				var smContent:String = File.getContent(smPath);
 				var smFile = new SMFile(smContent);
 				songData = SMConverter.convertToMoonFormat(smFile);
 				trace("Loaded and converted StepMania format: " + smPath);
+			} else if (FileSystem.exists(smAltPath)) {
+				var smContent:String = File.getContent(smAltPath);
+				var smFile = new SMFile(smContent);
+				songData = SMConverter.convertToMoonFormat(smFile);
+				trace("Loaded and converted StepMania format: " + smAltPath);
 			} else {
 				trace("No compatible chart found for: " + songName);
-				songData = null; 
+				songData = null;
 			}
 		}
 
