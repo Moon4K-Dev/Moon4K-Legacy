@@ -86,7 +86,7 @@ class SMFile
         return val;
     }
 
-    public function makeFNFChart(chartIndex=0, song_config:SongConfig=null, flipchart=false)
+    public function makeM4KChart(chartIndex=0, song_config:SongConfig=null, flipchart=false)
     {
         if(song_config == null)
             song_config = {};
@@ -101,8 +101,8 @@ class SMFile
             sectionLengths: [],
             timescale: [4, 4]
         };
-        var fnfchart = charts[chartIndex].toFNF(bpms, chartOffset, flipchart);
-        MoonJson.notes = MoonJson.notes.concat(fnfchart);
+        var M4Kchart = charts[chartIndex].toM4K(bpms, chartOffset, flipchart);
+        MoonJson.notes = MoonJson.notes.concat(M4Kchart);
         return { song: MoonJson };
     }
 }

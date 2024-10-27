@@ -7,7 +7,7 @@ import util.stepmania.SMUtils;
 class SMConverter {
     public static function convertToMoonFormat(smFile:SMFile, chartIndex:Int = 0):Dynamic {
         var smChart = smFile.charts[chartIndex];
-        var moonJson = smFile.makeFNFChart(chartIndex);
+        var moonJson = smFile.makeM4KChart(chartIndex);
         
         var songName = smFile.title != null && smFile.title != "" ? smFile.title : "Unnamed";
         

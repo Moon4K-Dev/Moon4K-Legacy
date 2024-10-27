@@ -32,7 +32,7 @@ class SMChart
         n_keys = measures[0].trim().split('\n')[0].length;
     }
 
-    public function toFNF(bpmmap:Array<Array<Float>>, offset=0.0, flipChart=false):Array<SwagSection>
+    public function toM4K(bpmmap:Array<Array<Float>>, offset=0.0, flipChart=false):Array<SwagSection>
     {
         var sections:Array<SwagSection> = [];
         var holdtracker = new Map<Int, SwagNote>();
