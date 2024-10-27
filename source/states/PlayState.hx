@@ -30,6 +30,10 @@ import hscript.Hscript;
 #end
 import flixel.math.FlxRandom;
 import flixel.system.FlxAssets.FlxShader;
+import util.stepmania.SMConverter;
+import util.stepmania.SMFile;
+import haxe.Json;
+import sys.io.File;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -690,31 +694,31 @@ class PlayState extends SwagState {
 	function generateNotes(dataPath:String):Void {
 		for (section in song.notes) {
 			Conductor.recalculateStuff(songMultiplier);
-
+	
 			for (note in section.sectionNotes) {
 				var strum = strumNotes.members[note.noteData % keyCount];
-
+	
 				var daStrumTime:Float = note.noteStrum + (Options.getData('song-offset') * songMultiplier);
 				var daNoteData:Int = Std.int(note.noteData % keyCount);
-
+	
 				var oldNote:Note;
-
+	
 				if (spawnNotes.length > 0)
 					oldNote = spawnNotes[Std.int(spawnNotes.length - 1)];
 				else
 					oldNote = null;
-
+	
 				var swagNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime, Options.getNoteskins()[Options.getData("ui-skin")], false, false,
 					keyCount);
 				swagNote.scrollFactor.set();
 				swagNote.lastNote = oldNote;
-
+	
 				swagNote.playAnim('note');
-
+	
 				spawnNotes.push(swagNote);
 			}
 		}
-
+	
 		spawnNotes.sort(sortByShit);
 	}
 
