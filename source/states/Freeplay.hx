@@ -22,6 +22,8 @@ import flixel.graphics.FlxGraphic;
 import util.stepmania.SMFile;
 import util.stepmania.SMConverter;
 
+using StringTools;
+
 class Freeplay extends SwagState {
 	var grpSongs:FlxTypedGroup<FlxText>;
 	var songs:Array<String>;
@@ -194,7 +196,8 @@ class Freeplay extends SwagState {
 	}
 
 	function loadSongJson(songName:String):Void {
-		var path = "assets/charts/" + songName + "/" + songName;
+		var cleanSongName = songName.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
+		var path = "assets/charts/" + songName + "/" + cleanSongName;
 		
 		var moonPath = path + ".moon";
 		if (FileSystem.exists(moonPath)) {
@@ -202,25 +205,31 @@ class Freeplay extends SwagState {
 			songData = Json.parse(jsonContent);
 			trace("Loaded Moon format: " + moonPath);
 		} else {
-			var smPath = path + ".sm";
-			var smAltPath = path + ".ssc";
-			if (FileSystem.exists(smPath)) {
-				var smContent:String = File.getContent(smPath);
+			var directory = "assets/charts/" + songName;
+			var files = FileSystem.readDirectory(directory);
+			var foundFile:String = null;
+			
+			for (f in files) {
+				var lowerFile = f.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
+				var lowerSong = cleanSongName;
+				if (lowerFile == lowerSong + ".sm" || lowerFile == lowerSong + ".ssc") {
+					foundFile = f;
+					break;
+				}
+			}
+			
+			if (foundFile != null) {
+				var fullPath = directory + "/" + foundFile;
+				var smContent:String = File.getContent(fullPath);
 				var smFile = new SMFile(smContent);
 				songData = SMConverter.convertToMoonFormat(smFile);
-				trace("Loaded and converted StepMania format: " + smPath);
-			} else if (FileSystem.exists(smAltPath)) {
-				var smContent:String = File.getContent(smAltPath);
-				var smFile = new SMFile(smContent);
-				songData = SMConverter.convertToMoonFormat(smFile);
-				trace("Loaded and converted StepMania format: " + smAltPath);
+				trace("Loaded and converted StepMania format: " + fullPath);
 			} else {
 				trace("No compatible chart found for: " + songName);
 				songData = null;
 			}
 		}
 
-		// Ensure the song name is set correctly
 		if (songData != null) {
 			songData.song = songName;
 		}
