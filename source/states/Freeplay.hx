@@ -196,14 +196,12 @@ class Freeplay extends SwagState {
 	function loadSongJson(songName:String):Void {
 		var path = "assets/charts/" + songName + "/" + songName;
 		
-		// Try loading Moon format first
 		var moonPath = path + ".moon";
 		if (FileSystem.exists(moonPath)) {
 			var jsonContent:String = File.getContent(moonPath);
 			songData = Json.parse(jsonContent);
 			trace("Loaded Moon format: " + moonPath);
 		} else {
-			// Try loading StepMania format
 			var smPath = path + ".sm";
 			if (FileSystem.exists(smPath)) {
 				var smContent:String = File.getContent(smPath);
@@ -212,7 +210,7 @@ class Freeplay extends SwagState {
 				trace("Loaded and converted StepMania format: " + smPath);
 			} else {
 				trace("No compatible chart found for: " + songName);
-				songData = null; // Set to null if no chart is found
+				songData = null; 
 			}
 		}
 

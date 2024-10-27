@@ -122,6 +122,7 @@ class PlayState extends SwagState {
 		instance = this;
 
 		botPlay = Options.getData('botplay');
+		FlxG.sound.music.stop();
 	}
 
 	override public function create() {
