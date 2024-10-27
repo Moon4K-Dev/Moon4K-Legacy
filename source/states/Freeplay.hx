@@ -19,6 +19,8 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 import flixel.graphics.FlxGraphic;
+import util.stepmania.SMFile;
+import util.stepmania.SMConverter;
 
 class Freeplay extends SwagState {
 	var grpSongs:FlxTypedGroup<FlxText>;
@@ -192,18 +194,32 @@ class Freeplay extends SwagState {
 	}
 
 	function loadSongJson(songName:String):Void {
-		var path = "assets/charts/" + songName + "/" + songName + ".moon";
-		#if web
-		if (Assets.exists(path)) {
-			var jsonContent:String = Assets.getText(path);
+		var path = "assets/charts/" + songName + "/" + songName;
+		
+		// Try loading Moon format first
+		var moonPath = path + ".moon";
+		if (FileSystem.exists(moonPath)) {
+			var jsonContent:String = File.getContent(moonPath);
 			songData = Json.parse(jsonContent);
-			trace("Loaded from assets: " + path);
+			trace("Loaded Moon format: " + moonPath);
+		} else {
+			// Try loading StepMania format
+			var smPath = path + ".sm";
+			if (FileSystem.exists(smPath)) {
+				var smContent:String = File.getContent(smPath);
+				var smFile = new SMFile(smContent);
+				songData = SMConverter.convertToMoonFormat(smFile);
+				trace("Loaded and converted StepMania format: " + smPath);
+			} else {
+				trace("No compatible chart found for: " + songName);
+				songData = null; // Set to null if no chart is found
+			}
 		}
-		#else
-		var jsonContent:String = File.getContent(path);
-		songData = Json.parse(jsonContent);
-		trace("Loaded from assets: " + path);
-		#end
+
+		// Ensure the song name is set correctly
+		if (songData != null) {
+			songData.song = songName;
+		}
 	}
 
 	function loadSongs():Void {
