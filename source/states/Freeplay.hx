@@ -120,6 +120,14 @@ class Freeplay extends SwagState {
 			updateSongImage();
 		}
 
+		if (FlxG.keys.justPressed.TAB) {
+			#if debug
+			transitionState(new ChartingState());
+			#else
+			trace("Not in debug mode, can't access charting state from Freeplay");
+			#end
+		}
+
 		if (FlxG.keys.justPressed.ENTER) {
 			FlxG.sound.music.stop();
 			loadSongJson(selectedSong);
