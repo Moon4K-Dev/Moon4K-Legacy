@@ -168,23 +168,42 @@ class Freeplay extends SwagState {
 
 	function updateSongImage():Void {
 		var imagePath = '${selectedSong}/image';
+		var imagePathAlt = '${selectedSong}/${selectedSong}-bg';
+		var imagePathAlt2 = '${selectedSong}/${selectedSong}';
 		trace('Attempting to load image: $imagePath');
 
 		var loadedImage:FlxGraphic = Cache.getFromCache(imagePath, "image");
-		if (loadedImage == null) {
+		var loadedImageAlt:FlxGraphic = Cache.getFromCache(imagePathAlt, "image");
+		var loadedImageAlt2:FlxGraphic = Cache.getFromCache(imagePathAlt2, "image");
+
+		if (loadedImage == null && loadedImageAlt == null && loadedImageAlt2 == null) {
 			loadedImage = Util.getchartImage(imagePath);
 			if (loadedImage != null) {
 				Cache.addToCache(imagePath, loadedImage, "image");
 				trace('Successfully loaded and cached image: $imagePath');
 			} else {
-				trace('Image not found: $imagePath');
+				loadedImageAlt = Util.getchartImage(imagePathAlt);
+				if (loadedImageAlt != null) {
+					Cache.addToCache(imagePathAlt, loadedImageAlt, "image");
+					trace('Successfully loaded and cached image: $imagePathAlt');
+				} else {
+					loadedImageAlt2 = Util.getchartImage(imagePathAlt2);
+					if (loadedImageAlt2 != null) {
+						Cache.addToCache(imagePathAlt2, loadedImageAlt2, "image");
+						trace('Successfully loaded and cached image: $imagePathAlt2');
+					} else {
+						trace('No images found for: $selectedSong');
+					}
+				}
 			}
-		} else {
-			trace('Using cached image: $imagePath');
 		}
 
 		if (loadedImage != null) {
 			songImage.loadGraphic(loadedImage);
+		} else if (loadedImageAlt != null) {
+			songImage.loadGraphic(loadedImageAlt);
+		} else if (loadedImageAlt2 != null) {
+			songImage.loadGraphic(loadedImageAlt2);
 		} else {
 			songImage.makeGraphic(400, 300, FlxColor.BLACK);
 		}

@@ -34,6 +34,8 @@ import util.stepmania.SMConverter;
 import util.stepmania.SMFile;
 import haxe.Json;
 import sys.io.File;
+import util.Cache;
+import flixel.graphics.FlxGraphic;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -278,31 +280,63 @@ class PlayState extends SwagState {
 
 	function checkAndSetBackground():Void {
 		var daSongswag = song.song;
-		var bgImagePath:String = 'assets/charts/' + daSongswag + '/image.png';
-		var bgImagePathAlt:String = 'assets/charts/' + daSongswag + '/bg.png';
+		var imagePath = 'assets/charts/${daSongswag}/image';
+		var imagePathAlt = 'assets/charts/${daSongswag}/${daSongswag}-bg';
+		var imagePathAlt2 = 'assets/charts/${daSongswag}/${daSongswag}';
 		var bgVideoPath:String = 'assets/charts/' + daSongswag + '/video.mp4';
-		if (FileSystem.exists(bgImagePath)) {
-			trace(bgImagePath);
-			var songbg:FlxSprite = new FlxSprite(-80).loadGraphic(Util.getchartImage(daSongswag + '/image'));
-			songbg.setGraphicSize(Std.int(songbg.width * 1.1));
-			songbg.updateHitbox();
-			songbg.screenCenter();
-			songbg.visible = true;
-			songbg.antialiasing = true;
-			add(songbg);
-		} else if (FileSystem.exists(bgImagePathAlt)) {
-			trace(bgImagePathAlt);
-			var songbg:FlxSprite = new FlxSprite(-80).loadGraphic(Util.getchartImage(daSongswag + '/bg'));
-			songbg.setGraphicSize(Std.int(songbg.width * 1.1));
-			songbg.updateHitbox();
-			songbg.screenCenter();
-			songbg.visible = true;
-			songbg.antialiasing = true;
-			add(songbg);
-		} else if (FileSystem.exists(bgVideoPath)) {
-			trace(bgVideoPath);
-			video.play(bgVideoPath, true); // location:String, shouldLoop:Bool = false
+
+		var loadedImage:FlxGraphic = Cache.getFromCache(imagePath, "image");
+		var loadedImageAlt:FlxGraphic = Cache.getFromCache(imagePathAlt, "image");
+		var loadedImageAlt2:FlxGraphic = Cache.getFromCache(imagePathAlt2, "image");
+
+		if (loadedImage == null && loadedImageAlt == null && loadedImageAlt2 == null) {
+			loadedImage = Util.getchartImage('${daSongswag}/image');
+			if (loadedImage != null) {
+				Cache.addToCache(imagePath, loadedImage, "image");
+				trace('Successfully loaded and cached image: $imagePath');
+			} else {
+				loadedImageAlt = Util.getchartImage('${daSongswag}/${daSongswag}-bg');
+				if (loadedImageAlt != null) {
+					Cache.addToCache(imagePathAlt, loadedImageAlt, "image");
+					trace('Successfully loaded and cached image: $imagePathAlt');
+				} else {
+					loadedImageAlt2 = Util.getchartImage('${daSongswag}/${daSongswag}');
+					if (loadedImageAlt2 != null) {
+						Cache.addToCache(imagePathAlt2, loadedImageAlt2, "image");
+						trace('Successfully loaded and cached image: $imagePathAlt2');
+					}
+				}
+			}
 		}
+
+		var songbg:FlxSprite = new FlxSprite(-80);
+		if (loadedImage != null) {
+			songbg.loadGraphic(loadedImage);
+		} else if (loadedImageAlt != null) {
+			songbg.loadGraphic(loadedImageAlt);
+		} else if (loadedImageAlt2 != null) {
+			songbg.loadGraphic(loadedImageAlt2);
+		} else if (FileSystem.exists(bgVideoPath)) {
+			video.play(bgVideoPath, true);
+			return;
+		} else {
+			trace('No background found for: $daSongswag');
+			var swagbg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/bg'));
+			swagbg.setGraphicSize(Std.int(swagbg.width * 1.1));
+			swagbg.updateHitbox();
+			swagbg.screenCenter();
+			swagbg.visible = true;
+			swagbg.antialiasing = true;
+			add(swagbg);
+			return;
+		}
+
+		songbg.setGraphicSize(Std.int(songbg.width * 1.1));
+		songbg.updateHitbox();
+		songbg.screenCenter();
+		songbg.visible = true;
+		songbg.antialiasing = true;
+		add(songbg);
 	}
 	#end
 

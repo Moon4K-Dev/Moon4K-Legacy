@@ -66,7 +66,7 @@ class OnlineDLState extends SwagState {
 		pageText.setFormat(null, 16, FlxColor.WHITE, CENTER);
 		add(pageText);
 
-		fetchDirectoryListing("https://raw.githubusercontent.com/yophlox/Moon4K-OnlineMaps/main/maps.json");
+		fetchDirectoryListing("https://raw.githubusercontent.com/yophlox/Moon4K-OnlineMaps/refs/heads/main/maps.json");
 	}
 
 	override public function update(elapsed:Float) {

@@ -232,8 +232,7 @@ class Util {
 	 * @param   songName            The name of the song.
 	 */
 	static public function getSong(song:String):Dynamic {
-		var cleanSong = song.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
-		var sound = getSound('charts/$song/$cleanSong', false, true);
+		var sound = getSound('charts/$song/$song', false, true);
 		return sound;
 	}
 
