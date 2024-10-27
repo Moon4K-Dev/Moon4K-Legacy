@@ -274,10 +274,20 @@ class PlayState extends SwagState {
 	function checkAndSetBackground():Void {
 		var daSongswag = song.song;
 		var bgImagePath:String = 'assets/charts/' + daSongswag + '/image.png';
+		var bgImagePathAlt:String = 'assets/charts/' + daSongswag + '/bg.png';
 		var bgVideoPath:String = 'assets/charts/' + daSongswag + '/video.mp4';
 		if (FileSystem.exists(bgImagePath)) {
 			trace(bgImagePath);
 			var songbg:FlxSprite = new FlxSprite(-80).loadGraphic(Util.getchartImage(daSongswag + '/image'));
+			songbg.setGraphicSize(Std.int(songbg.width * 1.1));
+			songbg.updateHitbox();
+			songbg.screenCenter();
+			songbg.visible = true;
+			songbg.antialiasing = true;
+			add(songbg);
+		} else if (FileSystem.exists(bgImagePathAlt)) {
+			trace(bgImagePathAlt);
+			var songbg:FlxSprite = new FlxSprite(-80).loadGraphic(Util.getchartImage(daSongswag + '/bg'));
 			songbg.setGraphicSize(Std.int(songbg.width * 1.1));
 			songbg.updateHitbox();
 			songbg.screenCenter();
