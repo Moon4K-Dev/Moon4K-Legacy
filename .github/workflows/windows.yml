@@ -1,0 +1,62 @@
+name: Moon4K-Win
+
+on:
+  workflow_dispatch:
+
+jobs:
+  buildWindows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Restore Previous Cache
+        id: cache-build-restore
+        uses: actions/cache/restore@main
+        with:
+          path: |
+            .haxelib/
+            export/debug/windows/haxe/
+            export/debug/windows/obj/
+          key: cache-windows-debug
+
+      - name: Set Cache Status
+        id: cache-status
+        run: echo CACHE_HIT=${{ steps.cache-build-restore.outputs.cache-hit }} | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
+        shell: powershell
+
+      - name: Install Haxelib
+        run: |
+          haxelib setup C:/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          .\"setup/setup.bat"
+      - name: Create Version Tag
+        run: echo "${{github.run_id}}" > VERSION
+      - name: Compile
+        run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}"  -debug
+
+      - name: Clear Previous Cache
+        uses: actions/github-script@main
+        with:
+          script: await require('./actions/cache/clear-cache.js')({github, context}, 'cache-windows-debug');
+
+      - name: Save Current Cache
+        uses: actions/cache@main
+        with:
+          key: cache-windows-debug
+          path: |
+            .haxelib/
+            export/debug/windows/haxe/
+            export/debug/windows/obj/
+          restore-keys: |
+            cache-windows-debug
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: windowsBuild
+          path: export/debug/windows/bin

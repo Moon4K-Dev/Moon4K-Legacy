@@ -1,0 +1,62 @@
+name: Moon4K-MacOSX
+on:
+  workflow_dispatch:
+
+jobs:
+  buildMac:
+    runs-on: macos-12
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Clear Previous Cache
+        uses: actions/github-script@main
+        with:
+          script: await require('./actions/cache/clear-cache.js')({github, context}, 'cache-macos-debug');
+
+      - name: Save Current Cache
+        uses: actions/cache@main
+        with:
+          key: cache-macos-debug
+          path: |
+            .haxelib/
+            export/debug/macos/haxe/
+            export/debug/macos/obj/
+          restore-keys: |
+            cache-macos-debug
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          chmod +x ./setup/setup.sh
+          sh ./setup/setup.sh
+      - name: Create Version Tag
+        run: echo "${{github.run_id}}" > VERSION
+      - name: Compile
+        run: haxelib run lime build mac --app-version="4.0.0-${{ github.run_id}}"  -debug
+
+      - name: Clear Previous Cache
+        uses: actions/github-script@main
+        with:
+          script: await require('./actions/cache/clear-cache.js')({github, context}, 'cache-macos-debug');
+
+      - name: Save Current Cache
+        uses: actions/cache@main
+        with:
+          key: cache-macos-debug
+          path: |
+            .haxelib/
+            export/debug/macos/haxe/
+            export/debug/macos/obj/
+          restore-keys: |
+            cache-macos-debug
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: macBuild
+          path: export/debug/macos/bin
