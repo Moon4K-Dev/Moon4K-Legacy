@@ -365,10 +365,8 @@ class ChartingState extends SwagState {
 
 	function changeNoteSustain(value:Float):Void {
 		if (curSelectedNote != null) {
-			if (curSelectedNote.noteSus != null) {
-				curSelectedNote.noteSus += value;
-				curSelectedNote.noteSus = Math.max(curSelectedNote.noteSus, 0);
-			}
+			curSelectedNote.noteSus += value;
+			curSelectedNote.noteSus = Math.max(curSelectedNote.noteSus, 0);
 		}
 
 		updateGrid();
