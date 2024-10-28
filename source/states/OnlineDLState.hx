@@ -40,12 +40,11 @@ class OnlineDLState extends SwagState {
 
 	override public function create() {
 		FlxG.stage.window.title = "Moon4K - OnlineDLState";
+		FlxG.mouse.visible = true;
 		#if desktop
 		Discord.changePresence("Downloading Songs...", null);
 		#end
 		super.create();
-
-		FlxG.mouse.visible = true;
 
 		gridLines = new FlxTypedGroup<FlxSprite>();
 		for (i in 0...20) {

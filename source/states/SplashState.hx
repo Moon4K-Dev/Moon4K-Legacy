@@ -55,7 +55,7 @@ class SplashState extends SwagState {
 			arrowsexylogo.alpha = 0;
 			add(arrowsexylogo);
 
-			funnyText = new FlxText(0, 0, 0, "Welcome to Moon4K! - by Celestial Studios", 24);
+			funnyText = new FlxText(0, 0, 0, "Welcome to Moon4K!", 24);
 			funnyText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, CENTER);
 			funnyText.screenCenter();
 			funnyText.alpha = 0;

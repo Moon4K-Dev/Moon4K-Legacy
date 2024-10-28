@@ -1,6 +1,8 @@
 # Moon4K
 
-* Funny 4k rhythm game
+* Funny 4k rhythm game made by basically three people
+
+* Oh yeah the chart editor is kinda bad as of rn but it'll get better! (trust me)
 
 * Make sure to check out the [docs!](https://github.com/Celestial-Studioz/Moon4K/tree/main/docs) to learn how to do custom stuff!
 
