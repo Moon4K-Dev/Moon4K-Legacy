@@ -82,7 +82,7 @@ class Note extends FlxSprite {
 		animation.addByPrefix("note", json.animations[direction][3], json.framerate, false);
 
 		animation.addByPrefix("hold", json.animations[direction + 5][0], json.framerate, false);
-		animation.addByPrefix("hold end", json.animations[direction + 5][1], json.framerate, false);
+		animation.addByPrefix("holdend", json.animations[direction + 5][1], json.framerate, false);
 
 		if (json.antialiasing == true)
 			antialiasing = Options.getData('antialiasing');
@@ -98,7 +98,7 @@ class Note extends FlxSprite {
 			alpha = 0.6;
 			x += width / 2;
 
-			playAnim("hold end");
+			playAnim("holdend");
 			updateHitbox();
 
 			x += width / 2;
