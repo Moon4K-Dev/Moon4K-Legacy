@@ -109,7 +109,7 @@ class PlayState extends SwagState {
 
 		if (song == null) {
 			song = {
-				song: "test",
+				song: "",
 				notes: [],
 				bpm: 100,
 				sections: 0,
