@@ -713,11 +713,9 @@ class PlayState extends SwagState {
 		script.call("goodNoteHit", [note, judgment]);
 		#end
 
-		if (!note.isSustainNote) {
-			notes.remove(note);
-			note.kill();
-			note.destroy();
-		}
+		notes.remove(note);
+		note.kill();
+		note.destroy();
 	}
 
 	function generateNotes(dataPath:String):Void {

@@ -81,8 +81,8 @@ class Note extends FlxSprite {
 		animation.addByPrefix("confirm", json.animations[direction][2], json.framerate, false);
 		animation.addByPrefix("note", json.animations[direction][3], json.framerate, false);
 
-		animation.addByPrefix("hold", json.animations[direction][0], json.framerate, false);
-		animation.addByPrefix("hold end", json.animations[direction][1], json.framerate, false);
+		animation.addByPrefix("hold", json.animations[direction + 5][0], json.framerate, false);
+		animation.addByPrefix("hold end", json.animations[direction + 5][1], json.framerate, false);
 
 		if (json.antialiasing == true)
 			antialiasing = Options.getData('antialiasing');
