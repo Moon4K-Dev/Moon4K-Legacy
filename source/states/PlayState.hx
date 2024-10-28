@@ -752,6 +752,17 @@ class PlayState extends SwagState {
 
 					var sustainNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, Options.getNoteskins()[Options.getData("ui-skin")], true, keyCount);
 					sustainNote.scrollFactor.set();
+					sustainNote.lastNote = oldNote;
+					sustainNote.isSustainNote = true;
+					
+					if (susNote == Math.floor(susLength) - 1) {
+						sustainNote.isEndNote = true;
+						sustainNote.playAnim('holdend');
+					} else {
+						sustainNote.playAnim('hold');
+					}
+					
+					oldNote.nextNote = sustainNote;
 					spawnNotes.push(sustainNote);
 				}
 			}

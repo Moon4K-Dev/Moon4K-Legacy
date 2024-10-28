@@ -39,6 +39,9 @@ class Note extends FlxSprite {
 
 	public var offsets = [0, 0];
 
+	public var isEndNote:Bool = false;
+	public var nextNote:Note = null;
+
 	public function new(x, y, direction:Int = 0, ?strum:Float, ?noteskin:String = 'default', ?isSustainNote:Bool = false, ?keyCount:Int = 4) {
 		super(x, y);
 
