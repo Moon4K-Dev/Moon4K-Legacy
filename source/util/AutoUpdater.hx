@@ -1,4 +1,3 @@
-
 /*      
  * MIT License
  *
@@ -41,7 +40,15 @@ using StringTools;
 class AutoUpdater
 {
     private static inline var VERSION_URL = "https://raw.githubusercontent.com/yophlox/VersionShit/refs/heads/main/Moon4KVer.txt"; // Replace with your repo and txt file
-    private static inline var DOWNLOAD_URL = "https://github.com/yophlox/Moon4K/releases/latest/download/Moon4K-Release.zip"; // Replace with your repo and zip file
+    private static inline var DOWNLOAD_URL = 
+    #if windows 
+        "https://github.com/yophlox/Moon4K/releases/latest/download/Moon4K-Win-Release.zip"
+    #elseif macos
+        "https://github.com/yophlox/Moon4K/releases/latest/download/Moon4K-Mac-Release.zip"
+    #elseif linux
+        "https://github.com/yophlox/Moon4K/releases/latest/download/Moon4K-Linux-Release.zip"
+    #end
+    ; // Replace with your repo and zip file
     public static inline var CURRENT_VERSION = "1.0"; // Replace with your version
     
     public static var latestVersion:String = "";

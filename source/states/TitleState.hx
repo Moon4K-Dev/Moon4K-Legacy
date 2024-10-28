@@ -39,21 +39,17 @@ class TitleState extends SwagState {
 
 	override public function update(elapsed:Float):Void {
 		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
-			new FlxTimer().start(2, function(tmr:FlxTimer)
-			{
-				// Check if version is outdated
-				AutoUpdater.checkForUpdates();
+			AutoUpdater.checkForUpdates();
 	
-				if (AutoUpdater.isNewerVersion(AutoUpdater.latestVersion, AutoUpdater.CURRENT_VERSION) && !OutdatedState.leftState)
-				{
-					trace('OLD VERSION!');
-					transitionState(new OutdatedState());
-				}
-				else
-				{
-					transitionState(new MainMenuState());
-				}
-			});
+			if (AutoUpdater.isNewerVersion(AutoUpdater.latestVersion, AutoUpdater.CURRENT_VERSION) && !OutdatedState.leftState)
+			{
+				trace('OLD VERSION!');
+				transitionState(new OutdatedState());
+			}
+			else
+			{
+				transitionState(new MainMenuState());
+			}
 		}
 		super.update(elapsed);
 	}
