@@ -91,12 +91,9 @@ class Main extends Sprite {
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
 
-		#if desktop
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
-		#end
 	}
 
-	#if desktop
 	function onCrash(e:UncaughtErrorEvent):Void {
 		var errMsg:String = "";
 		var path:String;
@@ -130,5 +127,4 @@ class Main extends Sprite {
 		Application.current.window.alert(errMsg, "Error!");
 		Sys.exit(1);
 	}
-	#end
 }

@@ -6,3 +6,4 @@ import states.SwagState;
 import api.dc.Discord;
 #end
 import game.HighScoreManager;
+import util.AutoUpdater;
