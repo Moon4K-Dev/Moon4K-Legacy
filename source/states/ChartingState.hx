@@ -79,6 +79,8 @@ class ChartingState extends SwagState {
 	var songInfoText:FlxText;
 
 	override public function create() {
+		FlxG.mouse.visible = true;
+
 		FlxG.stage.window.title = "Moon4K - ChartingState";
 		#if desktop
 		Discord.changePresence("Charting: " + song.song, null);
@@ -222,6 +224,7 @@ class ChartingState extends SwagState {
 			changeSection(curSection + 1);
 
 		if (FlxG.keys.justPressed.ENTER) {
+			FlxG.mouse.visible = false;
 			transitionState(new PlayState());
 			PlayState.instance.song = song;
 		}
