@@ -44,6 +44,7 @@ class ChartingState extends SwagState {
 	var beatSnap:Int = 16;
 
 	var renderedNotes:FlxTypedGroup<Note>;
+	var renderedSustains:FlxTypedGroup<FlxSprite>;
 
 	public var song:SwagSong;
 
@@ -102,6 +103,9 @@ class ChartingState extends SwagState {
 
 		renderedNotes = new FlxTypedGroup<Note>();
 		add(renderedNotes);
+
+		renderedSustains = new FlxTypedGroup<FlxSprite>();
+		add(renderedSustains);
 
 		addSection();
 		updateGrid();
@@ -229,6 +233,15 @@ class ChartingState extends SwagState {
 			PlayState.instance.song = song;
 		}
 
+		if (FlxG.keys.justPressed.E)
+		{
+			changeNoteSustain(Conductor.stepCrochet);
+		}
+		if (FlxG.keys.justPressed.Q)
+		{
+			changeNoteSustain(-Conductor.stepCrochet);
+		}
+
 		if (FlxG.keys.justPressed.SPACE) {
 			if (FlxG.sound.music.playing) {
 				FlxG.sound.music.pause();
@@ -350,6 +363,17 @@ class ChartingState extends SwagState {
 		updateGrid();
 	}
 
+	function changeNoteSustain(value:Float):Void {
+		if (curSelectedNote != null) {
+			if (curSelectedNote[2] != null) {
+				curSelectedNote[2] += value;
+				curSelectedNote[2] = Math.max(curSelectedNote[2], 0);
+			}
+		}
+
+		updateGrid();
+	}
+
 	function deleteNote(note:Note):Void {
 		for (sectionNote in song.notes[curSection].sectionNotes) {
 			if (sectionNote.noteStrum == note.strum && sectionNote.noteData == note.rawNoteData) {
@@ -382,8 +406,15 @@ class ChartingState extends SwagState {
 
 		renderedNotes.clear();
 
+		while (renderedSustains.members.length > 0)
+		{
+			renderedSustains.remove(renderedSustains.members[0], true);
+		}
+
 		for (sectionNote in song.notes[curSection].sectionNotes) {
-			var note:Note = new Note(0, 0, sectionNote.noteData % song.keyCount, sectionNote.noteStrum, "default", false, false, song.keyCount);
+			var daSus = sectionNote[2];
+			var note:Note = new Note(0, 0, sectionNote.noteData % song.keyCount, sectionNote.noteStrum, "default", false, song.keyCount);
+			note.sustainLength = daSus;
 
 			note.setGraphicSize(gridSize, gridSize);
 			note.updateHitbox();
@@ -394,6 +425,12 @@ class ChartingState extends SwagState {
 			note.rawNoteData = sectionNote.noteData;
 
 			renderedNotes.add(note);
+
+			if (daSus > 0) {
+				var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2),
+					note.y + GRID_SIZE).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridBG.height)));
+				renderedSustains.add(sustainVis);
+			}
 		}
 	}
 

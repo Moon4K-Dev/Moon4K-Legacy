@@ -15,7 +15,6 @@ class Note extends FlxSprite {
 
 	public var strum:Float = 0.0;
 	public var isSustainNote:Bool = false;
-	public var isEndNote:Bool = false;
 	public var shouldHit:Bool = true;
 	public var sustainLength:Float = 0;
 
@@ -40,15 +39,13 @@ class Note extends FlxSprite {
 
 	public var offsets = [0, 0];
 
-	public function new(x, y, direction:Int = 0, ?strum:Float, ?noteskin:String = 'default', ?isSustainNote:Bool = false, ?isEndNote:Bool = false,
-			?keyCount:Int = 4) {
+	public function new(x, y, direction:Int = 0, ?strum:Float, ?noteskin:String = 'default', ?isSustainNote:Bool = false, ?keyCount:Int = 4) {
 		super(x, y);
 
 		this.noteskin = noteskin;
 		this.direction = direction;
 		this.strum = strum;
 		this.isSustainNote = isSustainNote;
-		this.isEndNote = isEndNote;
 		this.keyCount = keyCount;
 
 		loadNoteSkin(noteskin, direction);
@@ -83,6 +80,9 @@ class Note extends FlxSprite {
 		animation.addByPrefix("press", json.animations[direction][1], json.framerate, false);
 		animation.addByPrefix("confirm", json.animations[direction][2], json.framerate, false);
 		animation.addByPrefix("note", json.animations[direction][3], json.framerate, false);
+
+		animation.addByPrefix("hold", json.animations[direction][0], json.framerate, false);
+		animation.addByPrefix("hold end", json.animations[direction][1], json.framerate, false);
 
 		if (json.antialiasing == true)
 			antialiasing = Options.getData('antialiasing');
