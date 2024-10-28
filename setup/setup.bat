@@ -8,21 +8,7 @@ echo Installing haxelib libraries...
 cinst haxe --version 4.1.5 -y
 mkdir "%HAXELIB_ROOT%"
 haxelib setup "%HAXELIB_ROOT%"
-haxelib install lime 
-haxelib install openfl
-haxelib --never install flixel
-haxelib run lime setup flixel
-haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
-haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc.git
-haxelib install hxCodec
-haxelib install newgrounds 1.1.4
-haxelib git tentools https://github.com/TentaRJ/tentools
-haxelib git hxcpp https://github.com/yophlox/fxcpp
-haxelib run lime setup -y
-haxelib install flixel-tools
-haxelib install flixel-addons
-haxelib install flixel-ui
-echo Installing the sexy visualizer known as funkVis...
-haxelib git funkin.vis https://github.com/FunkinCrew/funkVis
-haxelib git grig_audio https://gitlab.com/haxe-grig/grig.audio.git
+haxelib --global install hmm
+haxelib --global run hmm setup
+hmm install
 cls

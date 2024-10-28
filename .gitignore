@@ -7,3 +7,4 @@ converter/2hot.json
 source/api/gamejolt/GJKeys.hx
 source/api/newgrounds/APIStuff.hx
 source/states/FuckYouState.hx
+/.haxelib
