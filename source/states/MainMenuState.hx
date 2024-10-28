@@ -70,7 +70,7 @@ class MainMenuState extends SwagState {
 		devcred.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		add(devcred);
 
-		var versionShit:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width - 5, "Moon4K" + Utils.VERSION, 12);
+		var versionShit:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width - 5, "Moon4K v" + Utils.VERSION, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		add(versionShit);

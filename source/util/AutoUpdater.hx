@@ -49,7 +49,7 @@ class AutoUpdater
         "https://github.com/yophlox/Moon4K/releases/latest/download/Moon4K-Linux-Release.zip"
     #end
     ; // Replace with your repo and zip file
-    public static inline var CURRENT_VERSION = "1.0"; // Replace with your version
+    public static var CURRENT_VERSION = Utils.VERSION;
     
     public static var latestVersion:String = "";
 
