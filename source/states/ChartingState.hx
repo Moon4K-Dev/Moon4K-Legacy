@@ -365,9 +365,9 @@ class ChartingState extends SwagState {
 
 	function changeNoteSustain(value:Float):Void {
 		if (curSelectedNote != null) {
-			if (curSelectedNote[2] != null) {
-				curSelectedNote[2] += value;
-				curSelectedNote[2] = Math.max(curSelectedNote[2], 0);
+			if (curSelectedNote.noteSus != null) {
+				curSelectedNote.noteSus += value;
+				curSelectedNote.noteSus = Math.max(curSelectedNote.noteSus, 0);
 			}
 		}
 
@@ -412,7 +412,7 @@ class ChartingState extends SwagState {
 		}
 
 		for (sectionNote in song.notes[curSection].sectionNotes) {
-			var daSus = sectionNote[2];
+			var daSus = sectionNote.noteSus;
 			var note:Note = new Note(0, 0, sectionNote.noteData % song.keyCount, sectionNote.noteStrum, "default", false, song.keyCount);
 			note.sustainLength = daSus;
 
