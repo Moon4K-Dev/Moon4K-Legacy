@@ -57,5 +57,5 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: macBuild
+          name: Moon4K-Mac-Release
           path: export/debug/macos/bin
