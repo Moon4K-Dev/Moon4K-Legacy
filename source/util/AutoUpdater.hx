@@ -216,7 +216,7 @@ class AutoUpdater
                 var fileName = entry.fileName;
                 trace("Extracting: " + fileName);
                 
-                if (fileName == "AutoUpdater.exe" || fileName == "lime.ndll") { // replace with your executable's name.
+                if (fileName == "lime.ndll" || fileName == "Moon4K.exe" || fileName == "libvlc.dll") { // replace with your executable's name.
                     var content = Reader.unzip(entry);
                     File.saveBytes(fileName + ".new", content);
                     trace("Saved new version of: " + fileName);
@@ -245,9 +245,10 @@ class AutoUpdater
         var batchContent = 
         '@echo off\n' +
         'timeout /t 1 /nobreak > NUL\n' +
-        'move /y AutoUpdater.exe.new AutoUpdater.exe\n' + // replace with your executable's name.
+        'move /y Moon4K.exe.new Moon4K.exe\n' + // replace with your executable's name.
         'move /y lime.ndll.new lime.ndll\n' +
-        'start "" AutoUpdater.exe\n' + // replace with your executable's name.
+        'move /y libvlc.dll.new libvlc.dll\n' +
+        'start "" Moon4K.exe\n' + // replace with your executable's name.
         'del "%~f0"';
 
         File.saveContent("finish_update.bat", batchContent);
