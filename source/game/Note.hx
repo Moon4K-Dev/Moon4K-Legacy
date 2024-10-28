@@ -106,7 +106,7 @@ class Note extends FlxSprite {
 			if (lastNote.isSustainNote) {
 				lastNote.playAnim("hold");
 
-				lastNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.song.speed;
+				lastNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.instance.speed;
 				lastNote.updateHitbox();
 			}
 		}
