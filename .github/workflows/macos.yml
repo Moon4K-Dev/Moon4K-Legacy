@@ -25,7 +25,7 @@ jobs:
 
       - name: Set Cache Status
         id: cache-status
-        run: echo CACHE_HIT=${{ steps.cache-build-restore.outputs.cache-hit }} | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
+        run: echo "CACHE_HIT=${{ steps.cache-build-restore.outputs.cache-hit }}" >> $GITHUB_ENV
 
       - name: Install Haxelib
         run: |
