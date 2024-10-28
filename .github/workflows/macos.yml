@@ -13,21 +13,20 @@ jobs:
         with:
           haxe-version: 4.3.4
 
-      - name: Clear Previous Cache
-        uses: actions/github-script@main
+      - name: Restore Previous Cache
+        id: cache-build-restore
+        uses: actions/cache/restore@main
         with:
-          script: await require('./actions/cache/clear-cache.js')({github, context}, 'cache-macos-debug');
-
-      - name: Save Current Cache
-        uses: actions/cache@main
-        with:
-          key: cache-macos-debug
           path: |
             .haxelib/
-            export/debug/macos/haxe/
-            export/debug/macos/obj/
-          restore-keys: |
-            cache-macos-debug
+            export/debug/windows/haxe/
+            export/debug/windows/obj/
+          key: cache-windows-debug
+
+      - name: Set Cache Status
+        id: cache-status
+        run: echo CACHE_HIT=${{ steps.cache-build-restore.outputs.cache-hit }} | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
+
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
