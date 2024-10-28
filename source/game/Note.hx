@@ -93,6 +93,23 @@ class Note extends FlxSprite {
 		updateHitbox();
 
 		playAnim("note");
+
+		if (isSustainNote && lastNote != null) {
+			alpha = 0.6;
+			x += width / 2;
+
+			playAnim("hold end");
+			updateHitbox();
+
+			x += width / 2;
+
+			if (lastNote.isSustainNote) {
+				lastNote.playAnim("hold");
+
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.song.speed;
+				prevNote.updateHitbox();
+			}
+		}
 	}
 
 	public function playAnim(anim:String, ?force:Bool = false) {
