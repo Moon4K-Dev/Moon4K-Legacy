@@ -6,6 +6,8 @@
 
 * Make sure to check out the [docs!](https://github.com/Celestial-Studioz/Moon4K/tree/main/docs) to learn how to do custom stuff!
 
+* Download it on [itch.io](https://yophlox.itch.io/moon4k) or the [releases/tags](https://github.com/yophlox/Moon4K/tags) page!
+
 # Features
 
 * Swag 4K Gameplay
