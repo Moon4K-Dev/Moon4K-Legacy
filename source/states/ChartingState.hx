@@ -44,6 +44,7 @@ class ChartingState extends SwagState {
 	var beatSnap:Int = 16;
 
 	var renderedNotes:FlxTypedGroup<Note>;
+	var renderedSustains:FlxTypedGroup<FlxSprite>;
 
 	public var song:SwagSong;
 
@@ -79,6 +80,8 @@ class ChartingState extends SwagState {
 	var songInfoText:FlxText;
 
 	override public function create() {
+		FlxG.mouse.visible = true;
+
 		FlxG.stage.window.title = "Moon4K - ChartingState";
 		#if desktop
 		Discord.changePresence("Charting: " + song.song, null);
@@ -100,6 +103,9 @@ class ChartingState extends SwagState {
 
 		renderedNotes = new FlxTypedGroup<Note>();
 		add(renderedNotes);
+
+		renderedSustains = new FlxTypedGroup<FlxSprite>();
+		add(renderedSustains);
 
 		addSection();
 		updateGrid();
@@ -222,8 +228,18 @@ class ChartingState extends SwagState {
 			changeSection(curSection + 1);
 
 		if (FlxG.keys.justPressed.ENTER) {
+			FlxG.mouse.visible = false;
 			transitionState(new PlayState());
 			PlayState.instance.song = song;
+		}
+
+		if (FlxG.keys.justPressed.E)
+		{
+			changeNoteSustain(Conductor.stepCrochet);
+		}
+		if (FlxG.keys.justPressed.Q)
+		{
+			changeNoteSustain(-Conductor.stepCrochet);
 		}
 
 		if (FlxG.keys.justPressed.SPACE) {
@@ -347,6 +363,15 @@ class ChartingState extends SwagState {
 		updateGrid();
 	}
 
+	function changeNoteSustain(value:Float):Void {
+		if (curSelectedNote != null) {
+			curSelectedNote.noteSus += value;
+			curSelectedNote.noteSus = Math.max(curSelectedNote.noteSus, 0);
+		}
+
+		updateGrid();
+	}
+
 	function deleteNote(note:Note):Void {
 		for (sectionNote in song.notes[curSection].sectionNotes) {
 			if (sectionNote.noteStrum == note.strum && sectionNote.noteData == note.rawNoteData) {
@@ -379,8 +404,15 @@ class ChartingState extends SwagState {
 
 		renderedNotes.clear();
 
+		while (renderedSustains.members.length > 0)
+		{
+			renderedSustains.remove(renderedSustains.members[0], true);
+		}
+
 		for (sectionNote in song.notes[curSection].sectionNotes) {
-			var note:Note = new Note(0, 0, sectionNote.noteData % song.keyCount, sectionNote.noteStrum, "default", false, false, song.keyCount);
+			var daSus = sectionNote.noteSus;
+			var note:Note = new Note(0, 0, sectionNote.noteData % song.keyCount, sectionNote.noteStrum, "default", false, song.keyCount);
+			note.sustainLength = daSus;
 
 			note.setGraphicSize(gridSize, gridSize);
 			note.updateHitbox();
@@ -391,6 +423,12 @@ class ChartingState extends SwagState {
 			note.rawNoteData = sectionNote.noteData;
 
 			renderedNotes.add(note);
+
+			if (daSus > 0) {
+				var sustainVis:FlxSprite = new FlxSprite(note.x + (gridSize / 2),
+					note.y + gridSize).makeGraphic(8, Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * 16, 0, gridBG.height)));
+				renderedSustains.add(sustainVis);
+			}
 		}
 	}
 

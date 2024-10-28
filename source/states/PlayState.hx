@@ -735,14 +735,25 @@ class PlayState extends SwagState {
 				else
 					oldNote = null;
 	
-				var swagNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime, Options.getNoteskins()[Options.getData("ui-skin")], false, false,
-					keyCount);
+				var swagNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime, Options.getNoteskins()[Options.getData("ui-skin")], false, keyCount);
+				swagNote.sustainLength = note.noteSus;
 				swagNote.scrollFactor.set();
 				swagNote.lastNote = oldNote;
 	
 				swagNote.playAnim('note');
+
+				var susLength:Float = swagNote.sustainLength;
+				susLength = susLength / Conductor.stepCrochet;
 	
 				spawnNotes.push(swagNote);
+
+				for (susNote in 0...Math.floor(susLength)) {
+					oldNote = spawnNotes[Std.int(spawnNotes.length - 1)];
+
+					var sustainNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, Options.getNoteskins()[Options.getData("ui-skin")], true, keyCount);
+					sustainNote.scrollFactor.set();
+					spawnNotes.push(sustainNote);
+				}
 			}
 		}
 	

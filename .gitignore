@@ -1,5 +1,6 @@
 
-/export
+export/
+.vscode/*
 index.html
 style.css
 converter/*.json
@@ -7,4 +8,9 @@ converter/2hot.json
 source/api/gamejolt/GJKeys.hx
 source/api/newgrounds/APIStuff.hx
 source/states/FuckYouState.hx
-/.haxelib
+.haxelib/
+desktop.ini
+dump/
+
+## For mac or smth
+.DS_Store

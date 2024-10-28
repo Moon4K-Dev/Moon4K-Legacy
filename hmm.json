@@ -2,23 +2,19 @@
   "dependencies": [
     {
       "name": "flixel",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     },
     {
       "name": "flixel-addons",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     },
     {
       "name": "flixel-tools",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     },
     {
       "name": "flixel-ui",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     },
     {
       "name": "funkin.vis",
@@ -50,28 +46,23 @@
     },
     {
       "name": "hxcpp",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     },
     {
       "name": "hxcpp-debug-server",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     },
     {
       "name": "hxdiscord_rpc",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     },
     {
       "name": "lime",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     },
     {
       "name": "openfl",
-      "type": "haxelib",
-      "version": null
+      "type": "haxelib"
     }
   ]
 }

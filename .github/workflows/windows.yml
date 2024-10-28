@@ -1,6 +1,9 @@
 name: Moon4K-Win
 
 on:
+  push:
+    branches: [ main ]
+  
   workflow_dispatch:
 
 jobs:
@@ -8,11 +11,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@main
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.4
+          haxe-version: 4.3.6
 
       - name: Restore Previous Cache
         id: cache-build-restore
@@ -30,14 +33,11 @@ jobs:
         shell: powershell
 
       - name: Install Haxelib
-        run: |
-          haxelib setup C:/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          .\"setup/setup.bat"
+        run: haxe --interp -cp ./actions/libs-installer -D analyzer-optimize -main Main
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
-        run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}"  -debug
+        run: haxelib run lime build windows -debug
 
       - name: Clear Previous Cache
         uses: actions/github-script@main
@@ -56,7 +56,7 @@ jobs:
             cache-windows-debug
 
       - name: Publish Artifact
-        uses: actions/upload-artifact@v4.3.4
+        uses: actions/upload-artifact@main
         with:
           name: Moon4K-Win-Release
           path: export/debug/windows/bin
