@@ -1,6 +1,6 @@
-# 1.0 PRE-RELEASE/INIT-RELEASE
+# 1.0 PRE-RELEASE
 
-- Initial Release.
+- Initial Pre-Release.
 
 # 1.1 PRE-RELEASE
 
