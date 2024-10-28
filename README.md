@@ -24,8 +24,8 @@
 
 * YoPhlox - Main Programmer
 * Hoshino2Git - Helper (legit got the in-game dl working properly)
+* Skdoobep - Artist (Made the Moon4K logo)
 * ★†~AxylusMusic~†★ - WIP Moon4K OST 
 * UncertainProd - StepMania Chart Converter (taken from [here](https://github.com/UncertainProd/SMToPsychFNF-Web))
-* Skdoobep - Artist (Made the Moon4K logo)
 * YT Playlist - Title Music (https://www.youtube.com/watch?v=hQT6WMJ-Fco&list=PL06diOotXAJLAAHBY7kIUm5GQwm2ZinOz&index=1)
 * DeepFriedBolognese - Trojan Virus v3 - V.S. Ron
