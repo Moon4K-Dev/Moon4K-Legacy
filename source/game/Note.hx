@@ -80,7 +80,6 @@ class Note extends FlxSprite {
 		animation.addByPrefix("press", json.animations[direction][1], json.framerate, false);
 		animation.addByPrefix("confirm", json.animations[direction][2], json.framerate, false);
 		animation.addByPrefix("note", json.animations[direction][3], json.framerate, false);
-
 		animation.addByPrefix("hold", json.animations[direction + 5][0], json.framerate, false);
 		animation.addByPrefix("holdend", json.animations[direction + 5][1], json.framerate, false);
 
@@ -101,7 +100,7 @@ class Note extends FlxSprite {
 			playAnim("holdend");
 			updateHitbox();
 
-			x += width / 2;
+			x -= width / 2;
 
 			if (lastNote.isSustainNote) {
 				lastNote.playAnim("hold");
