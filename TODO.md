@@ -5,6 +5,8 @@
 
 - [x] Get hold notes to work. (Thanks Joalor64GH!)
 
+- [ ] Fix the hold notes scale.
+
 - [ ] Improve the UI. (Aghh anyone know a UI designer?...)
 
 - [ ] Improve the Song Downloader.

@@ -1,9 +1,6 @@
 name: Moon4K-Win
 
-on:
-  push:
-    branches: [ main ]
-  
+on:  
   workflow_dispatch:
 
 jobs:
