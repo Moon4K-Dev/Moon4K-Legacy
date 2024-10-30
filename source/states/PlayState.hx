@@ -629,6 +629,7 @@ class PlayState extends SwagState {
 							closestNote.wasGoodHit = true;
 							strumNotes.members[i].playAnim("confirm", true);
 							noteHit(closestNote, hitResult);
+							rateNoteHit(noteMs);
 						}
 					}
 				}
@@ -663,6 +664,7 @@ class PlayState extends SwagState {
 	}
 
 	function noteMiss(direction:Int) {
+		ratingText.visible = false;
 		health -= 0.04;
 		misses++;
 		songScore -= 10;
