@@ -72,7 +72,9 @@ class PauseSubstate extends SwagSubState {
 					close();
 					#if desktop
 					PlayState.instance.video.resume();
-					PlayState.instance.vocals.play();
+					if (PlayState.instance.vocals != null) {
+						PlayState.instance.vocals.play();
+					}
 					#end
 				case "Restart Song":
 					var newPlayState = new PlayState();
