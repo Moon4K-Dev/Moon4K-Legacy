@@ -30,12 +30,12 @@ import hscript.Hscript;
 #end
 import flixel.math.FlxRandom;
 import flixel.system.FlxAssets.FlxShader;
-import util.stepmania.SMConverter;
-import util.stepmania.SMFile;
 import haxe.Json;
 import sys.io.File;
 import util.Cache;
 import flixel.graphics.FlxGraphic;
+import flixel.sound.FlxSound;
+import openfl.media.Sound;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -103,6 +103,8 @@ class PlayState extends SwagState {
 	#end
 
 	public var botPlay:Bool = false;
+
+	public var vocals:FlxSound;
 
 	override public function new() {
 		super();
@@ -346,8 +348,36 @@ class PlayState extends SwagState {
 		startingSong = false;
 		// FlxG.sound.playMusic(Paths.song(curSong +'/music'));
 		var daSong = song.song;
-		FlxG.sound.playMusic(Util.getSong(daSong));
+		loadSongAudio(daSong);
 		FlxG.sound.music.onComplete = endSong;
+	}
+
+	private function loadSongAudio(daSong:String):Void {
+		var directory = "assets/charts/" + daSong + "/";
+		
+		if (FileSystem.exists(directory + "Inst.ogg")) {
+			var instPath = directory + "Inst.ogg";
+			FlxG.sound.playMusic(Sound.fromFile(instPath));
+			
+			if (FileSystem.exists(directory + "Voices.ogg")) {
+				var voicesPath = directory + "Voices.ogg";
+				vocals = new FlxSound();
+				vocals.loadEmbedded(Sound.fromFile(voicesPath));
+				FlxG.sound.music.play();
+				vocals.play();
+				
+				FlxG.sound.music.time = 0;
+				vocals.time = 0;
+				
+				FlxG.sound.music.volume = 1;
+				vocals.volume = 1;
+			} else {
+				vocals = null;
+			}
+		} else {
+			vocals = null;
+			FlxG.sound.playMusic(Util.getSong(daSong));
+		}
 	}
 
 	function startCountdown():Void {
@@ -444,6 +474,17 @@ class PlayState extends SwagState {
 			// Conductor.lastSongPos = FlxG.sound.music.time;
 		}
 
+		if (vocals != null) {
+			if (Math.abs(FlxG.sound.music.time - vocals.time) > 100) {
+				vocals.time = FlxG.sound.music.time;
+			}
+			
+			if (paused) {
+				FlxG.sound.music.pause();
+				vocals.pause();
+			}
+		}
+
 		#if desktop
 		script.call("update", [elapsed]);
 		#end
@@ -484,6 +525,9 @@ class PlayState extends SwagState {
 
 		if (paused) {
 			if (FlxG.sound.music != null) {
+				if (vocals != null) {
+					vocals.pause();
+				}
 				FlxG.sound.music.pause();
 			}
 		}

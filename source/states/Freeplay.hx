@@ -21,6 +21,7 @@ import sys.io.File;
 import flixel.graphics.FlxGraphic;
 import util.stepmania.SMFile;
 import util.stepmania.SMConverter;
+import util.fnf.FNFConverter;
 
 using StringTools;
 
@@ -225,36 +226,63 @@ class Freeplay extends SwagState {
 	function loadSongJson(songName:String):Void {
 		var cleanSongName = songName.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
 		var path = "assets/charts/" + songName + "/" + cleanSongName;
+		var directory = "assets/charts/" + songName;
 		
 		var moonPath = path + ".moon";
 		if (FileSystem.exists(moonPath)) {
 			var jsonContent:String = File.getContent(moonPath);
 			songData = Json.parse(jsonContent);
-			trace("Loaded Moon format: " + moonPath);
-		} else {
-			var directory = "assets/charts/" + songName;
-			var files = FileSystem.readDirectory(directory);
-			var foundFile:String = null;
 			
+			trace("Loaded Moon format: " + moonPath);
+			return;
+		}
+		
+		var files = FileSystem.readDirectory(directory);
+		var foundFile:String = null;
+		var difficulties = ["", "-easy", "-hard"];
+		
+		for (diff in difficulties) {
+			if (foundFile != null) break;
 			for (f in files) {
 				var lowerFile = f.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
-				var lowerSong = cleanSongName;
+				var lowerSong = cleanSongName + diff;
 				if (lowerFile == lowerSong + ".sm" || lowerFile == lowerSong + ".ssc") {
 					foundFile = f;
 					break;
 				}
 			}
-			
-			if (foundFile != null) {
-				var fullPath = directory + "/" + foundFile;
+		}
+		
+		if (foundFile == null) {
+			for (diff in difficulties) {
+				if (foundFile != null) break;
+				for (f in files) {
+					var lowerFile = f.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
+					var lowerSong = cleanSongName + diff;
+					if (lowerFile == lowerSong + ".json") {
+						foundFile = f;
+						break;
+					}
+				}
+			}
+		}
+		
+		if (foundFile != null) {
+			var fullPath = directory + "/" + foundFile;
+			if (foundFile.endsWith(".json")) {
+				var fnfContent:String = File.getContent(fullPath);
+				var fnfData = Json.parse(fnfContent);
+				songData = FNFConverter.convertToMoonFormat(fnfData);
+				trace("Loaded and converted FNF format: " + fullPath);
+			} else {
 				var smContent:String = File.getContent(fullPath);
 				var smFile = new SMFile(smContent);
 				songData = SMConverter.convertToMoonFormat(smFile);
 				trace("Loaded and converted StepMania format: " + fullPath);
-			} else {
-				trace("No compatible chart found for: " + songName);
-				songData = null;
 			}
+		} else {
+			trace("No compatible chart found for: " + songName);
+			songData = null;
 		}
 
 		if (songData != null) {

@@ -7,3 +7,13 @@
 - Added stuff for Mac and Linux in the auto updater
 
 - Made it so you don't gotta wait 2 seconds for the game to check for updates. 
+
+# 1.2 PRE-RELEASE
+
+- Made the fnf converter be handled in-engine.
+
+- Reenabled the rating system.
+
+- Added Hold Notes (PR by joalor64gh)
+
+- Fixed the fnf arrow skin.
