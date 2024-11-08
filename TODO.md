@@ -1,9 +1,13 @@
 # Moon4K TODO List
 
 
-## v1.0.0 RELEASE
+## 1.2 PRE-RELEASE
 
 - [x] Get hold notes to work. (Thanks Joalor64GH!)
+
+- [ ] Add support for adding custom online map libraries (in-game).
+
+## v1.0.0 RELEASE
 
 - [ ] Fix the hold notes scale.
 
