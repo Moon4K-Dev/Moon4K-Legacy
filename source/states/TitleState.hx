@@ -39,8 +39,10 @@ class TitleState extends SwagState {
 
 	override public function update(elapsed:Float):Void {
 		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
+			#if SKIP_UPDATES
+			transitionState(new MainMenuState());
+			#else
 			AutoUpdater.checkForUpdates();
-	
 			if (AutoUpdater.isNewerVersion(AutoUpdater.latestVersion, AutoUpdater.CURRENT_VERSION) && !OutdatedState.leftState)
 			{
 				trace('OLD VERSION!');
@@ -50,6 +52,7 @@ class TitleState extends SwagState {
 			{
 				transitionState(new MainMenuState());
 			}
+			#end
 		}
 		super.update(elapsed);
 	}

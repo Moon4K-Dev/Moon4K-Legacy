@@ -56,6 +56,9 @@
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
 
+	<!-- Moon4K specific lol -->
+	<haxedef name="SKIP_UPDATES" if="skipupdates" />
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
