@@ -17,3 +17,5 @@
 - Added Hold Notes (PR by joalor64gh)
 
 - Fixed the fnf arrow skin.
+
+- No way theres a game over now instead of just getting sent back to the freeplay menu!!!

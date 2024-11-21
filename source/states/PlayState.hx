@@ -441,8 +441,21 @@ class PlayState extends SwagState {
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
-			FlxG.sound.music.stop();
-			transitionState(new states.Freeplay());
+			FlxG.sound.music.pause();
+			if (vocals != null) {
+				vocals.pause();
+			}
+			transitionState(new substates.GameOverSubState());
+		}
+		else if (FlxG.keys.justPressed.R) {
+			persistentUpdate = false;
+			persistentDraw = false;
+			paused = true;
+			FlxG.sound.music.pause();
+			if (vocals != null) {
+				vocals.pause();
+			}
+			transitionState(new substates.GameOverSubState());
 		}
 
 		if (startingSong) {
