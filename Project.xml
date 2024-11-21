@@ -57,7 +57,7 @@
 	<!--<haxelib name="nape-haxe4" />-->
 
 	<!-- Moon4K specific lol -->
-	<haxedef name="SKIP_UPDATES" if="skipupdates" />
+	<haxedef name="SKIP_UPDATES" if="skippatchcheck" /> <!-- Unreal Engine Reference -->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
