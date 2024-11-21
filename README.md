@@ -23,7 +23,7 @@
 # Credits
 
 * YoPhlox - Main Programmer
-* Hoshino2Git - Helper (legit got the in-game dl working properly)
+* 失った - Helper (legit got the in-game dl working properly)
 * Joalor64GH - Got sustains/hold notes working!
 * Skdoobep - Artist (Made the Moon4K logo)
 * ★†~AxylusMusic~†★ - WIP Moon4K OST 
