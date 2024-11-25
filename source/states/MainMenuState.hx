@@ -24,7 +24,7 @@ class MainMenuState extends SwagState {
 	private var menuItems:Array<String> = ["Solo", #if desktop "Browse Online Levels", #end "Settings", "Exit"];
 
 	override public function create() {
-		FlxG.mouse.visible = false;
+		FlxG.mouse.visible = true;
 		FlxG.stage.window.title = "Moon4K - MainMenuState";
 		#if desktop
 		Discord.changePresence("In the Main Menu!", null);
@@ -118,6 +118,9 @@ class MainMenuState extends SwagState {
 					System.exit(0);
 			}
 		}
+
+		if (FlxG.keys.justPressed.SEVEN)
+			transitionState(new profile.states.ProfileState());
 	}
 
 	function changeSelection(change:Int = 0) {
