@@ -1,11 +1,18 @@
-# Moon4K TODO List
+# The maybe todo list for Moon4K
 
+- local multiplayer
+
+- sexy epic server
+
+- online multiplayer (1v1s)
+
+# Moon4K TODO List
 
 ## 1.2 PRE-RELEASE
 
 - [x] Get hold notes to work. (Thanks Joalor64GH!)
 
-- [ ] Add support for adding custom online map libraries (in-game).
+- [ ] Add support for adding custom online map repos (in-game).
 
 ## v1.0.0 RELEASE
 
