@@ -42,6 +42,8 @@ class SaveManager {
 		if (!hasSaveData()) {
 			FlxG.save.data.initialized = true;
 			FlxG.save.data.controls = null;
+			FlxG.save.data.playerName = "Player";
+			FlxG.save.data.profilePicture = "default";
 			FlxG.save.flush();
 		}
 
