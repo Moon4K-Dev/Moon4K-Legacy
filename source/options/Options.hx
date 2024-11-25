@@ -15,7 +15,7 @@ class Options {
 
 	// functions
 	static public function init() {
-		FlxG.save.bind("ya4krg", "TyDotCS");
+		FlxG.save.bind("Moon4K", "YoPhlox");
 
 		for (option in defaultOptions) {
 			if (getData(option[0]) == null)
