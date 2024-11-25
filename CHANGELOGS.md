@@ -19,3 +19,7 @@
 - Fixed the fnf arrow skin.
 
 - No way theres a game over now instead of just getting sent back to the freeplay menu!!!
+
+- Fixed a bug where your accuracy wouldn't go down
+
+- Profiles exist now (Press 7 in the main menu!)

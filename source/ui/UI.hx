@@ -8,6 +8,7 @@ import flixel.FlxG;
 import flixel.util.FlxColor;
 import states.PlayState;
 import game.Note;
+import flixel.math.FlxMath;
 
 class UI extends FlxSpriteGroup {
 	private var scoreTxt:FlxText;
@@ -80,7 +81,7 @@ class UI extends FlxSpriteGroup {
 	public function updateText() {
 		scoreTxt.text = "Score: " + PlayState.instance.songScore;
 		notesHitTXT.text = PlayState.instance.notesHit + "x";
-		accTxt.text = "Accuracy: " + PlayState.instance.accuracy;
+		accTxt.text = "Accuracy: " + Std.string(FlxMath.roundDecimal(PlayState.instance.accuracy, 2)) + "%";
 
 		if (FlxG.sound.music != null && FlxG.sound.music.playing) {
 			var currentTime:Float = FlxG.sound.music.time / 1000;

@@ -58,6 +58,7 @@
 
 	<!-- Moon4K specific lol -->
 	<haxedef name="SKIP_UPDATES" if="skippatchcheck" /> <!-- Unreal Engine Reference -->
+	<assets path='CHANGELOGS.md' rename='CHANGELOGS.txt' />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

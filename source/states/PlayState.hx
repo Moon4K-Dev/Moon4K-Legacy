@@ -66,6 +66,8 @@ class PlayState extends SwagState {
 	public var notesHit:Int = 0;
 	public var accuracy:Float = 0.00;
 	public var totalNotesHit:Float = 0;
+	private var totalNotesHitDefault:Float = 0;
+	private var accuracyDefault:Float = 0.00;
 
 	private var totalPlayed:Int = 0;
 
@@ -233,16 +235,8 @@ class PlayState extends SwagState {
 
 	function updateAccuracy() {
 		totalPlayed += 1;
-		accuracy = totalNotesHit / totalPlayed * 100;
-		if (accuracy >= 100.00) {
-			if (pfc && misses == 0)
-				accuracy = 100.00;
-			else {
-				accuracy = 99.98;
-				pfc = false;
-			}
-		}
-		accuracy = FlxMath.roundDecimal(accuracy, 2);
+		accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
+		accuracyDefault = Math.max(0, totalNotesHitDefault / totalPlayed * 100);
 	}
 
 	function updateRank() {
@@ -726,6 +720,7 @@ class PlayState extends SwagState {
 		misses++;
 		songScore -= 10;
 		totalNotesHit += 0;
+		totalPlayed++;
 		notesHit = 0;
 		updateAccuracy();
 		updateRank();
@@ -736,34 +731,35 @@ class PlayState extends SwagState {
 
 	function noteHit(note:Note, judgment:String) {
 		var score:Int = 0;
-		var accuracy:Float = 0;
+		var accuracyValue:Float = 0;
 
 		switch (judgment) {
 			case "perfect":
 				score = 350;
-				accuracy = 1;
+				accuracyValue = 1;
 				health += 0.023;
 			case "great":
 				score = 300;
-				accuracy = 0.98;
+				accuracyValue = 0.75;
 				health += 0.015;
 			case "good":
 				score = 200;
-				accuracy = 0.65;
+				accuracyValue = 0.50;
 				health += 0.008;
 			case "ok":
 				score = 100;
-				accuracy = 0.25;
+				accuracyValue = 0.25;
 			case "meh":
 				score = 50;
-				accuracy = 0.1;
+				accuracyValue = 0.1;
 			case "bad":
 				score = 20;
-				accuracy = 0;
+				accuracyValue = 0;
 		}
 
 		songScore += score;
-		totalNotesHit += accuracy;
+		totalNotesHit += accuracyValue;
+		totalPlayed++;
 		notesHit++;
 		updateAccuracy();
 		updateRank();
