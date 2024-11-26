@@ -18,8 +18,6 @@
 
 * In-game Song Downloader
 
-* [HScript support!](https://github.com/Celestial-Studioz/Moon4K/tree/main/docs/HScript.md)
-
 # Credits
 
 * YoPhlox - Main Programmer

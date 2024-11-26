@@ -26,7 +26,6 @@ import flixel.util.FlxTimer;
 #if desktop
 import sys.FileSystem;
 import hxcodec.flixel.FlxVideo;
-import hscript.Hscript;
 #end
 import flixel.math.FlxRandom;
 import flixel.system.FlxAssets.FlxShader;
@@ -101,11 +100,6 @@ class PlayState extends SwagState {
 	// GameJolt Achievement crap
 	var achievementget:Bool = false;
 
-	// HSCRIPT
-	#if desktop
-	public var script:Hscript = new Hscript();
-	#end
-
 	public var botPlay:Bool = false;
 
 	public var vocals:FlxSound;
@@ -175,14 +169,6 @@ class PlayState extends SwagState {
 		camHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(camHUD);
 		hud = new UI();
-
-		#if desktop
-		script.interp.variables.set("add", function(value:Dynamic) {
-			add(value);
-		});
-
-		script.call("onCreate"); // Stuff may or NOT work properly lol.
-		#end
 		super.create();
 
 		laneOffset = Options.getData('lane-offset');
@@ -282,10 +268,6 @@ class PlayState extends SwagState {
 		startingSong = true;
 		startCountdown();
 		generateNotes(song.song);
-		#if desktop
-		checkandrunscripts();
-		script.call("createPost");
-		#end
 
 		ratingText = new FlxText(0, 0, 0, "", 26);
 		ratingText.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -326,18 +308,6 @@ class PlayState extends SwagState {
 	}
 
 	#if desktop
-	function checkandrunscripts():Void {
-		var daSongswagg = song.song;
-		var scriptPath:String = 'data/charts/' + daSongswagg + '/script.hx';
-		if (sys.FileSystem.exists(scriptPath)) {
-			var scriptContent = sys.io.File.getContent(scriptPath);
-			script.loadScript(scriptContent);
-			trace("SCRIPT FOUND AND RUNNING LOL!");
-		} else {
-			trace("no script found for the current song");
-		}
-	}
-
 	function checkAndSetBackground():Void {
 		var daSongswag = song.song;
 		var imagePath = 'data/charts/${daSongswag}/image';
@@ -560,9 +530,6 @@ class PlayState extends SwagState {
 			}
 		}
 
-		#if desktop
-		script.call("update", [elapsed]);
-		#end
 		super.update(elapsed);
 
 		if (spawnNotes[0] != null) {
@@ -629,10 +596,6 @@ class PlayState extends SwagState {
 			vocals.stop();
 			transitionState(new ResultsState());
 		}
-
-		#if desktop
-		script.call("updatePost", [elapsed]);
-		#end
 
 		for (note in notes.members) {
 			if (note != null && !note.wasGoodHit && !note.isSustainNote) {
@@ -846,10 +809,6 @@ class PlayState extends SwagState {
 		
 		health -= 0.04;
 		notesHit = 0;
-		
-		#if desktop
-		script.call("noteMiss", [direction]);
-		#end
 	}
 
 	function noteHit(note:Note, judgment:String) {
@@ -893,11 +852,6 @@ class PlayState extends SwagState {
 		}
 
 		notesHit++;
-		
-		#if desktop
-		script.call("goodNoteHit", [note, judgment]);
-		#end
-
 		notes.remove(note);
 		note.kill();
 		note.destroy();
