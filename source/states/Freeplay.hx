@@ -148,10 +148,19 @@ class Freeplay extends SwagState {
 		if (FlxG.keys.justPressed.ENTER) {
 			FlxG.sound.music.stop();
 			loadSongJson(selectedSong);
-			var playState = new PlayState();
-			playState.song = songData;
-			playState.isMultiplayer = isMultiplayer;
-			transitionState(playState);
+			
+			if (isOnline && isHost) {
+				trace('Host starting song: ${songData.song}');
+				Server.sendMessage("game_start", {
+					song: songData
+				});
+				startOnlineSong(songData);
+			} else if (!isOnline) {
+				var playState = new PlayState();
+				playState.song = songData;
+				playState.isMultiplayer = isMultiplayer;
+				transitionState(playState);
+			}
 		}
 
 		if (FlxG.keys.justPressed.R) {
@@ -363,24 +372,36 @@ class Freeplay extends SwagState {
 	public function startOnlineSong(songData:Dynamic) {
 		if (!isOnline) return;
 		
-		var playState = new PlayState();
-		playState.song = songData;
-		playState.isOnline = true;
-		playState.isHost = isHost;
-		transitionState(playState);
+		trace('Starting online song: ${songData.song}');
+		
+		// Make sure we're on the main thread for state transitions
+		FlxG.stage.application.window.onEnterFrame = function(_) {
+			FlxG.stage.application.window.onEnterFrame = null;
+			
+			var playState = new PlayState();
+			playState.song = songData;
+			playState.isOnline = true;
+			playState.isHost = isHost;
+			transitionState(playState);
+		}
 	}
 
 	private function loadSong() {
 		if (isOnline && isHost) {
+			trace('Sending song data to guest: ${songData.song}');
 			Server.sendMessage("game_start", {
 				song: songData
 			});
+			
+			var playState = new PlayState();
+			playState.song = songData;
+			playState.isOnline = true;
+			playState.isHost = true;
+			transitionState(playState);
+		} else if (!isOnline) {
+			var playState = new PlayState();
+			playState.song = songData;
+			transitionState(playState);
 		}
-		
-		var playState = new PlayState();
-		playState.song = songData;
-		playState.isOnline = isOnline;
-		playState.isHost = isHost;
-		transitionState(playState);
 	}
 }

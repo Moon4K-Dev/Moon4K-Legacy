@@ -32,20 +32,33 @@ const server = net.createServer((socket) => {
 });
 
 function sendToSocket(socket, data) {
-    socket.write(JSON.stringify(data) + '\n');
+    try {
+        const message = JSON.stringify(data) + '\n';
+        console.log('Sending message:', message);
+        socket.write(message);
+    } catch (e) {
+        console.error('Error sending message:', e);
+    }
 }
 
 function handleMessage(socket, data) {
+    console.log('Received message:', data.type, data);
+
     switch(data.type) {
         case 'create_room':
             const roomCode = Math.random().toString(36).substring(2, 8);
+            console.log(`Creating room with code: ${roomCode}`);
+            
             rooms.set(roomCode, {
                 host: socket,
                 players: [{
                     socket: socket,
-                    name: data.playerName
+                    name: data.data.playerName || "Player"
                 }]
             });
+            
+            console.log(`Current rooms: ${Array.from(rooms.keys()).join(', ')}`);
+            
             sendToSocket(socket, {
                 type: 'create_room',
                 room: roomCode,
@@ -54,25 +67,48 @@ function handleMessage(socket, data) {
             break;
 
         case 'join_room':
-            const room = rooms.get(data.code);
-            if (room && room.players.length < 2) {
-                room.players.push({
-                    socket: socket,
-                    name: data.playerName
-                });
-                
+            console.log(`Attempting to join room: ${data.data.code}`);
+            const room = rooms.get(data.data.code.toLowerCase());
+            if (!room) {
+                console.log('Room not found');
                 sendToSocket(socket, {
-                    type: 'join_room',
-                    room: data.code,
-                    isHost: false,
-                    otherPlayerName: room.players[0].name
+                    type: 'error',
+                    message: 'Room not found'
                 });
-                
-                sendToSocket(room.players[0].socket, {
-                    type: 'player_joined',
-                    playerName: data.playerName
-                });
+                return;
             }
+            
+            console.log('Room found:', room);
+            console.log('Current players:', room.players.length);
+            
+            if (room.players.length >= 2) {
+                console.log('Room is full');
+                sendToSocket(socket, {
+                    type: 'error',
+                    message: 'Room is full'
+                });
+                return;
+            }
+            
+            console.log('Joining room with player:', data.data.playerName);
+            room.players.push({
+                socket: socket,
+                name: data.data.playerName
+            });
+            
+            console.log('Sending join confirmation');
+            sendToSocket(socket, {
+                type: 'join_room',
+                room: data.data.code,
+                isHost: false,
+                otherPlayerName: room.players[0].name
+            });
+            
+            console.log('Notifying host');
+            sendToSocket(room.players[0].socket, {
+                type: 'player_joined',
+                playerName: data.data.playerName
+            });
             break;
             
         case 'note_hit':
@@ -144,6 +180,6 @@ function handleDisconnect(socket) {
 }
 
 const PORT = 8080;
-server.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server listening on port ${PORT} on all interfaces`);
 });

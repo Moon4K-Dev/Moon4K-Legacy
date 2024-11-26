@@ -58,11 +58,22 @@ class Server {
     private static function handleMessage(data:Dynamic) {
         if (data == null) return;
         
+        trace('Handling message type: ${data.type}');
+        
         switch (data.type) {
             case "join_room":
                 roomCode = data.room;
                 isHost = data.isHost;
-                trace('Joined room: $roomCode (Host: $isHost)');
+                otherPlayerName = data.otherPlayerName;
+                trace('Joined room: $roomCode (Host: $isHost) with ${data.otherPlayerName}');
+                
+            case "player_joined":
+                otherPlayerName = data.playerName;
+                trace('Player joined: $otherPlayerName');
+                
+            case "player_left":
+                otherPlayerName = "";
+                trace('Other player left');
                 
             case "create_room":
                 roomCode = data.room;
@@ -70,9 +81,13 @@ class Server {
                 trace('Created room: $roomCode (Host: true)');
                 
             case "game_start":
-                trace('Game starting with song: ${data.song}');
+                trace('Received game start with song data');
                 if (Freeplay.instance != null) {
-                    Freeplay.instance.startOnlineSong(data.song);
+                    var songData = data.data.song;
+                    trace('Starting song: ${songData.song}');
+                    Freeplay.instance.startOnlineSong(songData);
+                } else {
+                    trace('Warning: Freeplay.instance is null!');
                 }
                 
             case "note_hit":
@@ -90,14 +105,13 @@ class Server {
                 }
                 
             case "force_start":
-                if (!isHost) {
-                    trace('Host forced game start');
-                    if (Freeplay.instance != null) {
-                        var freeplay = new Freeplay();
-                        freeplay.isOnline = true;
-                        freeplay.isHost = false;
-                        FlxG.switchState(freeplay);
-                    }
+                trace('Received force start');
+                if (!isHost && Freeplay.instance != null) {
+                    trace('Guest forcing state change to Freeplay');
+                    var freeplay = new Freeplay();
+                    freeplay.isOnline = true;
+                    freeplay.isHost = false;
+                    FlxG.switchState(freeplay);
                 }
                 
             case "leave_room":

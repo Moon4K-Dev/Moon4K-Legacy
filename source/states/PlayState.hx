@@ -663,6 +663,13 @@ class PlayState extends SwagState {
 				misses: currentPlayer == 0 ? p1Misses : p2Misses
 			});
 		}
+
+		if (FlxG.keys.justPressed.ENTER && !isOnline) {
+			persistentUpdate = false;
+			persistentDraw = true;
+			paused = true;
+			openSubState(new PauseSubState());
+		}
 	}
 
 	override function openSubState(SubState:FlxSubState) {

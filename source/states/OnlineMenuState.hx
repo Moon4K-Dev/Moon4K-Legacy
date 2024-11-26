@@ -53,7 +53,7 @@ class OnlineMenuState extends SwagState {
         add(startBtn);
         
         try {
-            Server.connect("127.0.0.1", 8080);
+            Server.connect("10.0.0.155", 8080);
             statusText.text = "Connected to server!";
         } catch(e) {
             statusText.text = "Failed to connect: " + e;
@@ -110,11 +110,18 @@ class OnlineMenuState extends SwagState {
     private function joinRoom() {
         if (Server.isConnected) {
             openSubState(new RoomCodeInput(function(code:String) {
+                trace('Attempting to join with code: $code');
                 Server.sendMessage("join_room", {
-                    code: code,
+                    code: code.toLowerCase(),
                     playerName: FlxG.save.data.playerName ?? "Player"
                 });
                 statusText.text = "Joining room...";
+                
+                new flixel.util.FlxTimer().start(5, function(_) {
+                    if (Server.roomCode == "") {
+                        statusText.text = "Failed to join room - timeout or invalid code";
+                    }
+                });
             }));
         } else {
             statusText.text = "Not connected to server!";
