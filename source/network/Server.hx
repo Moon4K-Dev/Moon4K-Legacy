@@ -5,6 +5,7 @@ import sys.net.Host;
 import haxe.io.Bytes;
 import haxe.Json;
 import states.*;
+import flixel.FlxG;
 
 class Server {
     private static var socket:Socket;
@@ -87,6 +88,23 @@ class Server {
                         data.data.misses
                     );
                 }
+                
+            case "force_start":
+                if (!isHost) {
+                    trace('Host forced game start');
+                    if (Freeplay.instance != null) {
+                        var freeplay = new Freeplay();
+                        freeplay.isOnline = true;
+                        freeplay.isHost = false;
+                        FlxG.switchState(freeplay);
+                    }
+                }
+                
+            case "leave_room":
+                roomCode = "";
+                otherPlayerName = "";
+                isHost = false;
+                trace('Left room');
                 
             default:
                 trace("Unknown message type: " + data.type);

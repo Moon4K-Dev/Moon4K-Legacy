@@ -86,6 +86,39 @@ function handleMessage(socket, data) {
                 }
             }
             break;
+
+        case 'leave_room':
+            for (const [code, room] of rooms) {
+                const playerIndex = room.players.findIndex(p => p.socket === socket);
+                if (playerIndex !== -1) {
+                    room.players.splice(playerIndex, 1);
+                    
+                    if (room.players.length > 0) {
+                        sendToSocket(room.players[0].socket, {
+                            type: 'player_left'
+                        });
+                    }
+                    
+                    if (room.players.length === 0) {
+                        rooms.delete(code);
+                    }
+                    break;
+                }
+            }
+            break;
+
+        case 'force_start':
+            for (const [code, room] of rooms) {
+                if (room.host === socket) { 
+                    room.players
+                        .filter(p => p.socket !== socket)
+                        .forEach(p => sendToSocket(p.socket, {
+                            type: 'force_start'
+                        }));
+                    break;
+                }
+            }
+            break;
     }
 }
 

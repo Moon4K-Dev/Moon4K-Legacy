@@ -13,6 +13,8 @@ class OnlineMenuState extends SwagState {
     private var createBtn:FlxButton;
     private var joinBtn:FlxButton;
     private var playersList:FlxText;
+    private var leaveBtn:FlxButton;
+    private var startBtn:FlxButton;
     
     override public function create() {
         super.create();
@@ -37,6 +39,17 @@ class OnlineMenuState extends SwagState {
         playersList.alignment = CENTER;
         add(playersList);
         
+        leaveBtn = new FlxButton(0, playersList.y + 100, "Leave Room", leaveLobby);
+        leaveBtn.screenCenter(X);
+        leaveBtn.visible = false;
+        add(leaveBtn);
+        
+        startBtn = new FlxButton(0, leaveBtn.y, "Start Game", startGame);
+        startBtn.screenCenter(X);
+        startBtn.y = leaveBtn.y + leaveBtn.height + 10;
+        startBtn.visible = false;
+        add(startBtn);
+        
         try {
             Server.connect("127.0.0.1", 8080);
             statusText.text = "Connected to server!";
@@ -48,7 +61,6 @@ class OnlineMenuState extends SwagState {
     override public function update(elapsed:Float) {
         super.update(elapsed);
         
-
         if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE)
             transitionState(new MainMenuState());
 
@@ -56,6 +68,9 @@ class OnlineMenuState extends SwagState {
             roomCode.text = "Room Code: " + Server.roomCode;
             createBtn.visible = false;
             joinBtn.visible = false;
+            leaveBtn.visible = true;
+            
+            startBtn.visible = Server.isHost;
             
             var playersText = "Players in Room:\n";
             playersText += (Server.isHost ? "👑 " : "") + (FlxG.save.data.playerName ?? "Player") + " (You)\n";
@@ -63,6 +78,12 @@ class OnlineMenuState extends SwagState {
                 playersText += (Server.isHost ? "" : "👑 ") + Server.otherPlayerName;
             }
             playersList.text = playersText;
+        } else {
+            createBtn.visible = true;
+            joinBtn.visible = true;
+            leaveBtn.visible = false;
+            startBtn.visible = false;
+            playersList.text = "";
         }
         
         if (!Server.isConnected) {
@@ -92,6 +113,24 @@ class OnlineMenuState extends SwagState {
             }));
         } else {
             statusText.text = "Not connected to server!";
+        }
+    }
+    
+    private function leaveLobby() {
+        Server.sendMessage("leave_room", {});
+        Server.roomCode = "";
+        Server.otherPlayerName = "";
+        Server.isHost = false;
+        statusText.text = "Left room";
+    }
+    
+    private function startGame() {
+        if (Server.isHost && Server.otherPlayerName != "") {
+            Server.sendMessage("force_start", {});
+            var freeplay = new Freeplay();
+            freeplay.isOnline = true;
+            freeplay.isHost = true;
+            transitionState(freeplay);
         }
     }
 } 
