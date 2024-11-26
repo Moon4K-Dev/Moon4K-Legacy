@@ -22,6 +22,7 @@ import flixel.graphics.FlxGraphic;
 import util.stepmania.SMFile;
 import util.stepmania.SMConverter;
 import util.fnf.FNFConverter;
+import network.Server;
 
 using StringTools;
 
@@ -50,6 +51,9 @@ class Freeplay extends SwagState {
 
 	var modeText:FlxText;
 	var isMultiplayer:Bool = false;
+
+	public var isOnline:Bool = false;
+	public var isHost:Bool = false;
 
 	public function new() {
 		super();
@@ -113,6 +117,13 @@ class Freeplay extends SwagState {
 
 		changeSelection();
 		super.create();
+
+		if (isOnline) {
+			var onlineText = new FlxText(10, 10, 0, 
+				isHost ? "HOST - Room: " + Server.roomCode : "GUEST - Room: " + Server.roomCode, 
+				16);
+			add(onlineText);
+		}
 	}
 
 	override public function update(elapsed:Float) {
@@ -145,6 +156,10 @@ class Freeplay extends SwagState {
 
 		if (FlxG.keys.justPressed.R) {
 			rescanSongs();
+		}
+
+		if (isOnline && !isHost) {
+			return;
 		}
 
 		super.update(elapsed);
@@ -343,5 +358,29 @@ class Freeplay extends SwagState {
 	function rescanSongs():Void {
 		updateSongList();
 		changeSelection();
+	}
+
+	public function startOnlineSong(songData:Dynamic) {
+		if (!isOnline) return;
+		
+		var playState = new PlayState();
+		playState.song = songData;
+		playState.isOnline = true;
+		playState.isHost = isHost;
+		transitionState(playState);
+	}
+
+	private function loadSong() {
+		if (isOnline && isHost) {
+			Server.sendMessage("game_start", {
+				song: songData
+			});
+		}
+		
+		var playState = new PlayState();
+		playState.song = songData;
+		playState.isOnline = isOnline;
+		playState.isHost = isHost;
+		transitionState(playState);
 	}
 }

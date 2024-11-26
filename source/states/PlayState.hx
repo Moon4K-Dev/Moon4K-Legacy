@@ -37,6 +37,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.sound.FlxSound;
 import openfl.media.Sound;
 import game.Section.SwagNote;
+import network.Server;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -131,6 +132,9 @@ class PlayState extends SwagState {
 	public var p2TotalPlayed:Int = 0;
 
 	static public var lastMultiplayerState:Bool = false;
+
+	public var isOnline:Bool = false;
+	public var isHost:Bool = false;
 
 	override public function new() {
 		super();
@@ -647,6 +651,18 @@ class PlayState extends SwagState {
 				}
 			}
 		}
+
+		if (isOnline) {
+			Server.sendMessage("note_hit", {
+				time: Conductor.songPosition
+			});
+			
+			Server.sendMessage("score_update", {
+				score: currentPlayer == 0 ? p1Score : p2Score,
+				accuracy: currentPlayer == 0 ? p1Accuracy : p2Accuracy,
+				misses: currentPlayer == 0 ? p1Misses : p2Misses
+			});
+		}
 	}
 
 	override function openSubState(SubState:FlxSubState) {
@@ -942,5 +958,41 @@ class PlayState extends SwagState {
 	override public function destroy():Void {
 		super.destroy();
 		Controls.destroy();
+	}
+
+	public function handleOnlineNoteHit(data:Dynamic) {
+		if (currentPlayer == 0) {
+			for (strum in p2StrumNotes.members) {
+				if (strum.direction == data.direction) {
+					strum.playAnim('confirm');
+					break;
+				}
+			}
+		} else {
+			for (strum in p1StrumNotes.members) {
+				if (strum.direction == data.direction) {
+					strum.playAnim('confirm');
+					break;
+				}
+			}
+		}
+	}
+
+	public function updateOpponentScore(score:Int, accuracy:Float, misses:Int) {
+		if (!isOnline) return;
+		
+		if (currentPlayer == 0) {
+			p2Score = score;
+			p2Accuracy = accuracy;
+			p2Misses = misses;
+		} else {
+			p1Score = score;
+			p1Accuracy = accuracy;
+			p1Misses = misses;
+		}
+		
+		if (hud != null) {
+			hud.updateHUD();
+		}
 	}
 }

@@ -107,7 +107,7 @@ class MainMenuState extends SwagState {
 				case "local":
 					transitionState(new states.Freeplay());
 				case "online":
-					trace("oogh online!");
+					transitionState(new states.OnlineMenuState());
 				case "download charts":
 					transitionState(new states.OnlineDLState());
 				case "profile":
