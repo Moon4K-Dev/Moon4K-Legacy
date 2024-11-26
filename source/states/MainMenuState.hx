@@ -21,7 +21,7 @@ class MainMenuState extends SwagState {
 	private var randomhaxesprite:FlxSprite;
 	private var stars:FlxTypedGroup<FlxSprite>;
 	private var currentSelection:Int = 0;
-	private var menuItems:Array<String> = ["Solo", #if desktop "Browse Online Levels", #end "Settings", "Exit"];
+	private var menuItems:Array<String> = ["Local", #if desktop "Browse Online Levels", #end "Settings", "Exit"];
 
 	override public function create() {
 		FlxG.mouse.visible = true;
@@ -65,7 +65,7 @@ class MainMenuState extends SwagState {
 		FlxTween.tween(titlesprite, {y: 50}, 1, {ease: FlxEase.elasticOut});
 		FlxTween.tween(randomhaxesprite, {y: FlxG.height * 0.25}, 2, {ease: FlxEase.sineInOut, type: PINGPONG});
 
-		var devcred:FlxText = new FlxText(5, FlxG.height - 37, 0, "Code by: @YoPhlox & @Hoshino-2Git \nLogo by: @skdoobep", 12);
+		var devcred:FlxText = new FlxText(5, FlxG.height - 37, 0, "Code by: YoPhlox, Lost, and Joalor64GH \nLogo by: 4bidden/alicefromfpeshusband", 12);
 		devcred.scrollFactor.set();
 		devcred.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		add(devcred);
@@ -104,7 +104,7 @@ class MainMenuState extends SwagState {
 
 		if (FlxG.keys.justPressed.ENTER) {
 			switch (menuItems[currentSelection].toLowerCase()) {
-				case "solo":
+				case "local":
 					transitionState(new states.Freeplay());
 				#if desktop
 				case "browse online levels":

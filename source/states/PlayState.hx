@@ -36,6 +36,7 @@ import util.Cache;
 import flixel.graphics.FlxGraphic;
 import flixel.sound.FlxSound;
 import openfl.media.Sound;
+import game.Section.SwagNote;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -59,6 +60,7 @@ class PlayState extends SwagState {
 	public var curSong:String = '';
 
 	var hud:UI;
+	private var laneUnderlay:FlxSprite;
 	private var camHUD:FlxCamera;
 
 	public var songScore:Int = 0;
@@ -108,6 +110,28 @@ class PlayState extends SwagState {
 
 	public var vocals:FlxSound;
 
+	// multiplayer shit
+	public var isMultiplayer:Bool = false;
+	public var p1Score:Int = 0;
+	public var p2Score:Int = 0;
+	public var p1Misses:Int = 0;
+	public var p2Misses:Int = 0;
+	public var p1Accuracy:Float = 0.00;
+	public var p2Accuracy:Float = 0.00;
+	public var currentPlayer:Int = 0; // 0 = p1, 1 = p2
+	private var actionKeys:Array<String> = ["left", "down", "up", "right"];
+
+	public var p1StrumNotes:FlxTypedGroup<StrumNote>;
+	public var p2StrumNotes:FlxTypedGroup<StrumNote>;
+	public var currentStrumNotes:FlxTypedGroup<StrumNote>; 
+
+	public var p1TotalNotesHit:Float = 0;
+	public var p2TotalNotesHit:Float = 0;
+	public var p1TotalPlayed:Int = 0;
+	public var p2TotalPlayed:Int = 0;
+
+	static public var lastMultiplayerState:Bool = false;
+
 	override public function new() {
 		super();
 
@@ -126,6 +150,7 @@ class PlayState extends SwagState {
 
 		curSong = Freeplay.instance.selectedSong;
 		instance = this;
+		isMultiplayer = lastMultiplayerState;
 
 		botPlay = Options.getData('botplay');
 		FlxG.sound.music.stop();
@@ -150,7 +175,6 @@ class PlayState extends SwagState {
 		camHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(camHUD);
 		hud = new UI();
-		add(hud);
 
 		#if desktop
 		script.interp.variables.set("add", function(value:Dynamic) {
@@ -196,20 +220,57 @@ class PlayState extends SwagState {
 		if (speed < 0.1 && songMultiplier > 1)
 			speed = 0.1;
 
+		laneUnderlay = new FlxSprite(0, 0);
+		laneUnderlay.makeGraphic(Std.int(Note.swagWidth * 4), FlxG.height, 0xA4000000);
+		laneUnderlay.scrollFactor.set();
+		laneUnderlay.screenCenter(X);
+		add(laneUnderlay);
+
+		members.remove(laneUnderlay);
+		members.insert(0, laneUnderlay);
+
 		strumNotes = new FlxTypedGroup<StrumNote>();
 		add(strumNotes);
+
+		p1StrumNotes = new FlxTypedGroup<StrumNote>();
+		p2StrumNotes = new FlxTypedGroup<StrumNote>();
+		add(p1StrumNotes);
+		add(p2StrumNotes);
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
 
+		add(hud);
+
 		for (i in 0...keyCount) {
 			var noteskin:String = Options.getNoteskins()[Options.getData('ui-skin')];
 			var daStrum:StrumNote = new StrumNote(0, strumArea.y, i, noteskin);
-			daStrum.screenCenter(X);
+			
+			daStrum.x = (FlxG.width * 0.25);
 			daStrum.x += (keyCount * ((laneOffset / 2) * -1)) + (laneOffset / 2);
 			daStrum.x += i * laneOffset;
 
-			strumNotes.add(daStrum);
+			p1StrumNotes.add(daStrum);
+		}
+
+		for (i in 0...keyCount) {
+			var noteskin:String = Options.getNoteskins()[Options.getData('ui-skin')];
+			var daStrum:StrumNote = new StrumNote(0, strumArea.y, i, noteskin);
+			
+			daStrum.x = (FlxG.width * 0.75); 
+			daStrum.x += (keyCount * ((laneOffset / 2) * -1)) + (laneOffset / 2);
+			daStrum.x += i * laneOffset;
+
+			p2StrumNotes.add(daStrum);
+		}
+
+		if (!isMultiplayer) {
+			for (strum in p1StrumNotes.members) {
+				strum.screenCenter(X);
+				strum.x += (keyCount * ((laneOffset / 2) * -1)) + (laneOffset / 2);
+				strum.x += strum.direction * laneOffset;
+			}
+			p2StrumNotes.visible = false;
 		}
 
 		Controls.init();
@@ -231,11 +292,14 @@ class PlayState extends SwagState {
 		ratingText.screenCenter();
 		ratingText.visible = false;
 		add(ratingText);
+
+		lastMultiplayerState = isMultiplayer;
 	}
 
 	function updateAccuracy() {
 		totalPlayed += 1;
 		accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
+		
 		accuracyDefault = Math.max(0, totalNotesHitDefault / totalPlayed * 100);
 	}
 
@@ -422,7 +486,11 @@ class PlayState extends SwagState {
 		#if desktop
 		if (!Options.getData('botplay')) {
 			Discord.changePresence("Playing: " + curSong, "Score: " + songScore + " - " + accuracy + "% - " + notesHit + " combo");
-		} else {
+		}
+		else if (isMultiplayer && !Options.getData('botplay')) {
+			Discord.changePresence("Playing: " + curSong, "Against P2!"); // will update to show scores later lol
+		}
+		else {
 			Discord.changePresence("Playing: " + curSong, "Botplay!");
 		}
 		#end
@@ -431,7 +499,7 @@ class PlayState extends SwagState {
 		if (health > 2)
 			health = 2;
 
-		if (health <= 0) {
+		if (health <= 0 && !isMultiplayer) {
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
@@ -441,7 +509,7 @@ class PlayState extends SwagState {
 			}
 			transitionState(new substates.GameOverSubState());
 		}
-		else if (FlxG.keys.justPressed.R) {
+		else if (FlxG.keys.justPressed.R && !isMultiplayer) {
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
@@ -508,11 +576,16 @@ class PlayState extends SwagState {
 		}
 
 		for (note in notes) {
-			var strum = strumNotes.members[note.direction % keyCount];
-			if (Options.getData('downscroll'))
-				note.y = strum.y + (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
-			else
-				note.y = strum.y - (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
+			var strumGroup = note.isP1Note ? p1StrumNotes : p2StrumNotes;
+			if (strumGroup != null) {
+				var strum = strumGroup.members[note.direction % keyCount];
+				if (strum != null) {
+					if (Options.getData('downscroll'))
+						note.y = strum.y + (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
+					else
+						note.y = strum.y - (0.45 * (Conductor.songPosition - note.strum) * FlxMath.roundDecimal(speed, 2));
+				}
+			}
 		}
 
 		if (FlxG.keys.justPressed.BACKSPACE)
@@ -553,12 +626,27 @@ class PlayState extends SwagState {
 			#if desktop
 			video.stop();
 			#end
+			vocals.stop();
 			transitionState(new ResultsState());
 		}
 
 		#if desktop
 		script.call("updatePost", [elapsed]);
 		#end
+
+		for (note in notes.members) {
+			if (note != null && !note.wasGoodHit && !note.isSustainNote) {
+				var noteTime = note.strum - Conductor.songPosition;
+				if (noteTime < -Conductor.safeZoneOffset) {
+					note.wasGoodHit = true;
+					if ((note.isP1Note && !isMultiplayer) || 
+						(isMultiplayer && ((note.isP1Note && currentPlayer == 0) || (!note.isP1Note && currentPlayer == 1)))) {
+						noteMiss(note.direction);
+					}
+					notes.remove(note, true);
+				}
+			}
+		}
 	}
 
 	override function openSubState(SubState:FlxSubState) {
@@ -616,83 +704,102 @@ class PlayState extends SwagState {
 	}
 
 	function inputFunction() {
-		justPressed = [];
-		pressed = [];
-		released = [];
-
-		var actionKeys = ["left", "down", "up", "right"];
-
-		for (i in 0...keyCount) {
-			var action = actionKeys[i];
-			justPressed.push(Controls.getPressEvent(action, 'justPressed'));
-			pressed.push(Controls.getPressEvent(action, 'pressed'));
-			released.push(Controls.getPressEvent(action, 'justReleased'));
-		}
-
-		for (i in 0...justPressed.length) {
-			if (justPressed[i]) {
-				strumNotes.members[i].playAnim("press", true);
+		if (isMultiplayer) {
+			// P1 Controls (WASD)
+			for (i in 0...4) {
+				if (FlxG.keys.justPressed.A && i == 0
+					|| FlxG.keys.justPressed.S && i == 1
+					|| FlxG.keys.justPressed.W && i == 2
+					|| FlxG.keys.justPressed.D && i == 3) {
+					currentPlayer = 0;
+					currentStrumNotes = p1StrumNotes;
+					handleNotePress(i);
+					p1StrumNotes.members[i].playAnim("press", true);
+				}
+				if (FlxG.keys.justReleased.A && i == 0
+					|| FlxG.keys.justReleased.S && i == 1
+					|| FlxG.keys.justReleased.W && i == 2
+					|| FlxG.keys.justReleased.D && i == 3) {
+					p1StrumNotes.members[i].playAnim("static");
+				}
 			}
-		}
 
-		for (i in 0...released.length) {
-			if (released[i]) {
-				strumNotes.members[i].playAnim("static");
-			}
-		}
-
-		var possibleNotes:Array<Note> = [];
-
-		for (note in notes) {
-			note.calculateCanBeHit();
-
-			if (note.canBeHit && !note.isSustainNote && !note.wasGoodHit)
-				possibleNotes.push(note);
-		}
-
-		possibleNotes.sort((a, b) -> Std.int(a.strum - b.strum));
-
-		if (botPlay) {
-			// Botplay snazz
-			for (note in possibleNotes) {
-				if (Conductor.songPosition >= note.strum) {
-					noteHit(note, "perfect");
-					strumNotes.members[note.direction].playAnim("confirm", true);
+			// P2 Controls (Arrow Keys)
+			for (i in 0...4) {
+				if (FlxG.keys.justPressed.LEFT && i == 0
+					|| FlxG.keys.justPressed.DOWN && i == 1
+					|| FlxG.keys.justPressed.UP && i == 2
+					|| FlxG.keys.justPressed.RIGHT && i == 3) {
+					currentPlayer = 1;
+					currentStrumNotes = p2StrumNotes;
+					handleNotePress(i);
+					p2StrumNotes.members[i].playAnim("press", true);
+				}
+				if (FlxG.keys.justReleased.LEFT && i == 0
+					|| FlxG.keys.justReleased.DOWN && i == 1
+					|| FlxG.keys.justReleased.UP && i == 2
+					|| FlxG.keys.justReleased.RIGHT && i == 3) {
+					p2StrumNotes.members[i].playAnim("static");
 				}
 			}
 		} else {
-			// Player snazz
+			justPressed = [];
+			pressed = [];
+			released = [];
+			
 			for (i in 0...keyCount) {
-				if (justPressed[i]) {
-					var hitNotes:Array<Note> = [];
-					for (note in possibleNotes) {
-						if (note.direction == i && !note.wasGoodHit) {
-							hitNotes.push(note);
-						}
-					}
+				justPressed.push(Controls.getPressEvent(actionKeys[i], 'justPressed'));
+				pressed.push(Controls.getPressEvent(actionKeys[i], 'pressed'));
+				released.push(Controls.getPressEvent(actionKeys[i], 'justReleased'));
+			}
 
-					if (hitNotes.length > 0) {
-						var closestNote:Note = hitNotes[0];
-						var noteMs = (Conductor.songPosition - closestNote.strum) / songMultiplier;
-						var hitResult = judgeNote(noteMs);
+			currentPlayer = 0; 
+			currentStrumNotes = p1StrumNotes;
 
-						if (hitResult != "miss") {
-							closestNote.wasGoodHit = true;
-							strumNotes.members[i].playAnim("confirm", true);
-							noteHit(closestNote, hitResult);
-							rateNoteHit(noteMs);
-						}
-					}
+			for (i in 0...justPressed.length) {
+				if (justPressed[i] && p1StrumNotes != null && i < p1StrumNotes.members.length) {
+					p1StrumNotes.members[i].playAnim("press", true);
+					handleNotePress(i);
+				}
+			}
+
+			for (i in 0...released.length) {
+				if (released[i] && p1StrumNotes != null && i < p1StrumNotes.members.length) {
+					p1StrumNotes.members[i].playAnim("static");
 				}
 			}
 		}
+	}
 
-		for (note in possibleNotes) {
-			if (Conductor.songPosition > note.strum + (120 * songMultiplier) && note != null && !botPlay) {
-				noteMiss(note.direction);
-				notes.remove(note);
-				note.kill();
-				note.destroy();
+	function handleNotePress(direction:Int) {
+		if (currentStrumNotes == null || direction >= currentStrumNotes.members.length) return;
+		
+		var possibleNotes:Array<Note> = [];
+				
+		for (note in notes) {
+			if (note == null) continue;
+			note.calculateCanBeHit();
+			
+			if (note.canBeHit && !note.isSustainNote && !note.wasGoodHit && 
+				note.direction == direction && 
+				((currentPlayer == 0 && note.isP1Note) || (currentPlayer == 1 && !note.isP1Note))) {
+				possibleNotes.push(note);
+			}
+		}
+		
+		possibleNotes.sort((a, b) -> Std.int(a.strum - b.strum));
+		
+		if (possibleNotes.length > 0) {
+			var closestNote = possibleNotes[0];
+			var noteMs = (Conductor.songPosition - closestNote.strum) / songMultiplier;
+			var hitResult = judgeNote(noteMs);
+			
+			if (hitResult != "miss") {
+				closestNote.wasGoodHit = true;
+				currentStrumNotes.members[direction].playAnim("confirm", true);
+				noteHit(closestNote, hitResult);
+			} else {
+				noteMiss(direction);
 			}
 		}
 	}
@@ -715,15 +822,31 @@ class PlayState extends SwagState {
 	}
 
 	function noteMiss(direction:Int) {
-		ratingText.visible = false;
+		if (currentPlayer == 0) {
+			p1Misses++;
+			p1Score -= 10;
+			if (p1TotalPlayed == 0) {
+				p1TotalNotesHit = 0;
+				p1TotalPlayed = 1;
+			} else {
+				p1TotalPlayed++;
+			}
+			p1Accuracy = Math.max(0, p1TotalNotesHit / p1TotalPlayed * 100);
+		} else {
+			p2Misses++;
+			p2Score -= 10;
+			if (p2TotalPlayed == 0) {
+				p2TotalNotesHit = 0;
+				p2TotalPlayed = 1;
+			} else {
+				p2TotalPlayed++;
+			}
+			p2Accuracy = Math.max(0, p2TotalNotesHit / p2TotalPlayed * 100);
+		}
+		
 		health -= 0.04;
-		misses++;
-		songScore -= 10;
-		totalNotesHit += 0;
-		totalPlayed++;
 		notesHit = 0;
-		updateAccuracy();
-		updateRank();
+		
 		#if desktop
 		script.call("noteMiss", [direction]);
 		#end
@@ -757,13 +880,20 @@ class PlayState extends SwagState {
 				accuracyValue = 0;
 		}
 
-		songScore += score;
-		totalNotesHit += accuracyValue;
-		totalPlayed++;
-		notesHit++;
-		updateAccuracy();
-		updateRank();
+		if (currentPlayer == 0) {
+			p1Score += score;
+			p1TotalNotesHit += accuracyValue;
+			p1TotalPlayed++;
+			p1Accuracy = Math.max(0, p1TotalNotesHit / p1TotalPlayed * 100);
+		} else {
+			p2Score += score;
+			p2TotalNotesHit += accuracyValue;
+			p2TotalPlayed++;
+			p2Accuracy = Math.max(0, p2TotalNotesHit / p2TotalPlayed * 100);
+		}
 
+		notesHit++;
+		
 		#if desktop
 		script.call("goodNoteHit", [note, judgment]);
 		#end
@@ -778,52 +908,31 @@ class PlayState extends SwagState {
 			Conductor.recalculateStuff(songMultiplier);
 	
 			for (note in section.sectionNotes) {
-				var strum = strumNotes.members[note.noteData % keyCount];
-	
-				var daStrumTime:Float = note.noteStrum + (Options.getData('song-offset') * songMultiplier);
-				var daNoteData:Int = Std.int(note.noteData % keyCount);
-	
-				var oldNote:Note;
-	
-				if (spawnNotes.length > 0)
-					oldNote = spawnNotes[Std.int(spawnNotes.length - 1)];
-				else
-					oldNote = null;
-	
-				var swagNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime, Options.getNoteskins()[Options.getData("ui-skin")], false, keyCount);
-				swagNote.sustainLength = note.noteSus;
-				swagNote.scrollFactor.set();
-				swagNote.lastNote = oldNote;
-	
-				swagNote.playAnim('note');
-
-				var susLength:Float = swagNote.sustainLength;
-				susLength = susLength / Conductor.stepCrochet;
-	
-				spawnNotes.push(swagNote);
-
-				for (susNote in 0...Math.floor(susLength)) {
-					oldNote = spawnNotes[Std.int(spawnNotes.length - 1)];
-
-					var sustainNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, Options.getNoteskins()[Options.getData("ui-skin")], true, keyCount);
-					sustainNote.scrollFactor.set();
-					sustainNote.lastNote = oldNote;
-					sustainNote.isSustainNote = true;
-					
-					if (susNote == Math.floor(susLength) - 1) {
-						sustainNote.isEndNote = true;
-						sustainNote.playAnim('holdend');
-					} else {
-						sustainNote.playAnim('hold');
-					}
-					
-					oldNote.nextNote = sustainNote;
-					spawnNotes.push(sustainNote);
+				if (isMultiplayer) {
+					var p1Strum = p1StrumNotes.members[note.noteData % keyCount];
+					var p2Strum = p2StrumNotes.members[note.noteData % keyCount];
+					createNote(note, p1Strum, true);
+					createNote(note, p2Strum, false);
+				} else {
+					var strum = p1StrumNotes.members[note.noteData % keyCount];
+					createNote(note, strum, true);
 				}
 			}
 		}
-	
 		spawnNotes.sort(sortByShit);
+	}
+
+	private function createNote(noteData:SwagNote, strum:StrumNote, isP1:Bool):Void {
+		var daStrumTime:Float = noteData.noteStrum + (Options.getData('song-offset') * songMultiplier);
+		var daNoteData:Int = Std.int(noteData.noteData % keyCount);
+
+		var swagNote:Note = new Note(strum.x, strum.y, daNoteData, daStrumTime, 
+			Options.getNoteskins()[Options.getData("ui-skin")], false, keyCount);
+		swagNote.sustainLength = noteData.noteSus;
+		swagNote.scrollFactor.set();
+		swagNote.isP1Note = isP1;
+		
+		spawnNotes.push(swagNote);
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int {

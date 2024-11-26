@@ -44,12 +44,21 @@ class GameOverSubState extends SwagSubState {
 		var accepted = FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER;
 		var back = FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE;
 
-		if (accepted && !back) {
+		if (accepted && !back && !PlayState.instance.isMultiplayer) {
 			var newPlayState = new PlayState();
 			newPlayState.song = lastSong;
 			#if desktop
 			PlayState.instance.video.stop();
 			#end
+			transitionState(newPlayState);
+		}
+		else if (accepted && !back && PlayState.instance.isMultiplayer) {
+			var newPlayState = new PlayState();
+			newPlayState.song = lastSong;
+			#if desktop
+			PlayState.instance.video.stop();
+			#end
+			PlayState.instance.isMultiplayer = true;
 			transitionState(newPlayState);
 		}
 

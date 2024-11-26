@@ -64,29 +64,71 @@ class ResultsState extends SwagState {
 		text.scrollFactor.set();
 		add(text);
 
-		var score = PlayState.instance.songScore;
+		if (PlayState.instance.isMultiplayer) {
+			var p1Text = new FlxText(20, -75, FlxG.width / 2 - 40, 'Player 1:\nScore: ${PlayState.instance.p1Score}'
+				+ '\nMisses: ${PlayState.instance.p1Misses}'
+				+ '\nAccuracy: ${FlxMath.roundDecimal(PlayState.instance.p1Accuracy, 2)}%');
+			p1Text.size = 28;
+			p1Text.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
+			p1Text.color = FlxColor.WHITE;
+			p1Text.scrollFactor.set();
+			add(p1Text);
 
-		comboText = new FlxText(20, -75, 0, 'Judgements:\nScore: ${PlayState.instance.songScore}\nMisses - ${PlayState.instance.misses}
-        ');
-		comboText.size = 28;
-		comboText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
-		comboText.color = FlxColor.WHITE;
-		comboText.scrollFactor.set();
-		add(comboText);
+			var p2Text = new FlxText(FlxG.width / 2 + 20, -75, FlxG.width / 2 - 40, 'Player 2:\nScore: ${PlayState.instance.p2Score}'
+				+ '\nMisses: ${PlayState.instance.p2Misses}'
+				+ '\nAccuracy: ${FlxMath.roundDecimal(PlayState.instance.p2Accuracy, 2)}%');
+			p2Text.size = 28;
+			p2Text.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
+			p2Text.color = FlxColor.BLUE;
+			p2Text.scrollFactor.set();
+			add(p2Text);
 
-		var accuracylol:FlxText = new FlxText(20, -105, 0, 'Accuracy: ' + PlayState.instance.accuracy);
-		accuracylol.size = 28;
-		accuracylol.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
-		accuracylol.color = FlxColor.WHITE;
-		accuracylol.scrollFactor.set();
-		add(accuracylol);
+			var winnerText = new FlxText(20, -125, FlxG.width - 40);
+			if (PlayState.instance.p1Score > PlayState.instance.p2Score) {
+				winnerText.text = "Player 1 Wins!";
+				winnerText.color = FlxColor.WHITE;
+			} else if (PlayState.instance.p2Score > PlayState.instance.p1Score) {
+				winnerText.text = "Player 2 Wins!";
+				winnerText.color = FlxColor.BLUE;
+			} else {
+				winnerText.text = "It's a Tie!";
+				winnerText.color = FlxColor.YELLOW;
+			}
+			winnerText.size = 32;
+			winnerText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
+			winnerText.alignment = CENTER;
+			winnerText.scrollFactor.set();
+			add(winnerText);
 
-		var totalhit:FlxText = new FlxText(20, -125, 0, 'Total Notes Hit: ' + PlayState.instance.totalNotesHit);
-		totalhit.size = 28;
-		totalhit.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
-		comboText.color = FlxColor.WHITE;
-		totalhit.scrollFactor.set();
-		add(totalhit);
+			FlxTween.tween(winnerText, {y: 80}, 0.5, {ease: FlxEase.expoInOut});
+			FlxTween.tween(p1Text, {y: 145}, 0.5, {ease: FlxEase.expoInOut});
+			FlxTween.tween(p2Text, {y: 145}, 0.5, {ease: FlxEase.expoInOut});
+		} else {
+			comboText = new FlxText(20, -75, 0, 'Judgements:\nScore: ${PlayState.instance.songScore}\nMisses - ${PlayState.instance.misses}');
+			comboText.size = 28;
+			comboText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
+			comboText.color = FlxColor.WHITE;
+			comboText.scrollFactor.set();
+			add(comboText);
+
+			var accuracylol:FlxText = new FlxText(20, -105, 0, 'Accuracy: ' + PlayState.instance.accuracy);
+			accuracylol.size = 28;
+			accuracylol.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
+			accuracylol.color = FlxColor.WHITE;
+			accuracylol.scrollFactor.set();
+			add(accuracylol);
+
+			var totalhit:FlxText = new FlxText(20, -125, 0, 'Total Notes Hit: ' + PlayState.instance.totalNotesHit);
+			totalhit.size = 28;
+			totalhit.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
+			totalhit.color = FlxColor.WHITE;
+			totalhit.scrollFactor.set();
+			add(totalhit);
+
+			FlxTween.tween(comboText, {y: 145}, 0.5, {ease: FlxEase.expoInOut});
+			FlxTween.tween(accuracylol, {y: 215}, 0.5, {ease: FlxEase.expoInOut});
+			FlxTween.tween(totalhit, {y: 255}, 0.5, {ease: FlxEase.expoInOut});
+		}
 
 		contText = new FlxText(FlxG.width - 475, FlxG.height + 50, 0, 'Press ENTER to continue.');
 		contText.size = 28;
@@ -102,7 +144,6 @@ class ResultsState extends SwagState {
 
 		FlxTween.tween(background, {alpha: 0.5}, 0.5);
 		FlxTween.tween(text, {y: 20}, 0.5, {ease: FlxEase.expoInOut});
-		FlxTween.tween(comboText, {y: 145}, 0.5, {ease: FlxEase.expoInOut});
 		FlxTween.tween(contText, {y: FlxG.height - 45}, 0.5, {ease: FlxEase.expoInOut});
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];

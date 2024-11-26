@@ -23,7 +23,8 @@ class Note extends FlxSprite {
 	public var wasGoodHit:Bool = false;
 
 	public var keyCount:Int = 4;
-
+	public var isP1Note:Bool = true;
+	
 	public static var swagWidth:Float = 160 * 0.7;
 
 	public var scaleX:Float = 0;

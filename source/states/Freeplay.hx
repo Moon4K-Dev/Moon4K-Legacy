@@ -48,6 +48,9 @@ class Freeplay extends SwagState {
 
 	var songImage:FlxSprite;
 
+	var modeText:FlxText;
+	var isMultiplayer:Bool = false;
+
 	public function new() {
 		super();
 		this.curSelected = 0;
@@ -103,6 +106,11 @@ class Freeplay extends SwagState {
 		add(scoreText);
 		add(missText);
 
+		modeText = new FlxText(20, FlxG.height - 50, FlxG.width, "Mode: Single Player (TAB to change)", 18);
+		modeText.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT);
+		modeText.scrollFactor.set();
+		add(modeText);
+
 		changeSelection();
 		super.create();
 	}
@@ -122,18 +130,17 @@ class Freeplay extends SwagState {
 		}
 
 		if (FlxG.keys.justPressed.TAB) {
-			#if debug
-			transitionState(new ChartingState());
-			#else
-			trace("Not in debug mode, can't access charting state from Freeplay");
-			#end
+			isMultiplayer = !isMultiplayer;
+			modeText.text = "Mode: " + (isMultiplayer ? "Local Multiplayer" : "Single Player") + " (TAB to change)";
 		}
 
 		if (FlxG.keys.justPressed.ENTER) {
 			FlxG.sound.music.stop();
 			loadSongJson(selectedSong);
-			transitionState(new PlayState());
-			PlayState.instance.song = songData;
+			var playState = new PlayState();
+			playState.song = songData;
+			playState.isMultiplayer = isMultiplayer;
+			transitionState(playState);
 		}
 
 		if (FlxG.keys.justPressed.R) {
