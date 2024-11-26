@@ -36,7 +36,7 @@ class StrumNote extends FlxSprite {
 
 	public function loadNoteSkin(?noteskin:String = "default", ?direction:Null<Int>) {
 		// ADD MOD SUPPORT TO THIS CHECK
-		if (!Assets.exists('assets/images/ui-skins/$noteskin/config.json')) {
+		if (!Assets.exists('data/images/ui-skins/$noteskin/config.json')) {
 			Options.saveData('ui-skin', 0);
 			noteskin = Options.getNoteskins()[0];
 		}

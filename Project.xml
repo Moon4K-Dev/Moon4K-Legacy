@@ -31,13 +31,13 @@
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 	
 	<source path="source" />
-	<assets path="assets" />
+	<assets path="data" />
 
-	<assets path="assets/images" />
-	<assets path="assets/sfx" exclude="*.ogg" if="web"/>
-	<assets path="assets/sfx" exclude="*.mp3" unless="web"/>
-	<assets path="assets/charts" />
-	<assets path="assets/fonts" />
+	<assets path="data/images" />
+	<assets path="data/sfx" exclude="*.ogg" if="web"/>
+	<assets path="data/sfx" exclude="*.mp3" unless="web"/>
+	<assets path="data/charts" />
+	<assets path="data/fonts" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 

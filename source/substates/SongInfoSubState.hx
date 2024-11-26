@@ -122,11 +122,11 @@ class SongInfoSubState extends SwagSubState {
 
 	private function saveAndExtractFile(fileUrl:String, data:Bytes):Void {
 		var fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-		var tempPath = "assets/downloads/" + fileName;
-		var extractPath = "assets/charts/";
+		var tempPath = "data/downloads/" + fileName;
+		var extractPath = "data/charts/";
 
-		if (!FileSystem.exists("assets/downloads/")) {
-			FileSystem.createDirectory("assets/downloads/");
+		if (!FileSystem.exists("data/downloads/")) {
+			FileSystem.createDirectory("data/downloads/");
 		}
 		if (!FileSystem.exists(extractPath)) {
 			FileSystem.createDirectory(extractPath);

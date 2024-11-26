@@ -114,12 +114,12 @@ class Paths {
 	}
 
 	inline static function getLibraryPathForce(file:String, library:String) {
-		var returnPath = '$library:assets/$library/$file';
+		var returnPath = '$library:data/$library/$file';
 		return returnPath;
 	}
 
 	inline public static function getPreloadPath(file:String = '') {
-		return 'assets/$file';
+		return 'data/$file';
 	}
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String) {
@@ -151,7 +151,7 @@ class Paths {
 	}
 
 	static public function video(key:String) {
-		return 'assets/videos/$key.$VIDEO_EXT';
+		return 'data/videos/$key.$VIDEO_EXT';
 	}
 
 	static public function sound(key:String, ?library:String):Sound {
@@ -247,7 +247,7 @@ class Paths {
 	}
 
 	inline static public function font(key:String) {
-		return 'assets/fonts/$key';
+		return 'data/fonts/$key';
 	}
 
 	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String) {
