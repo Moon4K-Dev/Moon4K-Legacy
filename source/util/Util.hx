@@ -20,26 +20,26 @@ class Util {
 	 * Return a font from the `assets` folder with the correct format, ttf & otf are supported.
 	 * @param   fontPath            Path to the font.
 	 */
-	static public function getFont(font:String) // defaults to "assets/fonts/main.ttf"
+	static public function getFont(font:String) // defaults to "data/fonts/main.ttf"
 	{
-		var fontPath:String = 'assets/fonts/$font.ttf';
+		var fontPath:String = 'data/fonts/$font.ttf';
 		#if web
 		if (Assets.exists(fontPath)) {
 			return Assets.getText(fontPath);
 		} else {
-			fontPath = 'assets/fonts/$font.otf';
+			fontPath = 'data/fonts/$font.otf';
 			if (Assets.exists(fontPath)) {
 				return Assets.getText(fontPath);
 			}
 		}
-		return Assets.getText('assets/fonts/main.ttf');
+		return Assets.getText('data/fonts/main.ttf');
 		#else
-		if (sys.FileSystem.exists(Sys.getCwd() + 'assets/fonts/$font.ttf'))
-			return Sys.getCwd() + 'assets/fonts/$font.ttf';
-		else if (sys.FileSystem.exists(Sys.getCwd() + 'assets/fonts/$font.otf'))
-			return Sys.getCwd() + 'assets/fonts/$font.otf';
+		if (sys.FileSystem.exists(Sys.getCwd() + 'data/fonts/$font.ttf'))
+			return Sys.getCwd() + 'data/fonts/$font.ttf';
+		else if (sys.FileSystem.exists(Sys.getCwd() + 'data/fonts/$font.otf'))
+			return Sys.getCwd() + 'data/fonts/$font.otf';
 
-		return Sys.getCwd() + 'assets/fonts/main.ttf';
+		return Sys.getCwd() + 'data/fonts/main.ttf';
 		#end
 	}
 
@@ -52,9 +52,9 @@ class Util {
 		var png = path;
 
 		if (!customPath)
-			png = "assets/images/" + png;
+			png = "data/images/" + png;
 		else
-			png = "assets/" + png;
+			png = "data/" + png;
 
 		#if web
 		if (Assets.exists(png + ".png")) {
@@ -87,9 +87,9 @@ class Util {
 		var png = path;
 
 		if (!customPath)
-			png = "assets/charts/" + png;
+			png = "data/charts/" + png;
 		else
-			png = "assets/" + png;
+			png = "data/" + png;
 
 		#if web
 		if (Assets.exists(png + ".png")) {
@@ -122,9 +122,9 @@ class Util {
 		var videoPath = path;
 
 		if (!customPath)
-			videoPath = "assets/charts/" + videoPath;
+			videoPath = "data/charts/" + videoPath;
 		else
-			videoPath = "assets/" + videoPath;
+			videoPath = "data/" + videoPath;
 
 		#if desktop
 		if (sys.FileSystem.exists(Sys.getCwd() + videoPath + ".mp4")) {
@@ -155,11 +155,11 @@ class Util {
 			xml = png;
 
 		if (customPath) {
-			png = 'assets/$png';
-			xml = 'assets/$xml';
+			png = 'data/$png';
+			xml = 'data/$xml';
 		} else {
-			png = 'assets/images/$png';
-			xml = 'assets/images/$xml';
+			png = 'data/images/$png';
+			xml = 'data/images/$xml';
 		}
 
 		#if web
@@ -190,7 +190,7 @@ class Util {
 		}
 		#end
 
-		return FlxAtlasFrames.fromSparrow("assets/images/errorSparrow" + ".png", "assets/images/errorSparrow" + ".xml");
+		return FlxAtlasFrames.fromSparrow("data/images/errorSparrow" + ".png", "data/images/errorSparrow" + ".xml");
 	}
 
 	/**
@@ -211,11 +211,11 @@ class Util {
 		if (Cache.getFromCache(gamingPath, "sound") == null) {
 			var sound:Sound = null;
 			#if web
-			if (Assets.exists("assets/" + gamingPath)) {
-				sound = Assets.getSound("assets/" + gamingPath);
+			if (Assets.exists("data/" + gamingPath)) {
+				sound = Assets.getSound("data/" + gamingPath);
 			}
 			#else
-			sound = Sound.fromFile("assets/" + gamingPath);
+			sound = Sound.fromFile("data/" + gamingPath);
 			#end
 			if (sound != null) {
 				Cache.addToCache(gamingPath, sound, "sound");
@@ -242,12 +242,12 @@ class Util {
 	 */
 	static public function getText(filePath:String) {
 		#if web
-		if (Assets.exists("assets/" + filePath)) {
-			return Assets.getText("assets/" + filePath);
+		if (Assets.exists("data/" + filePath)) {
+			return Assets.getText("data/" + filePath);
 		}
 		#else
-		if (sys.FileSystem.exists(Sys.getCwd() + "assets/" + filePath))
-			return sys.io.File.getContent(Sys.getCwd() + "assets/" + filePath);
+		if (sys.FileSystem.exists(Sys.getCwd() + "data/" + filePath))
+			return sys.io.File.getContent(Sys.getCwd() + "data/" + filePath);
 		#end
 
 		return "";
@@ -259,12 +259,12 @@ class Util {
 	 */
 	static public function getJson(filePath:String) {
 		#if web
-		if (Assets.exists('assets/$filePath.json')) {
-			return Json.parse(Assets.getText('assets/$filePath.json'));
+		if (Assets.exists('data/$filePath.json')) {
+			return Json.parse(Assets.getText('data/$filePath.json'));
 		}
 		#else
-		if (sys.FileSystem.exists(Sys.getCwd() + 'assets/$filePath.json'))
-			return Json.parse(sys.io.File.getContent(Sys.getCwd() + 'assets/$filePath.json'));
+		if (sys.FileSystem.exists(Sys.getCwd() + 'data/$filePath.json'))
+			return Json.parse(sys.io.File.getContent(Sys.getCwd() + 'data/$filePath.json'));
 		#end
 
 		return null;
