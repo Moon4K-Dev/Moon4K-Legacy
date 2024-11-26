@@ -17,6 +17,8 @@ class OnlineMenuState extends SwagState {
     private var startBtn:FlxButton;
     
     override public function create() {
+        FlxG.stage.window.title = "Moon4K - OnlineMenuState";
+
         super.create();
         
         createBtn = new FlxButton(0, 0, "Create Room", createRoom);
@@ -59,6 +61,9 @@ class OnlineMenuState extends SwagState {
     }
     
     override public function update(elapsed:Float) {
+        #if desktop
+		Discord.changePresence("In a lobby! Code: " + Server.roomCode, null);
+		#end
         super.update(elapsed);
         
         if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE)
