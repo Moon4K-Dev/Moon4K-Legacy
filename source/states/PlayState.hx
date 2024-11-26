@@ -332,7 +332,7 @@ class PlayState extends SwagState {
 	#if desktop
 	function checkandrunscripts():Void {
 		var daSongswagg = song.song;
-		var scriptPath:String = 'assets/charts/' + daSongswagg + '/script.hx';
+		var scriptPath:String = 'data/charts/' + daSongswagg + '/script.hx';
 		if (sys.FileSystem.exists(scriptPath)) {
 			var scriptContent = sys.io.File.getContent(scriptPath);
 			script.loadScript(scriptContent);
@@ -344,10 +344,10 @@ class PlayState extends SwagState {
 
 	function checkAndSetBackground():Void {
 		var daSongswag = song.song;
-		var imagePath = 'assets/charts/${daSongswag}/image';
-		var imagePathAlt = 'assets/charts/${daSongswag}/${daSongswag}-bg';
-		var imagePathAlt2 = 'assets/charts/${daSongswag}/${daSongswag}';
-		var bgVideoPath:String = 'assets/charts/' + daSongswag + '/video.mp4';
+		var imagePath = 'data/charts/${daSongswag}/image';
+		var imagePathAlt = 'data/charts/${daSongswag}/${daSongswag}-bg';
+		var imagePathAlt2 = 'data/charts/${daSongswag}/${daSongswag}';
+		var bgVideoPath:String = 'data/charts/' + daSongswag + '/video.mp4';
 
 		var loadedImage:FlxGraphic = Cache.getFromCache(imagePath, "image");
 		var loadedImageAlt:FlxGraphic = Cache.getFromCache(imagePathAlt, "image");
@@ -415,7 +415,7 @@ class PlayState extends SwagState {
 	}
 
 	private function loadSongAudio(daSong:String):Void {
-		var directory = "assets/charts/" + daSong + "/";
+		var directory = "data/charts/" + daSong + "/";
 		
 		if (FileSystem.exists(directory + "Inst.ogg")) {
 			var instPath = directory + "Inst.ogg";

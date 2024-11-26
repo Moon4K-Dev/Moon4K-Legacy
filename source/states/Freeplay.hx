@@ -256,8 +256,8 @@ class Freeplay extends SwagState {
 
 	function loadSongJson(songName:String):Void {
 		var cleanSongName = songName.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
-		var path = "assets/charts/" + songName + "/" + cleanSongName;
-		var directory = "assets/charts/" + songName;
+		var path = "data/charts/" + songName + "/" + cleanSongName;
+		var directory = "data/charts/" + songName;
 		
 		var moonPath = path + ".moon";
 		if (FileSystem.exists(moonPath)) {
@@ -323,7 +323,7 @@ class Freeplay extends SwagState {
 
 	function loadSongs():Void {
 		songs = [];
-		var dataDir:String = "assets/charts/";
+		var dataDir:String = "data/charts/";
 		#if web
 		songs = ["bopeebo"];
 		#else
