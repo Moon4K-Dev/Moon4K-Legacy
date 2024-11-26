@@ -47,7 +47,6 @@
 	<haxelib name="hxdiscord_rpc" if="desktop"/>
 	<haxelib name="hxCodec" if="desktop || mobile"/>
 	<haxelib name="hxcpp-debug-server" if="debug" />
-	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>
 	<haxelib name="funkin.vis"/>
 	<haxelib name="grig.audio"/>
