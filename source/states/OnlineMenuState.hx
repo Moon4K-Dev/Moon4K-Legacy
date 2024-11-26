@@ -62,7 +62,7 @@ class OnlineMenuState extends SwagState {
     
     override public function update(elapsed:Float) {
         #if desktop
-		Discord.changePresence("In a lobby! Code: " + Server.roomCode, null);
+		Discord.changePresence("In a lobby! Code: " + Server.roomCode, null); // i think showing the code in discord rpc should be toggable - abdumannan1340
 		#end
         super.update(elapsed);
         
