@@ -21,7 +21,7 @@ class MainMenuState extends SwagState {
 	private var randomhaxesprite:FlxSprite;
 	private var stars:FlxTypedGroup<FlxSprite>;
 	private var currentSelection:Int = 0;
-	private var menuItems:Array<String> = ["Local", #if desktop "Browse Online Levels", #end "Settings", "Exit"];
+	private var menuItems:Array<String> = ["Local", "Online", #if desktop "Download Charts", "Profile", #end "Options", "Exit"];
 
 	override public function create() {
 		FlxG.mouse.visible = true;
@@ -106,21 +106,18 @@ class MainMenuState extends SwagState {
 			switch (menuItems[currentSelection].toLowerCase()) {
 				case "local":
 					transitionState(new states.Freeplay());
-				#if desktop
-				case "browse online levels":
+				case "online":
+					trace("oogh online!");
+				case "download charts":
 					transitionState(new states.OnlineDLState());
-				#else
-				trace("PROLLY ON A WEB PLATFORM, USE THE DESKTOP BUILD!");
-				#end
-				case "settings":
+				case "profile":
+					transitionState(new profile.states.ProfileState());
+				case "options":
 					transitionState(new states.OptionSelectState());
 				case "exit":
 					System.exit(0);
 			}
 		}
-
-		if (FlxG.keys.justPressed.SEVEN)
-			transitionState(new profile.states.ProfileState());
 	}
 
 	function changeSelection(change:Int = 0) {
