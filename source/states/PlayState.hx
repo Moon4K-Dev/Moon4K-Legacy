@@ -294,6 +294,10 @@ class PlayState extends SwagState {
 		if (FileSystem.exists(songLuaPath)) {
 			loadLuaScript(songLuaPath);
 			trace('Loaded Lua script: $songLuaPath');
+			
+			#if desktop
+			callOnLuas('onCreate', []);
+			#end
 		}
 	}
 
@@ -428,6 +432,7 @@ class PlayState extends SwagState {
 	}
 
 	function startCountdown():Void {
+		trace("Countdown started");
 		var startTimer:FlxTimer;
 		startedCountdown = true;
 		Conductor.songPosition = 0;
@@ -436,6 +441,11 @@ class PlayState extends SwagState {
 		var swagCounter:Int = 0;
 
 		startTimer = new FlxTimer().start(Conductor.crochet / 5000, function(tmr:FlxTimer) {
+			#if desktop
+			setOnLuas('startedCountdown', true);
+			callOnLuas('onCountdownTick', [swagCounter]);
+			#end
+
 			switch (swagCounter) {
 				case 0:
 					trace("THREE!");
@@ -445,7 +455,11 @@ class PlayState extends SwagState {
 					trace("ONE!");
 				case 3:
 					trace("GO!");
+					#if desktop
+					callOnLuas('onSongStart', []);
+					#end
 				case 4:
+					trace("Countdown complete!");
 			}
 			swagCounter += 1;
 		}, 5);
@@ -632,6 +646,13 @@ class PlayState extends SwagState {
 				}
 			}
 		}
+
+		#if desktop
+		setOnLuas('songPos', Conductor.songPosition);
+		setOnLuas('curStep', curStep);
+		setOnLuas('curBeat', curBeat);
+		callOnLuas('onUpdate', [elapsed]);
+		#end
 	}
 
 	override function openSubState(SubState:FlxSubState) {
