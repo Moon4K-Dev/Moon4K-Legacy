@@ -785,30 +785,28 @@ class PlayState extends SwagState {
 	}
 
 	function noteMiss(direction:Int) {
-		if (currentPlayer == 0) {
-			p1Misses++;
-			p1Score -= 10;
-			if (p1TotalPlayed == 0) {
-				p1TotalNotesHit = 0;
-				p1TotalPlayed = 1;
-			} else {
+		if (isMultiplayer) {
+			if (currentPlayer == 0) {
+				p1Misses++;
+				p1Score -= 10;
 				p1TotalPlayed++;
-			}
-			p1Accuracy = Math.max(0, p1TotalNotesHit / p1TotalPlayed * 100);
-		} else {
-			p2Misses++;
-			p2Score -= 10;
-			if (p2TotalPlayed == 0) {
-				p2TotalNotesHit = 0;
-				p2TotalPlayed = 1;
+				p1Accuracy = Math.max(0, p1TotalNotesHit / p1TotalPlayed * 100);
 			} else {
+				p2Misses++;
+				p2Score -= 10;
 				p2TotalPlayed++;
+				p2Accuracy = Math.max(0, p2TotalNotesHit / p2TotalPlayed * 100);
 			}
-			p2Accuracy = Math.max(0, p2TotalNotesHit / p2TotalPlayed * 100);
+		} else {
+			misses++;
+			songScore -= 10;
+			totalPlayed++;
+			accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
 		}
 		
 		health -= 0.04;
 		notesHit = 0;
+		updateRank();
 	}
 
 	function noteHit(note:Note, judgment:String) {
@@ -839,16 +837,23 @@ class PlayState extends SwagState {
 				accuracyValue = 0;
 		}
 
-		if (currentPlayer == 0) {
-			p1Score += score;
-			p1TotalNotesHit += accuracyValue;
-			p1TotalPlayed++;
-			p1Accuracy = Math.max(0, p1TotalNotesHit / p1TotalPlayed * 100);
+		if (isMultiplayer) {
+			if (currentPlayer == 0) {
+				p1Score += score;
+				p1TotalNotesHit += accuracyValue;
+				p1TotalPlayed++;
+				p1Accuracy = Math.max(0, p1TotalNotesHit / p1TotalPlayed * 100);
+			} else {
+				p2Score += score;
+				p2TotalNotesHit += accuracyValue;
+				p2TotalPlayed++;
+				p2Accuracy = Math.max(0, p2TotalNotesHit / p2TotalPlayed * 100);
+			}
 		} else {
-			p2Score += score;
-			p2TotalNotesHit += accuracyValue;
-			p2TotalPlayed++;
-			p2Accuracy = Math.max(0, p2TotalNotesHit / p2TotalPlayed * 100);
+			songScore += score;
+			totalNotesHit += accuracyValue;
+			totalPlayed++;
+			accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
 		}
 
 		notesHit++;
