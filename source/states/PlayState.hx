@@ -286,6 +286,7 @@ class PlayState extends SwagState {
 		var songLuaPath = 'data/charts/${curSong}/${curSong}.lua';
 		if (FileSystem.exists(songLuaPath)) {
 			loadLuaScript(songLuaPath);
+			trace('Loaded Lua script: $songLuaPath');
 		}
 	}
 
