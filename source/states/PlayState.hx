@@ -36,6 +36,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.sound.FlxSound;
 import openfl.media.Sound;
 import game.Section.SwagNote;
+import game.MoonLua;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -125,6 +126,11 @@ class PlayState extends SwagState {
 	public var p2TotalPlayed:Int = 0;
 
 	static public var lastMultiplayerState:Bool = false;
+
+	// lou ah (lua)
+	#if desktop
+    private var luaScripts:Array<MoonLua> = [];
+    #end
 
 	override public function new() {
 		super();

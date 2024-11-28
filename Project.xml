@@ -50,6 +50,8 @@
 	<haxedef name="openflPos"/>
 	<haxelib name="funkin.vis"/>
 	<haxelib name="grig.audio"/>
+	<haxelib name="linc_luajit" if="desktop"/>
+
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
 
