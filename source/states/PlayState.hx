@@ -132,6 +132,10 @@ class PlayState extends SwagState {
     private var luaScripts:Array<MoonLua> = [];
     #end
 
+	public static var Function_Stop:Dynamic = 1;
+	public static var Function_Continue:Dynamic = 0;
+	public static var Function_StopLua:Dynamic = 2;
+
 	override public function new() {
 		super();
 
@@ -832,6 +836,7 @@ class PlayState extends SwagState {
 	}
 
 	function noteHit(note:Note, judgment:String) {
+		trace("noteHit start");
 		var score:Int = 0;
 		var accuracyValue:Float = 0;
 
@@ -878,15 +883,25 @@ class PlayState extends SwagState {
 			accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
 		}
 
-		var noteMs = (Conductor.songPosition - note.strum) / songMultiplier;
 		notesHit++;
 		notes.remove(note);
 		note.kill();
 		note.destroy();
+		updateRank();
 
-		for (lua in luaScripts) {
-			lua.call("onNoteHit", [noteMs, judgment]);
+		#if desktop
+		try {
+			for (lua in luaScripts) {
+				if (lua != null) {
+					lua.call("onNoteHit", [judgment]);
+				}
+			}
+		} catch(e) {
+			trace('Lua error in noteHit: ${e.message}');
 		}
+		#end
+
+		trace("noteHit end");
 	}
 
 	function generateNotes(dataPath:String):Void {
@@ -937,20 +952,63 @@ class PlayState extends SwagState {
 
 	#if desktop
 	private function loadLuaScript(scriptPath:String) {
-		var lua = new MoonLua(scriptPath);
-		luaScripts.push(lua);
+		try {
+			var lua = new MoonLua(scriptPath);
+			if (lua != null) {
+				luaScripts.push(lua);
+				trace('Successfully loaded Lua script: $scriptPath');
+			}
+		} catch(e) {
+			trace('Error loading Lua script $scriptPath: ${e.message}');
+		}
 	}
 	#end
 
 	override public function stepHit():Void {
-		for (lua in luaScripts) {
-			lua.call("onStep", []);
-		}
+		super.stepHit();
+		
+		#if desktop
+		setOnLuas('curStep', curStep);
+		callOnLuas('onStep', [curStep]);
+		#end
 	}
 
 	override public function beatHit():Void {
-		for (lua in luaScripts) {
-			lua.call("onBeat", []);
+		super.beatHit();
+		
+		#if desktop
+		setOnLuas('curBeat', curBeat);
+		callOnLuas('onBeat', [curBeat]);
+		#end
+	}
+
+	public function callOnLuas(event:String, args:Array<Dynamic>, ignoreStops = true):Dynamic {
+		var returnVal:Dynamic = Function_Continue;
+		
+		#if desktop
+		for (script in luaScripts) {
+			if (script != null && !script.closed) {
+				var ret:Dynamic = script.call(event, args);
+				if(ret == Function_StopLua && !ignoreStops)
+					break;
+				
+				if(ret != Function_Continue && ret != 0) {
+					returnVal = ret;
+				}
+			}
 		}
+		#end
+		
+		return returnVal;
+	}
+
+	public function setOnLuas(variable:String, arg:Dynamic) {
+		#if desktop
+		for (script in luaScripts) {
+			if (script != null && !script.closed) {
+				script.set(variable, arg);
+			}
+		}
+		#end
 	}
 }

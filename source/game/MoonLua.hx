@@ -14,6 +14,7 @@ class MoonLua {
     private var lua:State = null;
     private var scriptPath:String;
     private var game:PlayState;
+    public var closed:Bool = false;
 
     public function new(scriptPath:String) {
         this.scriptPath = scriptPath;
@@ -32,6 +33,7 @@ class MoonLua {
             var error = Lua.tostring(lua, -1);
             trace('Lua Error: $error');
             Lua.pop(lua, 1);
+            closed = true;
         }
     }
 
@@ -83,28 +85,31 @@ class MoonLua {
         });
     }
 
-    public function call(func:String, ?args:Array<Dynamic>):Dynamic {
+    public function call(event:String, args:Array<Dynamic>):Dynamic {
         if (lua == null) return null;
         
-        Lua.getglobal(lua, func);
+        Lua.getglobal(lua, event);
         
-        if (args != null) {
+        if (Lua.isfunction(lua, -1)) {
             for (arg in args) {
                 Convert.toLua(lua, arg);
             }
-        }
-        
-        var status = Lua.pcall(lua, args != null ? args.length : 0, 1, 0);
-        if (status != 0) {
-            var error = Lua.tostring(lua, -1);
-            trace('Lua Error: $error');
+
+            var result:Dynamic = null;
+            var status = Lua.pcall(lua, args.length, 1, 0);
+            
+            if (status != 0) {
+                var error = Lua.tostring(lua, -1);
+                trace('Lua error: ${error}');
+                return null;
+            }
+
+            result = Convert.fromLua(lua, -1);
             Lua.pop(lua, 1);
-            return null;
+            return result;
         }
-        
-        var result = Convert.fromLua(lua, -1);
         Lua.pop(lua, 1);
-        return result;
+        return null;
     }
 
     private function setVar(name:String, value:Dynamic) {
@@ -120,7 +125,41 @@ class MoonLua {
         if (lua != null) {
             Lua.close(lua);
             lua = null;
+            closed = true;
         }
+    }
+
+    public function set(variable:String, data:Dynamic) {
+        if (lua == null) return;
+
+        Convert.toLua(lua, data);
+        Lua.setglobal(lua, variable);
+    }
+
+    public function luaTrace(text:String, ignoreCheck:Bool = false, deprecated:Bool = false) {
+        #if desktop
+        if(ignoreCheck || getBool('luaDebugMode')) {
+            if(deprecated && !getBool('luaDeprecatedWarnings')) {
+                return;
+            }
+            trace(text);
+        }
+        #end
+    }
+
+    public function getBool(variable:String) {
+        #if desktop
+        var result:String = null;
+        Lua.getglobal(lua, variable);
+        result = Convert.fromLua(lua, -1);
+        Lua.pop(lua, 1);
+
+        if(result == null) {
+            return false;
+        }
+        return (result == 'true');
+        #end
+        return false;
     }
 }
 #end
