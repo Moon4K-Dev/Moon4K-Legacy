@@ -176,7 +176,7 @@ class PlayState extends SwagState {
 		FlxG.cameras.add(camHUD);
 		hud = new UI();
 		super.create();
-		if (lua != null) {
+		for (lua in luaScripts) {
 			lua.call("onCreate", []);
 		}
 
@@ -546,7 +546,7 @@ class PlayState extends SwagState {
 		}
 
 		super.update(elapsed);
-		if (lua != null) {
+		for (lua in luaScripts) {
 			lua.call("onUpdate", [elapsed]);
 		}
 
@@ -826,7 +826,7 @@ class PlayState extends SwagState {
 		notesHit = 0;
 		updateRank();
 
-		if (lua != null) {
+		for (lua in luaScripts) {
 			lua.call("onNoteMiss", [direction]);
 		}
 	}
@@ -878,12 +878,13 @@ class PlayState extends SwagState {
 			accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
 		}
 
+		var noteMs = (Conductor.songPosition - note.strum) / songMultiplier;
 		notesHit++;
 		notes.remove(note);
 		note.kill();
 		note.destroy();
 
-		if (lua != null) {
+		for (lua in luaScripts) {
 			lua.call("onNoteHit", [noteMs, judgment]);
 		}
 	}
@@ -942,13 +943,13 @@ class PlayState extends SwagState {
 	#end
 
 	override public function stepHit():Void {
-		if (lua != null) {
+		for (lua in luaScripts) {
 			lua.call("onStep", []);
 		}
 	}
 
 	override public function beatHit():Void {
-		if (lua != null) {
+		for (lua in luaScripts) {
 			lua.call("onBeat", []);
 		}
 	}
