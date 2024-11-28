@@ -282,6 +282,11 @@ class PlayState extends SwagState {
 		add(ratingText);
 
 		lastMultiplayerState = isMultiplayer;
+
+		var songLuaPath = 'data/charts/${curSong}/${curSong}.lua';
+		if (FileSystem.exists(songLuaPath)) {
+			loadLuaScript(songLuaPath);
+		}
 	}
 
 	function updateAccuracy() {
@@ -902,5 +907,17 @@ class PlayState extends SwagState {
 	override public function destroy():Void {
 		super.destroy();
 		Controls.destroy();
+
+		for (script in luaScripts) {
+			script.destroy();
+		}
+		luaScripts = [];
 	}
+
+	#if desktop
+	private function loadLuaScript(scriptPath:String) {
+		var lua = new MoonLua(scriptPath);
+		luaScripts.push(lua);
+	}
+	#end
 }

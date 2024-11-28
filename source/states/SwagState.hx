@@ -14,8 +14,8 @@ import game.Conductor;
 import options.Options;
 
 class SwagState extends FlxUIState {
-	var curStep:Int = 0;
-	var curBeat:Int = 0;
+	public var curStep:Int = 0;
+	public var curBeat:Int = 0;
 
 	override public function new(?noTransition:Bool = false) {
 		super();
