@@ -180,9 +180,16 @@ class PlayState extends SwagState {
 		FlxG.cameras.add(camHUD);
 		hud = new UI();
 		super.create();
-		for (lua in luaScripts) {
-			lua.call("onCreate", []);
-		}
+
+		try {
+            for (lua in luaScripts) {
+                if (lua != null) {
+                    lua.call("onCreate", []);
+                }
+            }
+        } catch(e) {
+            trace('Lua error in onCreate: ${e.message}');
+        }
 
 		laneOffset = Options.getData('lane-offset');
 
@@ -564,9 +571,16 @@ class PlayState extends SwagState {
 		}
 
 		super.update(elapsed);
-		for (lua in luaScripts) {
-			lua.call("onUpdate", [elapsed]);
-		}
+
+		try {
+            for (lua in luaScripts) {
+                if (lua != null) {
+                    lua.call("onUpdate", [elapsed]);
+                }
+            }
+        } catch(e) {
+            trace('Lua error in onUpdate: ${e.message}');
+        }
 
 		if (spawnNotes[0] != null) {
 			while (spawnNotes.length > 0 && spawnNotes[0].strum - Conductor.songPosition < (1500 * songMultiplier)) {
@@ -851,9 +865,15 @@ class PlayState extends SwagState {
 		notesHit = 0;
 		updateRank();
 
-		for (lua in luaScripts) {
-			lua.call("onNoteMiss", [direction]);
-		}
+		try {
+            for (lua in luaScripts) {
+                if (lua != null) {
+                    lua.call("onNoteMiss", [direction]);
+                }
+            }
+        } catch(e) {
+            trace('Lua error in onNoteMiss: ${e.message}');
+        }
 	}
 
 	function noteHit(note:Note, judgment:String) {
