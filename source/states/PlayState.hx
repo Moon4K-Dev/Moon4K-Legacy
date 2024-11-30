@@ -38,6 +38,8 @@ import openfl.media.Sound;
 import game.Section.SwagNote;
 import game.MoonLua;
 
+using StringTools;
+
 class PlayState extends SwagState {
 	static public var instance:PlayState;
 
@@ -837,15 +839,7 @@ class PlayState extends SwagState {
 		notesHit = 0;
 		updateRank();
 
-		try {
-            for (lua in luaScripts) {
-                if (lua != null) {
-                    lua.call("onNoteMiss", [direction]);
-                }
-            }
-        } catch(e) {
-            trace('Lua error in onNoteMiss: ${e.message}');
-        }
+		callOnScripts("onNoteMiss", [direction]);
 	}
 
 	function noteHit(note:Note, judgment:String) {
@@ -965,11 +959,11 @@ class PlayState extends SwagState {
 	}
 
 	private function callOnLuas(funcName:String, args:Array<Dynamic>):Dynamic {
-		var value:Dynamic = LuaScript.Function_Continue;
+		var value:Dynamic = MoonLua.Function_Continue;
 
 		for (i in 0...luaScripts.length) {
 			var ret:Dynamic = luaScripts[i].call(funcName, args);
-			if (ret != LuaScript.Function_Continue) {
+			if (ret != MoonLua.Function_Continue) {
 				value = ret;
 			}
 		}
