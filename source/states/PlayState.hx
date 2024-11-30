@@ -36,6 +36,9 @@ import flixel.graphics.FlxGraphic;
 import flixel.sound.FlxSound;
 import openfl.media.Sound;
 import game.Section.SwagNote;
+import game.MoonLua;
+
+using StringTools;
 
 class PlayState extends SwagState {
 	static public var instance:PlayState;
@@ -126,6 +129,13 @@ class PlayState extends SwagState {
 
 	static public var lastMultiplayerState:Bool = false;
 
+	// lou ah (lua)
+    public var luaScripts:Array<MoonLua> = [];
+
+	static public var luaImages:Map<String, FlxSprite> = new Map<String, FlxSprite>();
+	static public var luaText:Map<String, FlxText> = new Map<String, FlxText>();
+	static public var luaSound:Map<String, Sound> = new Map<String, Sound>();
+
 	override public function new() {
 		super();
 
@@ -169,6 +179,20 @@ class PlayState extends SwagState {
 		camHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(camHUD);
 		hud = new UI();
+
+		var foldersToCheck:Array<String> = ['data/charts/${curSong}/', 'data/scripts/'];
+		for (folder in foldersToCheck) {
+			if (FileSystem.exists(folder) && FileSystem.isDirectory(folder)) {
+				for (file in FileSystem.readDirectory(folder)) {
+					if (file.endsWith('.lua')) {
+						luaScripts.push(new MoonLua(folder + file));
+					}
+				}
+			}
+		}
+
+		callOnLuas("onCreate", []);
+
 		super.create();
 
 		laneOffset = Options.getData('lane-offset');
@@ -276,6 +300,8 @@ class PlayState extends SwagState {
 		add(ratingText);
 
 		lastMultiplayerState = isMultiplayer;
+
+		callOnLuas("onCreatePost", []);
 	}
 
 	function updateAccuracy() {
@@ -409,6 +435,7 @@ class PlayState extends SwagState {
 	}
 
 	function startCountdown():Void {
+		trace("Countdown started");
 		var startTimer:FlxTimer;
 		startedCountdown = true;
 		Conductor.songPosition = 0;
@@ -417,6 +444,8 @@ class PlayState extends SwagState {
 		var swagCounter:Int = 0;
 
 		startTimer = new FlxTimer().start(Conductor.crochet / 5000, function(tmr:FlxTimer) {
+			callOnLuas('onCountdownTick', [swagCounter]);
+
 			switch (swagCounter) {
 				case 0:
 					trace("THREE!");
@@ -426,7 +455,9 @@ class PlayState extends SwagState {
 					trace("ONE!");
 				case 3:
 					trace("GO!");
+					callOnLuas('onSongStart', []);
 				case 4:
+					trace("Countdown complete!");
 			}
 			swagCounter += 1;
 		}, 5);
@@ -530,6 +561,8 @@ class PlayState extends SwagState {
 			}
 		}
 
+		callOnLuas("onUpdate", [elapsed]);
+
 		super.update(elapsed);
 
 		if (spawnNotes[0] != null) {
@@ -610,6 +643,8 @@ class PlayState extends SwagState {
 				}
 			}
 		}
+
+		callOnLuas("onUpdatePost", [elapsed]);
 	}
 
 	override function openSubState(SubState:FlxSubState) {
@@ -807,9 +842,12 @@ class PlayState extends SwagState {
 		health -= 0.04;
 		notesHit = 0;
 		updateRank();
+
+		callOnLuas("onNoteMiss", [direction]);
 	}
 
 	function noteHit(note:Note, judgment:String) {
+		trace("noteHit start");
 		var score:Int = 0;
 		var accuracyValue:Float = 0;
 
@@ -860,6 +898,11 @@ class PlayState extends SwagState {
 		notes.remove(note);
 		note.kill();
 		note.destroy();
+		updateRank();
+
+		callOnLuas("onNoteHit", [judgment]);
+
+		trace("noteHit end");
 	}
 
 	function generateNotes(dataPath:String):Void {
@@ -899,7 +942,47 @@ class PlayState extends SwagState {
 	}
 
 	override public function destroy():Void {
+		callOnLuas("onDestroy", []);
+
 		super.destroy();
 		Controls.destroy();
+
+		for (script in luaScripts)
+			script?.destroy();
+		luaScripts = [];
+	}
+
+	override public function stepHit():Void {
+		super.stepHit();
+		callOnLuas('onStep', [curStep]);
+	}
+
+	override public function beatHit():Void {
+		super.beatHit();
+		callOnLuas('onBeat', [curBeat]);
+	}
+
+	private function callOnLuas(funcName:String, args:Array<Dynamic>):Dynamic {
+		var value:Dynamic = MoonLua.Function_Continue;
+
+		for (i in 0...luaScripts.length) {
+			var ret:Dynamic = luaScripts[i].call(funcName, args);
+			if (ret != MoonLua.Function_Continue) {
+				value = ret;
+			}
+		}
+
+		return value;
+	}
+
+	// for lua idk
+	public function playSound(name:String, outLoud:Float = 1, looped:Bool = false):FlxSound
+	{
+		return FlxG.sound.play(Paths.sound(name), outLoud, looped);
+	}
+
+	public function playMusic(name:String, outLoud:Float = 1, looped:Bool = false)
+	{
+		return FlxG.sound.playMusic(Paths.music(name), outLoud, looped);
 	}
 }
