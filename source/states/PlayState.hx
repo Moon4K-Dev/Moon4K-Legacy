@@ -132,6 +132,10 @@ class PlayState extends SwagState {
 	// lou ah (lua)
     public var luaScripts:Array<MoonLua> = [];
 
+	static public var luaImages:Map<String, FlxSprite> = new Map<String, FlxSprite>();
+	static public var luaText:Map<String, FlxText> = new Map<String, FlxText>();
+	static public var luaSound:Map<String, Sound> = new Map<String, Sound>();
+
 	override public function new() {
 		super();
 
@@ -969,5 +973,16 @@ class PlayState extends SwagState {
 		}
 
 		return value;
+	}
+
+	// for lua idk
+	public function playSound(name:String, outLoud:Float = 1, looped:Bool = false):FlxSound
+	{
+		return FlxG.sound.play(Paths.sound(name), outLoud, looped);
+	}
+
+	public function playMusic(name:String, outLoud:Float = 1, looped:Bool = false)
+	{
+		return FlxG.sound.playMusic(Paths.music(name), outLoud, looped);
 	}
 }
