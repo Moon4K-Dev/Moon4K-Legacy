@@ -839,7 +839,7 @@ class PlayState extends SwagState {
 		notesHit = 0;
 		updateRank();
 
-		callOnScripts("onNoteMiss", [direction]);
+		callOnLuas("onNoteMiss", [direction]);
 	}
 
 	function noteHit(note:Note, judgment:String) {
@@ -896,7 +896,7 @@ class PlayState extends SwagState {
 		note.destroy();
 		updateRank();
 
-		callOnScripts("onNoteHit", [judgment]);
+		callOnLuas("onNoteHit", [judgment]);
 
 		trace("noteHit end");
 	}
