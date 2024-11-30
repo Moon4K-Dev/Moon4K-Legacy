@@ -1,165 +1,155 @@
 package game;
 
-#if desktop
+import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.text.FlxText;
+import llua.Convert;
+import llua.Lua.Lua_helper;
 import llua.Lua;
 import llua.LuaL;
 import llua.State;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import states.PlayState;
-import llua.Convert;
+import openfl.Lib;
+import sys.io.File;
+
 import game.Conductor;
+import states.PlayState;
 
-class MoonLua {
-    private var lua:State = null;
-    private var scriptPath:String;
+class MoonLua extends FlxBasic
+{
+	public static var Function_Stop:Dynamic = 1;
+	public static var Function_Continue:Dynamic = 0;
+
     private var game:PlayState;
-    public var closed:Bool = false;
 
-    public function new(scriptPath:String) {
-        this.scriptPath = scriptPath;
+    var lua:State;
+
+	public function new(file:String, ?execute:Bool = true)
+	{
+		super();
+
         this.game = PlayState.instance;
-        
-        lua = LuaL.newstate();
-        LuaL.openlibs(lua);
-        
-        Lua_helper.register_hxtrace(lua);
-        
-        set_vars();
-        
-        set_callbacks();
-        
-        if (LuaL.dofile(lua, scriptPath) != 0) {
-            var error = Lua.tostring(lua, -1);
-            trace('Lua Error: $error');
-            Lua.pop(lua, 1);
-            closed = true;
-        }
-    }
 
-    private function set_vars() {
+		lua = LuaL.newstate();
+		LuaL.openlibs(lua);
+		Lua.init_callbacks(lua);
+
+		try
+		{
+			var result:Dynamic = LuaL.dofile(lua, file);
+			var resultStr:String = Lua.tostring(lua, result);
+			if (resultStr != null && result != 0)
+			{
+				trace('lua error!!! ' + resultStr);
+				Lib.application.window.alert(resultStr, "Error!");
+				lua = null;
+				return;
+			}
+		}
+		catch (e)
+		{
+			trace(e.message);
+			Lib.application.window.alert(e.message, "Error!");
+			return;
+		}
+
+		trace('Script Loaded Succesfully: $file');
+
         // PlayState vars
-        setVar("score", game.songScore);
-        setVar("misses", game.misses);
-        setVar("health", game.health);
-        setVar("accuracy", game.accuracy);
+        set("score", game.songScore);
+        set("misses", game.misses);
+        set("health", game.health);
+        set("accuracy", game.accuracy);
         
         // Song info
-        setVar("curBPM", Conductor.bpm);
-        setVar("crochet", Conductor.crochet);
-        setVar("stepCrochet", Conductor.stepCrochet);
-        setVar("songPos", Conductor.songPosition);
-        setVar("curStep", game.curStep);
-        setVar("curBeat", game.curBeat);
-    }
+        set("curBPM", Conductor.bpm);
+        set("crochet", Conductor.crochet);
+        set("stepCrochet", Conductor.stepCrochet);
+        set("songPos", Conductor.songPosition);
+        set("curStep", game.curStep);
+        set("curBeat", game.curBeat);
 
-    private function set_callbacks() {
-        addCallback("trace", function(text:Dynamic) {
+		add_callback("trace", function(text:Dynamic) {
             var traceText = Std.string(text);
             trace('Lua: $traceText');
         });
         
-        addCallback("debugPrint", function(text:Dynamic) {
+        add_callback("debugPrint", function(text:Dynamic) {
             var traceText = Std.string(text);
             trace('Lua Debug: $traceText');
         });
         
-        addCallback("setScore", function(score:Int) {
+        add_callback("setScore", function(score:Int) {
             game.songScore = score;
         });
         
-        addCallback("setHealth", function(health:Float) {
+        add_callback("setHealth", function(health:Float) {
             game.health = health;
         });
         
-        addCallback("getHealth", function():Float {
+        add_callback("getHealth", function():Float {
             return game.health;
         });
         
-        addCallback("setCamZoom", function(zoom:Float) {
+        add_callback("setCamZoom", function(zoom:Float) {
             FlxG.camera.zoom = zoom;
         });
         
-        addCallback("getCamZoom", function():Float {
+        add_callback("getCamZoom", function():Float {
             return FlxG.camera.zoom;
         });
-    }
-
-    public function call(event:String, args:Array<Dynamic>):Dynamic {
-        if (lua == null) return null;
-        
-        Lua.getglobal(lua, event);
-        
-        if (Lua.isfunction(lua, -1)) {
-            for (arg in args) {
-                Convert.toLua(lua, arg);
-            }
-
-            var result:Dynamic = null;
-            var status = Lua.pcall(lua, args.length, 1, 0);
-            
-            if (status != 0) {
-                var error = Lua.tostring(lua, -1);
-                trace('Lua error: ${error}');
-                return null;
-            }
-
-            result = Convert.fromLua(lua, -1);
-            Lua.pop(lua, 1);
-            return result;
-        }
-        Lua.pop(lua, 1);
-        return null;
-    }
-
-    private function setVar(name:String, value:Dynamic) {
-        Convert.toLua(lua, value);
-        Lua.setglobal(lua, name);
-    }
-
-    private function addCallback(name:String, fn:Dynamic) {
-        Lua_helper.add_callback(lua, name, fn);
-    }
-
-    public function destroy() {
-        if (lua != null) {
-            Lua.close(lua);
-            lua = null;
-            closed = true;
-        }
-    }
+	}
 
     public function set(variable:String, data:Dynamic) {
-        if (lua == null) return;
+		if (lua == null)
+			return;
 
-        Convert.toLua(lua, data);
-        Lua.setglobal(lua, variable);
-    }
+		Convert.toLua(lua, data);
+		Lua.setglobal(lua, variable);
+	}
 
-    public function luaTrace(text:String, ignoreCheck:Bool = false, deprecated:Bool = false) {
-        #if desktop
-        if(ignoreCheck || getBool('luaDebugMode')) {
-            if(deprecated && !getBool('luaDeprecatedWarnings')) {
-                return;
-            }
-            trace(text);
-        }
-        #end
-    }
+	function add_callback(name:String, eventToDo:Dynamic)
+		return Lua_helper.add_callback(lua, name, eventToDo);
 
-    public function getBool(variable:String) {
-        #if desktop
-        var result:String = null;
-        Lua.getglobal(lua, variable);
-        result = Convert.fromLua(lua, -1);
-        Lua.pop(lua, 1);
+	public function call(event:String, args:Array<Dynamic>):Dynamic
+	{
+		if (lua == null)
+		{
+			return Function_Continue;
+		}
 
-        if(result == null) {
-            return false;
-        }
-        return (result == 'true');
-        #end
-        return false;
-    }
+		Lua.getglobal(lua, event);
+
+		for (arg in args)
+		{
+			Convert.toLua(lua, arg);
+		}
+
+		var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
+		if (result != null && resultIsAllowed(lua, result))
+		{
+			if (Lua.type(lua, -1) == Lua.LUA_TSTRING)
+			{
+				var error:String = Lua.tostring(lua, -1);
+				if (error == 'attempt to call a nil value')
+				{
+					return Function_Continue;
+				}
+			}
+			var conv:Dynamic = Convert.fromLua(lua, result);
+			return conv;
+		}
+		return Function_Continue;
+	}
+
+	function resultIsAllowed(leLua:State, leResult:Null<Int>)
+	{
+		switch (Lua.type(leLua, leResult))
+		{
+			case Lua.LUA_TNIL | Lua.LUA_TBOOLEAN | Lua.LUA_TNUMBER | Lua.LUA_TSTRING | Lua.LUA_TTABLE:
+				return true;
+		}
+		return false;
+	}
 }
-#end
