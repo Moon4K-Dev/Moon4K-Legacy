@@ -22,4 +22,6 @@
 
 - Fixed a bug where your accuracy wouldn't go down
 
-- Profiles exist now (Press 7 in the main menu!)
+- Profiles exist now
+
+- Local & Online Multiplayer!

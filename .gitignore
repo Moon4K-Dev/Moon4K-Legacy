@@ -14,3 +14,6 @@ dump/
 
 ## For mac or smth
 .DS_Store
+/server_src/node_modules
+server_src/package.json
+server_src/package-lock.json

@@ -37,7 +37,7 @@ import flixel.sound.FlxSound;
 import openfl.media.Sound;
 import game.Section.SwagNote;
 import game.MoonLua;
-
+import network.Server;
 using StringTools;
 
 class PlayState extends SwagState {
@@ -135,6 +135,8 @@ class PlayState extends SwagState {
 	static public var luaImages:Map<String, FlxSprite> = new Map<String, FlxSprite>();
 	static public var luaText:Map<String, FlxText> = new Map<String, FlxText>();
 	static public var luaSound:Map<String, Sound> = new Map<String, Sound>();
+	public var isOnline:Bool = false;
+	public var isHost:Bool = false;
 
 	override public function new() {
 		super();
@@ -645,6 +647,24 @@ class PlayState extends SwagState {
 		}
 
 		callOnLuas("onUpdatePost", [elapsed]);
+		if (isOnline) {
+			Server.sendMessage("note_hit", {
+				time: Conductor.songPosition
+			});
+			
+			Server.sendMessage("score_update", {
+				score: currentPlayer == 0 ? p1Score : p2Score,
+				accuracy: currentPlayer == 0 ? p1Accuracy : p2Accuracy,
+				misses: currentPlayer == 0 ? p1Misses : p2Misses
+			});
+		}
+
+		if (FlxG.keys.justPressed.ENTER && !isOnline) {
+			persistentUpdate = false;
+			persistentDraw = true;
+			paused = true;
+			openSubState(new substates.PauseSubstate());
+		}
 	}
 
 	override function openSubState(SubState:FlxSubState) {
@@ -984,5 +1004,41 @@ class PlayState extends SwagState {
 	public function playMusic(name:String, outLoud:Float = 1, looped:Bool = false)
 	{
 		return FlxG.sound.playMusic(Paths.music(name), outLoud, looped);
+	}
+
+	public function handleOnlineNoteHit(data:Dynamic) {
+		if (currentPlayer == 0) {
+			for (strum in p2StrumNotes.members) {
+				if (strum.direction == data.direction) {
+					strum.playAnim('confirm');
+					break;
+				}
+			}
+		} else {
+			for (strum in p1StrumNotes.members) {
+				if (strum.direction == data.direction) {
+					strum.playAnim('confirm');
+					break;
+				}
+			}
+		}
+	}
+
+	public function updateOpponentScore(score:Int, accuracy:Float, misses:Int) {
+		if (!isOnline) return;
+		
+		if (currentPlayer == 0) {
+			p2Score = score;
+			p2Accuracy = accuracy;
+			p2Misses = misses;
+		} else {
+			p1Score = score;
+			p1Accuracy = accuracy;
+			p1Misses = misses;
+		}
+		
+		if (hud != null) {
+			hud.updateHUD();
+		}
 	}
 }
