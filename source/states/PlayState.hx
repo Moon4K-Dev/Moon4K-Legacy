@@ -631,7 +631,7 @@ class PlayState extends SwagState {
 			persistentUpdate = false;
 			persistentDraw = true;
 			paused = true;
-			openSubState(new PauseSubState());
+			openSubState(new substates.PauseSubstate());
 		}
 	}
 

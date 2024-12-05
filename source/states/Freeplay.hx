@@ -373,17 +373,12 @@ class Freeplay extends SwagState {
 		if (!isOnline) return;
 		
 		trace('Starting online song: ${songData.song}');
-		
-		// Make sure we're on the main thread for state transitions
-		FlxG.stage.application.window.onEnterFrame = function(_) {
-			FlxG.stage.application.window.onEnterFrame = null;
-			
-			var playState = new PlayState();
-			playState.song = songData;
-			playState.isOnline = true;
-			playState.isHost = isHost;
-			transitionState(playState);
-		}
+
+		var playState = new PlayState();
+		playState.song = songData;
+		playState.isOnline = true;
+		playState.isHost = isHost;
+		transitionState(playState);
 	}
 
 	private function loadSong() {
