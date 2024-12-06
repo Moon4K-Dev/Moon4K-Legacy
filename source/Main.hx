@@ -10,6 +10,16 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
+// crash handler stuff
+#if desktop
+import lime.app.Application;
+import openfl.events.UncaughtErrorEvent;
+import haxe.CallStack;
+import haxe.io.Path;
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
+#end
 import states.SplashState;
 #if desktop
 import hxdiscord_rpc.Discord as DiscordRPC;

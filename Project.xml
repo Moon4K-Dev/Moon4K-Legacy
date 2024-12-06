@@ -97,8 +97,4 @@
 	<haxedef name='no-deprecation-warnings' />
 	<icon path="setup/rpcIcon.png" />
 
-	<haxedef name="HXCPP_API_LEVEL" value="332" />
-	<haxedef name="no-compilation" />
-	<haxelib name="hxcpp" />
-
 </project>

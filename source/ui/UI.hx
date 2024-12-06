@@ -144,19 +144,4 @@ class UI extends FlxSpriteGroup {
 		var remainingSeconds:Int = Std.int(seconds % 60);
 		return minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
 	}
-
-	public function updateHUD():Void {
-		if (PlayState.instance.isMultiplayer) {
-			scoreTxt.text = "P1 Score: " + PlayState.instance.p1Score;
-			accTxt.text = "P1 Accuracy: " + Std.string(FlxMath.roundDecimal(PlayState.instance.p1Accuracy, 2)) + "%";
-			notesHitTXT.visible = false;
-
-			p2ScoreTxt.text = "P2 Score: " + PlayState.instance.p2Score;
-			p2AccTxt.text = "P2 Accuracy: " + Std.string(FlxMath.roundDecimal(PlayState.instance.p2Accuracy, 2)) + "%";
-		} else {
-			scoreTxt.text = "Score: " + PlayState.instance.songScore;
-			notesHitTXT.text = PlayState.instance.notesHit + "x";
-			accTxt.text = "Accuracy: " + Std.string(FlxMath.roundDecimal(PlayState.instance.accuracy, 2)) + "%";
-		}
-	}
 }
