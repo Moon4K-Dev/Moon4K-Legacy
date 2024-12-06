@@ -486,7 +486,7 @@ class PlayState extends SwagState {
 	override public function update(elapsed:Float) {
 		#if desktop
 		if (!Options.getData('botplay')) {
-			Discord.changePresence("Playing: " + curSong, "Score: " + songScore + " - " + accuracy + "% - " + notesHit + " combo");
+			Discord.changePresence("Playing: " + curSong, "Score: " + songScore + " - Accuracy: " + Std.string(FlxMath.roundDecimal(accuracy, 2)) + "% - " + notesHit + " Note Combo");
 		}
 		else if (isMultiplayer && !Options.getData('botplay')) {
 			Discord.changePresence("Playing: " + curSong, "Against P2!"); // will update to show scores later lol
@@ -597,7 +597,7 @@ class PlayState extends SwagState {
 			paused = true;
 			#if desktop
 			video.pause();
-			Discord.changePresence("Paused on: " + curSong, "Score: " + songScore + " - " + accuracy + "% - " + notesHit + " combo");
+			Discord.changePresence("Paused on: " + curSong, "Score: " + songScore + " - Accuracy: " + Std.string(FlxMath.roundDecimal(accuracy, 2)) + "% - " + notesHit + " Note Combo");
 			#end
 			openSubState(pauseSubState);
 		}
@@ -847,7 +847,6 @@ class PlayState extends SwagState {
 	}
 
 	function noteHit(note:Note, judgment:String) {
-		trace("noteHit start");
 		var score:Int = 0;
 		var accuracyValue:Float = 0;
 
@@ -901,8 +900,6 @@ class PlayState extends SwagState {
 		updateRank();
 
 		callOnLuas("onNoteHit", [judgment]);
-
-		trace("noteHit end");
 	}
 
 	function generateNotes(dataPath:String):Void {
