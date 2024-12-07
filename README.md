@@ -1,4 +1,8 @@
-# Moon4K
+# Moon4K - Online Multiplayer (Archived) Branch
+
+* All of the crappy old online multiplayer code, I'm redoing all of this because this code sucks.
+
+* ok bye
 
 * Funny 4k rhythm game made by basically three people
 
