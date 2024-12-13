@@ -23,7 +23,6 @@
 * YoPhlox - Main Programmer
 * 失った - Helper (legit got the in-game dl working properly)
 * Joalor64GH - Got sustains/hold notes working!
-* Skdoobep - Artist (Made the Moon4K logo)
 * ★†~AxylusMusic~†★ - WIP Moon4K OST 
 * UncertainProd - StepMania Chart Converter (taken from [here](https://github.com/UncertainProd/SMToPsychFNF-Web))
 * YT Playlist - Title Music (https://www.youtube.com/watch?v=hQT6WMJ-Fco&list=PL06diOotXAJLAAHBY7kIUm5GQwm2ZinOz&index=1)
