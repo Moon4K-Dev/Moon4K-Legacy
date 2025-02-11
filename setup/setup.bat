@@ -10,5 +10,5 @@ mkdir "%HAXELIB_ROOT%"
 haxelib setup "%HAXELIB_ROOT%"
 haxelib --global install hmm
 haxelib --global run hmm setup
-hmm install
+cd .. && hmm install
 cls
