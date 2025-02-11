@@ -108,7 +108,7 @@ class PlayState extends SwagState {
 	public var vocals:FlxSound;
 
 	// multiplayer shit
-	public var isMultiplayer:Bool = false;
+	public var islocalMultiplayer:Bool = false;
 	public var p1Score:Int = 0;
 	public var p2Score:Int = 0;
 	public var p1Misses:Int = 0;
@@ -127,7 +127,7 @@ class PlayState extends SwagState {
 	public var p1TotalPlayed:Int = 0;
 	public var p2TotalPlayed:Int = 0;
 
-	static public var lastMultiplayerState:Bool = false;
+	static public var lastLocalMultiplayerState:Bool = false;
 
 	// lou ah (lua)
     public var luaScripts:Array<MoonLua> = [];
@@ -154,7 +154,7 @@ class PlayState extends SwagState {
 
 		curSong = Freeplay.instance.selectedSong;
 		instance = this;
-		isMultiplayer = lastMultiplayerState;
+		islocalMultiplayer = lastLocalMultiplayerState;
 
 		botPlay = Options.getData('botplay');
 		FlxG.sound.music.stop();
@@ -274,7 +274,7 @@ class PlayState extends SwagState {
 			p2StrumNotes.add(daStrum);
 		}
 
-		if (!isMultiplayer) {
+		if (!islocalMultiplayer) {
 			for (strum in p1StrumNotes.members) {
 				strum.screenCenter(X);
 				strum.x += (keyCount * ((laneOffset / 2) * -1)) + (laneOffset / 2);
@@ -299,7 +299,7 @@ class PlayState extends SwagState {
 		ratingText.visible = false;
 		add(ratingText);
 
-		lastMultiplayerState = isMultiplayer;
+		lastLocalMultiplayerState = islocalMultiplayer;
 
 		callOnLuas("onCreatePost", []);
 	}
@@ -488,7 +488,7 @@ class PlayState extends SwagState {
 		if (!Options.getData('botplay')) {
 			Discord.changePresence("Playing: " + curSong, "Score: " + songScore + " - Accuracy: " + Std.string(FlxMath.roundDecimal(accuracy, 2)) + "% - " + notesHit + " Note Combo");
 		}
-		else if (isMultiplayer && !Options.getData('botplay')) {
+		else if (islocalMultiplayer && !Options.getData('botplay')) {
 			Discord.changePresence("Playing: " + curSong, "Against P2!"); // will update to show scores later lol
 		}
 		else {
@@ -500,7 +500,7 @@ class PlayState extends SwagState {
 		if (health > 2)
 			health = 2;
 
-		if (health <= 0 && !isMultiplayer) {
+		if (health <= 0 && !islocalMultiplayer) {
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
@@ -510,7 +510,7 @@ class PlayState extends SwagState {
 			}
 			transitionState(new substates.GameOverSubState());
 		}
-		else if (FlxG.keys.justPressed.R && !isMultiplayer) {
+		else if (FlxG.keys.justPressed.R && !islocalMultiplayer) {
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
@@ -635,8 +635,8 @@ class PlayState extends SwagState {
 				var noteTime = note.strum - Conductor.songPosition;
 				if (noteTime < -Conductor.safeZoneOffset) {
 					note.wasGoodHit = true;
-					if ((note.isP1Note && !isMultiplayer) || 
-						(isMultiplayer && ((note.isP1Note && currentPlayer == 0) || (!note.isP1Note && currentPlayer == 1)))) {
+					if ((note.isP1Note && !islocalMultiplayer) || 
+						(islocalMultiplayer && ((note.isP1Note && currentPlayer == 0) || (!note.isP1Note && currentPlayer == 1)))) {
 						noteMiss(note.direction);
 					}
 					notes.remove(note, true);
@@ -702,7 +702,7 @@ class PlayState extends SwagState {
 	}
 
 	function inputFunction() {
-		if (isMultiplayer) {
+		if (islocalMultiplayer) {
 			// P1 Controls (WASD)
 			for (i in 0...4) {
 				if (FlxG.keys.justPressed.A && i == 0
@@ -820,7 +820,7 @@ class PlayState extends SwagState {
 	}
 
 	function noteMiss(direction:Int) {
-		if (isMultiplayer) {
+		if (islocalMultiplayer) {
 			if (currentPlayer == 0) {
 				p1Misses++;
 				p1Score -= 10;
@@ -874,7 +874,7 @@ class PlayState extends SwagState {
 				accuracyValue = 0;
 		}
 
-		if (isMultiplayer) {
+		if (islocalMultiplayer) {
 			if (currentPlayer == 0) {
 				p1Score += score;
 				p1TotalNotesHit += accuracyValue;
@@ -907,7 +907,7 @@ class PlayState extends SwagState {
 			Conductor.recalculateStuff(songMultiplier);
 	
 			for (note in section.sectionNotes) {
-				if (isMultiplayer) {
+				if (islocalMultiplayer) {
 					var p1Strum = p1StrumNotes.members[note.noteData % keyCount];
 					var p2Strum = p2StrumNotes.members[note.noteData % keyCount];
 					createNote(note, p1Strum, true);
