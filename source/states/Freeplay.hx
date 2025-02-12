@@ -49,7 +49,7 @@ class Freeplay extends SwagState {
 	var songImage:FlxSprite;
 
 	var modeText:FlxText;
-	var isMultiplayer:Bool = false;
+	var islocalMultiplayer:Bool = false;
 
 	public function new() {
 		super();
@@ -130,8 +130,8 @@ class Freeplay extends SwagState {
 		}
 
 		if (FlxG.keys.justPressed.TAB) {
-			isMultiplayer = !isMultiplayer;
-			modeText.text = "Mode: " + (isMultiplayer ? "Local Multiplayer" : "Single Player") + " (TAB to change)";
+			islocalMultiplayer = !islocalMultiplayer;
+			modeText.text = "Mode: " + (islocalMultiplayer ? "Local Multiplayer" : "Single Player") + " (TAB to change)";
 		}
 
 		if (FlxG.keys.justPressed.ENTER) {
@@ -139,7 +139,7 @@ class Freeplay extends SwagState {
 			loadSongJson(selectedSong);
 			var playState = new PlayState();
 			playState.song = songData;
-			playState.isMultiplayer = isMultiplayer;
+			playState.islocalMultiplayer = islocalMultiplayer;
 			transitionState(playState);
 		}
 

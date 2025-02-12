@@ -64,10 +64,8 @@ class ResultsState extends SwagState {
 		text.scrollFactor.set();
 		add(text);
 
-		if (PlayState.instance.isMultiplayer) {
-			var p1Text = new FlxText(20, -75, FlxG.width / 2
-				- 40,
-				'Player 1:\nScore: ${PlayState.instance.p1Score}'
+		if (PlayState.instance.islocalMultiplayer) {
+			var p1Text = new FlxText(20, -75, FlxG.width / 2 - 40, 'Player 1:\nScore: ${PlayState.instance.p1Score}'
 				+ '\nMisses: ${PlayState.instance.p1Misses}'
 				+ '\nAccuracy: ${FlxMath.roundDecimal(PlayState.instance.p1Accuracy, 2)}%');
 			p1Text.size = 28;

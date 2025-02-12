@@ -77,7 +77,7 @@ class PauseSubstate extends SwagSubState {
 					}
 					#end
 				case "Restart Song":
-					PlayState.lastMultiplayerState = PlayState.instance.isMultiplayer;
+					PlayState.lastLocalMultiplayerState = PlayState.instance.islocalMultiplayer;
 					var newPlayState = new PlayState();
 					newPlayState.song = lastSong;
 

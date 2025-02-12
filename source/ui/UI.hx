@@ -28,7 +28,7 @@ class UI extends FlxSpriteGroup {
 		var isDownscroll:Bool = Options.getData('downscroll');
 
 		var textStartY:Int;
-		if (PlayState.instance.isMultiplayer) {
+		if (PlayState.instance.islocalMultiplayer) {
 			textStartY = isDownscroll ? 30 : FlxG.height - 120;
 		} else {
 			textStartY = isDownscroll ? FlxG.height - 120 : 30;
@@ -44,7 +44,7 @@ class UI extends FlxSpriteGroup {
 		healthBar.createFilledBar(0xFFFFFFFF, 0x00FFFFFF);
 		add(healthBar);
 
-		if (PlayState.instance.isMultiplayer) {
+		if (PlayState.instance.islocalMultiplayer) {
 			p2ScoreTxt = new FlxText(20, textStartY, textWidth, "P2 Score: 0", 20);
 			p2ScoreTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.BLUE, FlxTextAlign.LEFT);
 			p2ScoreTxt.scrollFactor.set();
@@ -111,7 +111,7 @@ class UI extends FlxSpriteGroup {
 	}
 
 	public function updateText() {
-		if (PlayState.instance.isMultiplayer) {
+		if (PlayState.instance.islocalMultiplayer) {
 			scoreTxt.text = "P1 Score: " + PlayState.instance.p1Score;
 			accTxt.text = "P1 Accuracy: " + Std.string(FlxMath.roundDecimal(PlayState.instance.p1Accuracy, 2)) + "%";
 			notesHitTXT.visible = false;
