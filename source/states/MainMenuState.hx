@@ -21,7 +21,13 @@ class MainMenuState extends SwagState {
 	private var randomhaxesprite:FlxSprite;
 	private var stars:FlxTypedGroup<FlxSprite>;
 	private var currentSelection:Int = 0;
-	private var menuItems:Array<String> = ["Local", "Online", #if desktop "Download Charts", "Profile", #end "Options", "Exit"];
+	private var menuItems:Array<String> = [
+		"Local",
+		"Online",
+		#if desktop "Download Charts", "Profile", #end
+		"Options",
+		"Exit"
+	];
 
 	override public function create() {
 		FlxG.mouse.visible = true;
@@ -49,7 +55,7 @@ class MainMenuState extends SwagState {
 		titlesprite.scale.set(0.25, 0.25);
 		titlesprite.updateHitbox();
 		titlesprite.screenCenter(X);
-		//add(titlesprite);
+		// add(titlesprite);
 
 		buttons = [];
 		for (i in 0...menuItems.length) {

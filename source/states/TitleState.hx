@@ -7,6 +7,7 @@ import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.util.FlxTimer;
 import states.OutdatedState;
+
 class TitleState extends SwagState {
 	var titlesprite:FlxSprite;
 	var titleMusic:Array<String> = ['Lofi Music 1', 'Lofi Music 2', 'Trojan Virus v3 - VS Ron'];
@@ -43,13 +44,10 @@ class TitleState extends SwagState {
 			transitionState(new MainMenuState());
 			#else
 			AutoUpdater.checkForUpdates();
-			if (AutoUpdater.isNewerVersion(AutoUpdater.latestVersion, AutoUpdater.CURRENT_VERSION) && !OutdatedState.leftState)
-			{
+			if (AutoUpdater.isNewerVersion(AutoUpdater.latestVersion, AutoUpdater.CURRENT_VERSION) && !OutdatedState.leftState) {
 				trace('OLD VERSION!');
 				transitionState(new OutdatedState());
-			}
-			else
-			{
+			} else {
 				transitionState(new MainMenuState());
 			}
 			#end

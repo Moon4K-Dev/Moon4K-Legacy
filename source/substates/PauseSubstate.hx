@@ -80,11 +80,11 @@ class PauseSubstate extends SwagSubState {
 					PlayState.lastMultiplayerState = PlayState.instance.isMultiplayer;
 					var newPlayState = new PlayState();
 					newPlayState.song = lastSong;
-					
+
 					#if desktop
 					PlayState.instance.video.stop();
 					#end
-					
+
 					FlxG.switchState(newPlayState);
 				case "Exit to menu":
 					transitionState(new states.Freeplay());
