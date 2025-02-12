@@ -26,7 +26,7 @@ class UI extends FlxSpriteGroup {
 		var textWidth:Int = 300;
 		var textPadding:Int = 10;
 		var isDownscroll:Bool = Options.getData('downscroll');
-		
+
 		var textStartY:Int;
 		if (PlayState.instance.isMultiplayer) {
 			textStartY = isDownscroll ? 30 : FlxG.height - 120;
@@ -50,13 +50,13 @@ class UI extends FlxSpriteGroup {
 			p2ScoreTxt.scrollFactor.set();
 			p2ScoreTxt.wordWrap = false;
 			add(p2ScoreTxt);
-			
+
 			p2AccTxt = new FlxText(20, textStartY + 30, textWidth, "P2 Accuracy: 0%", 20);
 			p2AccTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.BLUE, FlxTextAlign.LEFT);
 			p2AccTxt.scrollFactor.set();
 			p2AccTxt.wordWrap = false;
 			add(p2AccTxt);
-			
+
 			scoreTxt = new FlxText(FlxG.width - textWidth - textPadding, textStartY, textWidth, "P1 Score: 0", 20);
 			scoreTxt.setFormat(Paths.font('Zero G.ttf'), 26, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 			scoreTxt.scrollFactor.set();

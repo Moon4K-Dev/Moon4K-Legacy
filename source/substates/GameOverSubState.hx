@@ -30,10 +30,10 @@ class GameOverSubState extends SwagSubState {
 		bg.scrollFactor.set();
 		add(bg);
 
-        var tempGOText:FlxText = new FlxText(0, 0, 0, "temporary game over text goes hard");
-        tempGOText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, "center");
-        tempGOText.screenCenter();
-        add(tempGOText);
+		var tempGOText:FlxText = new FlxText(0, 0, 0, "temporary game over text goes hard");
+		tempGOText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, "center");
+		tempGOText.screenCenter();
+		add(tempGOText);
 
 		cameras = [FlxG.cameras.list[1]];
 	}
@@ -51,8 +51,7 @@ class GameOverSubState extends SwagSubState {
 			PlayState.instance.video.stop();
 			#end
 			transitionState(newPlayState);
-		}
-		else if (accepted && !back && PlayState.instance.isMultiplayer) {
+		} else if (accepted && !back && PlayState.instance.isMultiplayer) {
 			var newPlayState = new PlayState();
 			newPlayState.song = lastSong;
 			#if desktop

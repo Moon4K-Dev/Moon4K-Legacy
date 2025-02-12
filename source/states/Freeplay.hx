@@ -234,22 +234,23 @@ class Freeplay extends SwagState {
 		var cleanSongName = songName.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
 		var path = "data/charts/" + songName + "/" + cleanSongName;
 		var directory = "data/charts/" + songName;
-		
+
 		var moonPath = path + ".moon";
 		if (FileSystem.exists(moonPath)) {
 			var jsonContent:String = File.getContent(moonPath);
 			songData = Json.parse(jsonContent);
-			
+
 			trace("Loaded Moon format: " + moonPath);
 			return;
 		}
-		
+
 		var files = FileSystem.readDirectory(directory);
 		var foundFile:String = null;
 		var difficulties = ["", "-easy", "-hard"];
-		
+
 		for (diff in difficulties) {
-			if (foundFile != null) break;
+			if (foundFile != null)
+				break;
 			for (f in files) {
 				var lowerFile = f.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
 				var lowerSong = cleanSongName + diff;
@@ -259,10 +260,11 @@ class Freeplay extends SwagState {
 				}
 			}
 		}
-		
+
 		if (foundFile == null) {
 			for (diff in difficulties) {
-				if (foundFile != null) break;
+				if (foundFile != null)
+					break;
 				for (f in files) {
 					var lowerFile = f.toLowerCase().replace(" ", "").replace("(", "").replace(")", "");
 					var lowerSong = cleanSongName + diff;
@@ -273,7 +275,7 @@ class Freeplay extends SwagState {
 				}
 			}
 		}
-		
+
 		if (foundFile != null) {
 			var fullPath = directory + "/" + foundFile;
 			if (foundFile.endsWith(".json")) {

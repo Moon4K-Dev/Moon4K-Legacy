@@ -6,12 +6,10 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.app.Application;
 
-class OutdatedState extends SwagState
-{
+class OutdatedState extends SwagState {
 	public static var leftState:Bool = false;
 
-	override function create()
-	{
+	override function create() {
 		super.create();
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
@@ -28,14 +26,11 @@ class OutdatedState extends SwagState
 		add(txt);
 	}
 
-	override function update(elapsed:Float)
-	{
-		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
-		{
+	override function update(elapsed:Float) {
+		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
 			AutoUpdater.downloadUpdate();
 		}
-		if (FlxG.keys.justPressed.ESCAPE)
-		{
+		if (FlxG.keys.justPressed.ESCAPE) {
 			leftState = true;
 			transitionState(new MainMenuState());
 		}
