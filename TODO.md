@@ -6,16 +6,16 @@
 
 ## v1.0.0 RELEASE
 
-- [] Fix the hold notes scale.
+- [ ] Fix the hold notes scale.
 
-- [] Improve the Chart Editor. (A heavy maybe.)
+- [ ] Improve the Chart Editor. (A heavy maybe.)
 
 - [x] Local multiplayer
 
-- [] Online multiplayer
+- [ ] Online multiplayer
 
-- [] Mobile Support
+- [ ] Mobile Support
 
 - [x] Get hold notes to work. (Thanks Joalor64GH!) - I gotta redo em since I fucked em up lol!
 
-- [] Add support for adding custom online map repos (in-game).
+- [ ] Add support for adding custom online map repos (in-game).
