@@ -22,7 +22,7 @@
 
 * MaybeKoi - Main Programmer
 * Codie/hubbabubbagym - Artist (Made the Moon4K logo)
-* Joalor64GH - Got sustains/hold notes working!
+* Joalor64GH - Got sustains/hold notes working, and lua scripts working.
 * ★†~AxylusMusic~†★ - WIP Moon4K OST 
 * UncertainProd - StepMania Chart Converter Base (taken from [here](https://github.com/UncertainProd/SMToPsychFNF-Web))
 * YT Playlist - Title Music (https://www.youtube.com/watch?v=hQT6WMJ-Fco&list=PL06diOotXAJLAAHBY7kIUm5GQwm2ZinOz&index=1)
