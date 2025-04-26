@@ -62,7 +62,7 @@ class Note extends FlxSprite {
 
 	public function loadNoteSkin(?noteskin:String = 'default', ?direction:Int = 0) {
 		// ADD MOD SUPPORT TO THIS CHECK
-		if (!Assets.exists('data/images/ui-skins/$noteskin/config.json')) {
+		if (!Assets.exists('content/images/ui-skins/$noteskin/config.json')) {
 			Options.saveData('ui-skin', 0);
 			noteskin = Options.getNoteskins()[0];
 		}

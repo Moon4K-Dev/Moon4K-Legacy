@@ -114,12 +114,12 @@ class Paths {
 	}
 
 	inline static function getLibraryPathForce(file:String, library:String) {
-		var returnPath = '$library:data/$library/$file';
+		var returnPath = '$library:content/$library/$file';
 		return returnPath;
 	}
 
 	inline public static function getPreloadPath(file:String = '') {
-		return 'data/$file';
+		return 'content/$file';
 	}
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String) {
@@ -127,15 +127,15 @@ class Paths {
 	}
 
 	inline static public function txt(key:String, ?library:String) {
-		return getPath('data/$key.txt', TEXT, library);
+		return getPath('content/$key.txt', TEXT, library);
 	}
 
 	inline static public function xml(key:String, ?library:String) {
-		return getPath('data/$key.xml', TEXT, library);
+		return getPath('content/$key.xml', TEXT, library);
 	}
 
 	inline static public function json(key:String, ?library:String) {
-		return getPath('data/$key.json', TEXT, library);
+		return getPath('content/$key.json', TEXT, library);
 	}
 
 	inline static public function shaderFragment(key:String, ?library:String) {
@@ -151,7 +151,7 @@ class Paths {
 	}
 
 	static public function video(key:String) {
-		return 'data/videos/$key.$VIDEO_EXT';
+		return 'content/videos/$key.$VIDEO_EXT';
 	}
 
 	static public function sound(key:String, ?library:String):Sound {
@@ -247,7 +247,7 @@ class Paths {
 	}
 
 	inline static public function font(key:String) {
-		return 'data/fonts/$key';
+		return 'content/fonts/$key';
 	}
 
 	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String) {

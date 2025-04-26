@@ -182,7 +182,7 @@ class PlayState extends SwagState {
 		FlxG.cameras.add(camHUD);
 		hud = new UI();
 
-		var foldersToCheck:Array<String> = ['data/charts/${curSong}/', 'data/scripts/'];
+		var foldersToCheck:Array<String> = ['content/charts/${curSong}/', 'content/scripts/'];
 		for (folder in foldersToCheck) {
 			if (FileSystem.exists(folder) && FileSystem.isDirectory(folder)) {
 				for (file in FileSystem.readDirectory(folder)) {
@@ -338,10 +338,10 @@ class PlayState extends SwagState {
 	#if desktop
 	function checkAndSetBackground():Void {
 		var daSongswag = song.song;
-		var imagePath = 'data/charts/${daSongswag}/image';
-		var imagePathAlt = 'data/charts/${daSongswag}/${daSongswag}-bg';
-		var imagePathAlt2 = 'data/charts/${daSongswag}/${daSongswag}';
-		var bgVideoPath:String = 'data/charts/' + daSongswag + '/video.mp4';
+		var imagePath = 'content/charts/${daSongswag}/image';
+		var imagePathAlt = 'content/charts/${daSongswag}/${daSongswag}-bg';
+		var imagePathAlt2 = 'content/charts/${daSongswag}/${daSongswag}';
+		var bgVideoPath:String = 'content/charts/' + daSongswag + '/video.mp4';
 
 		var loadedImage:FlxGraphic = Cache.getFromCache(imagePath, "image");
 		var loadedImageAlt:FlxGraphic = Cache.getFromCache(imagePathAlt, "image");
@@ -409,7 +409,7 @@ class PlayState extends SwagState {
 	}
 
 	private function loadSongAudio(daSong:String):Void {
-		var directory = "data/charts/" + daSong + "/";
+		var directory = "content/charts/" + daSong + "/";
 
 		if (FileSystem.exists(directory + "Inst.ogg")) {
 			var instPath = directory + "Inst.ogg";

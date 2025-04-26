@@ -59,7 +59,7 @@ class Options {
 		var swagArray:Array<String> = [];
 
 		#if sys
-		swagArray = sys.FileSystem.readDirectory(Sys.getCwd() + "data/images/ui-skins");
+		swagArray = sys.FileSystem.readDirectory(Sys.getCwd() + "content/images/ui-skins");
 		#else
 		swagArray = ["default", "funkin"];
 		#end
