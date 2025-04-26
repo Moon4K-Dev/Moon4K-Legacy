@@ -21,8 +21,7 @@
 # Credits
 
 * MaybeKoi - Main Programmer
-* YoPhlox - Former Main Programmer
-* 失った - Helper (legit got the in-game dl working properly)
+* Codie/hubbabubbagym - Artist (Made the Moon4K logo)
 * Joalor64GH - Got sustains/hold notes working!
 * ★†~AxylusMusic~†★ - WIP Moon4K OST 
 * UncertainProd - StepMania Chart Converter Base (taken from [here](https://github.com/UncertainProd/SMToPsychFNF-Web))

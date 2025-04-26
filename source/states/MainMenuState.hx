@@ -51,11 +51,11 @@ class MainMenuState extends SwagState {
 		randomhaxesprite.antialiasing = true;
 		add(randomhaxesprite);
 
-		titlesprite = new FlxSprite(0, -50).loadGraphic(Paths.image(''));
+		titlesprite = new FlxSprite(0, -50).loadGraphic(Paths.image('sexylogobyhiro'));
 		titlesprite.scale.set(0.25, 0.25);
 		titlesprite.updateHitbox();
 		titlesprite.screenCenter(X);
-		// add(titlesprite);
+		add(titlesprite);
 
 		buttons = [];
 		for (i in 0...menuItems.length) {
@@ -71,7 +71,7 @@ class MainMenuState extends SwagState {
 		FlxTween.tween(titlesprite, {y: 50}, 1, {ease: FlxEase.elasticOut});
 		FlxTween.tween(randomhaxesprite, {y: FlxG.height * 0.25}, 2, {ease: FlxEase.sineInOut, type: PINGPONG});
 
-		var devcred:FlxText = new FlxText(5, FlxG.height - 37, 0, "Moon4K by: YoPhlox, MaybeKoi, Lost, and Joalor64GH", 12);
+		var devcred:FlxText = new FlxText(5, FlxG.height - 37, 0, "Code by: maybekoi and Joalor64GH \nLogo by: Codie/hubbabubbagym", 12);
 		devcred.scrollFactor.set();
 		devcred.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.SHADOW, FlxColor.BLACK);
 		add(devcred);
