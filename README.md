@@ -1,4 +1,6 @@
-# Moon4K
+# Moon4K - Legacy
+
+* The legacy HaxeFlixel version of Moon4K. You can check the new version out [here](https://github.com/Moon4K-Dev/Moon4K-HE)
 
 * Funny 4k rhythm game made by basically three people
 
