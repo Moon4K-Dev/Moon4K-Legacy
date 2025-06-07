@@ -7,7 +7,7 @@ import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import states.PlayState;
@@ -72,14 +72,20 @@ class PauseSubstate extends SwagSubState {
 					close();
 					#if desktop
 					PlayState.instance.video.resume();
+					if (PlayState.instance.vocals != null) {
+						PlayState.instance.vocals.play();
+					}
 					#end
 				case "Restart Song":
+					PlayState.lastLocalMultiplayerState = PlayState.instance.islocalMultiplayer;
 					var newPlayState = new PlayState();
 					newPlayState.song = lastSong;
+
 					#if desktop
 					PlayState.instance.video.stop();
 					#end
-					transitionState(newPlayState);
+
+					FlxG.switchState(newPlayState);
 				case "Exit to menu":
 					transitionState(new states.Freeplay());
 					#if desktop

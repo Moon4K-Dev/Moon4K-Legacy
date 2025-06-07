@@ -20,26 +20,26 @@ class Util {
 	 * Return a font from the `assets` folder with the correct format, ttf & otf are supported.
 	 * @param   fontPath            Path to the font.
 	 */
-	static public function getFont(font:String) // defaults to "assets/fonts/main.ttf"
+	static public function getFont(font:String) // defaults to "content/fonts/main.ttf"
 	{
-		var fontPath:String = 'assets/fonts/$font.ttf';
+		var fontPath:String = 'content/fonts/$font.ttf';
 		#if web
 		if (Assets.exists(fontPath)) {
 			return Assets.getText(fontPath);
 		} else {
-			fontPath = 'assets/fonts/$font.otf';
+			fontPath = 'content/fonts/$font.otf';
 			if (Assets.exists(fontPath)) {
 				return Assets.getText(fontPath);
 			}
 		}
-		return Assets.getText('assets/fonts/main.ttf');
+		return Assets.getText('content/fonts/main.ttf');
 		#else
-		if (sys.FileSystem.exists(Sys.getCwd() + 'assets/fonts/$font.ttf'))
-			return Sys.getCwd() + 'assets/fonts/$font.ttf';
-		else if (sys.FileSystem.exists(Sys.getCwd() + 'assets/fonts/$font.otf'))
-			return Sys.getCwd() + 'assets/fonts/$font.otf';
+		if (sys.FileSystem.exists(Sys.getCwd() + 'content/fonts/$font.ttf'))
+			return Sys.getCwd() + 'content/fonts/$font.ttf';
+		else if (sys.FileSystem.exists(Sys.getCwd() + 'content/fonts/$font.otf'))
+			return Sys.getCwd() + 'content/fonts/$font.otf';
 
-		return Sys.getCwd() + 'assets/fonts/main.ttf';
+		return Sys.getCwd() + 'content/fonts/main.ttf';
 		#end
 	}
 
@@ -52,9 +52,9 @@ class Util {
 		var png = path;
 
 		if (!customPath)
-			png = "assets/images/" + png;
+			png = "content/images/" + png;
 		else
-			png = "assets/" + png;
+			png = "content/" + png;
 
 		#if web
 		if (Assets.exists(png + ".png")) {
@@ -87,9 +87,9 @@ class Util {
 		var png = path;
 
 		if (!customPath)
-			png = "assets/charts/" + png;
+			png = "content/charts/" + png;
 		else
-			png = "assets/" + png;
+			png = "content/" + png;
 
 		#if web
 		if (Assets.exists(png + ".png")) {
@@ -122,9 +122,9 @@ class Util {
 		var videoPath = path;
 
 		if (!customPath)
-			videoPath = "assets/charts/" + videoPath;
+			videoPath = "content/charts/" + videoPath;
 		else
-			videoPath = "assets/" + videoPath;
+			videoPath = "content/" + videoPath;
 
 		#if desktop
 		if (sys.FileSystem.exists(Sys.getCwd() + videoPath + ".mp4")) {
@@ -155,11 +155,11 @@ class Util {
 			xml = png;
 
 		if (customPath) {
-			png = 'assets/$png';
-			xml = 'assets/$xml';
+			png = 'content/$png';
+			xml = 'content/$xml';
 		} else {
-			png = 'assets/images/$png';
-			xml = 'assets/images/$xml';
+			png = 'content/images/$png';
+			xml = 'content/images/$xml';
 		}
 
 		#if web
@@ -190,7 +190,7 @@ class Util {
 		}
 		#end
 
-		return FlxAtlasFrames.fromSparrow("assets/images/errorSparrow" + ".png", "assets/images/errorSparrow" + ".xml");
+		return FlxAtlasFrames.fromSparrow("content/images/errorSparrow" + ".png", "content/images/errorSparrow" + ".xml");
 	}
 
 	/**
@@ -198,7 +198,7 @@ class Util {
 	 * MP3 is used for web, OGG is used for Desktop.
 	 * @param   soundPath            Path to the sound.
 	 * @param   isMusic              Define if the sound is from the `music` folder.
-	 * @param   customPath           Define a custom path for your sound. EX: `data/mySound`
+	 * @param   customPath           Define a custom path for your sound. EX: `content/mySound`
 	 */
 	static public function getSound(path:String, ?music:Bool = false, ?customPath:Bool = false):Dynamic {
 		var base:String = "";
@@ -211,11 +211,11 @@ class Util {
 		if (Cache.getFromCache(gamingPath, "sound") == null) {
 			var sound:Sound = null;
 			#if web
-			if (Assets.exists("assets/" + gamingPath)) {
-				sound = Assets.getSound("assets/" + gamingPath);
+			if (Assets.exists("content/" + gamingPath)) {
+				sound = Assets.getSound("content/" + gamingPath);
 			}
 			#else
-			sound = Sound.fromFile("assets/" + gamingPath);
+			sound = Sound.fromFile("content/" + gamingPath);
 			#end
 			if (sound != null) {
 				Cache.addToCache(gamingPath, sound, "sound");
@@ -242,12 +242,12 @@ class Util {
 	 */
 	static public function getText(filePath:String) {
 		#if web
-		if (Assets.exists("assets/" + filePath)) {
-			return Assets.getText("assets/" + filePath);
+		if (Assets.exists("content/" + filePath)) {
+			return Assets.getText("content/" + filePath);
 		}
 		#else
-		if (sys.FileSystem.exists(Sys.getCwd() + "assets/" + filePath))
-			return sys.io.File.getContent(Sys.getCwd() + "assets/" + filePath);
+		if (sys.FileSystem.exists(Sys.getCwd() + "content/" + filePath))
+			return sys.io.File.getContent(Sys.getCwd() + "content/" + filePath);
 		#end
 
 		return "";
@@ -259,12 +259,12 @@ class Util {
 	 */
 	static public function getJson(filePath:String) {
 		#if web
-		if (Assets.exists('assets/$filePath.json')) {
-			return Json.parse(Assets.getText('assets/$filePath.json'));
+		if (Assets.exists('content/$filePath.json')) {
+			return Json.parse(Assets.getText('content/$filePath.json'));
 		}
 		#else
-		if (sys.FileSystem.exists(Sys.getCwd() + 'assets/$filePath.json'))
-			return Json.parse(sys.io.File.getContent(Sys.getCwd() + 'assets/$filePath.json'));
+		if (sys.FileSystem.exists(Sys.getCwd() + 'content/$filePath.json'))
+			return Json.parse(sys.io.File.getContent(Sys.getCwd() + 'content/$filePath.json'));
 		#end
 
 		return null;

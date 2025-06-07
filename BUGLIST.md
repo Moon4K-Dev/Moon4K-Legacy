@@ -1,5 +1,5 @@
 # CURRENT BUGS
 
-* No hold notes
+- Hold notes don't disappear when you hold them
 
-yeah that's all
+- Game freezes when it checks for updates (might not be fixable...)

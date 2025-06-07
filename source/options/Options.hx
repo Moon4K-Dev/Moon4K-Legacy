@@ -15,7 +15,7 @@ class Options {
 
 	// functions
 	static public function init() {
-		FlxG.save.bind("ya4krg", "TyDotCS");
+		FlxG.save.bind("Moon4K", "YoPhlox");
 
 		for (option in defaultOptions) {
 			if (getData(option[0]) == null)
@@ -59,7 +59,7 @@ class Options {
 		var swagArray:Array<String> = [];
 
 		#if sys
-		swagArray = sys.FileSystem.readDirectory(Sys.getCwd() + "assets/images/ui-skins");
+		swagArray = sys.FileSystem.readDirectory(Sys.getCwd() + "content/images/ui-skins");
 		#else
 		swagArray = ["default", "funkin"];
 		#end

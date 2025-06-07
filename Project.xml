@@ -4,7 +4,7 @@
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Moon4K!" file="Moon4K" main="Main" version="1.0.0" company="Celestial Studios" />
+	<app title="Moon4K!" file="Moon4K" main="Main" version="1.0.0" company="YoPhlox" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -31,13 +31,13 @@
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 	
 	<source path="source" />
-	<assets path="assets" />
+	<assets path="content" />
 
-	<assets path="assets/images" />
-	<assets path="assets/sfx" exclude="*.ogg" if="web"/>
-	<assets path="assets/sfx" exclude="*.mp3" unless="web"/>
-	<assets path="assets/charts" />
-	<assets path="assets/fonts" />
+	<assets path="content/images" />
+	<assets path="content/sfx" exclude="*.ogg" if="web"/>
+	<assets path="content/sfx" exclude="*.mp3" unless="web"/>
+	<assets path="content/charts" />
+	<assets path="content/fonts" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
@@ -46,15 +46,18 @@
 	<haxelib name="flixel-ui"/>
 	<haxelib name="hxdiscord_rpc" if="desktop"/>
 	<haxelib name="hxCodec" if="desktop || mobile"/>
-	<haxelib name="hscript-improved"/>
 	<haxelib name="hxcpp-debug-server" if="debug" />
-	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>
 	<haxelib name="funkin.vis"/>
 	<haxelib name="grig.audio"/>
+	<haxelib name="linc_luajit" if="desktop"/>
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
+
+	<!-- Moon4K specific lol -->
+	<haxedef name="SKIP_UPDATES" if="skippatchcheck" /> <!-- Unreal Engine Reference -->
+	<assets path='CHANGELOGS.md' rename='CHANGELOGS.txt' />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

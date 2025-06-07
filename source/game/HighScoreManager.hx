@@ -11,7 +11,7 @@ import openfl.net.SharedObject;
 #end
 
 class HighScoreManager {
-	private static var filePath:String = "assets/highscores.json";
+	private static var filePath:String = "content/highscores.json";
 	private static var sharedObject:Dynamic;
 
 	public static var highScores:Array<Dynamic>;

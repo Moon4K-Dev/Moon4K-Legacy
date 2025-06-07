@@ -6,7 +6,7 @@ import flixel.FlxState;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import game.Conductor;
 import game.Note;
@@ -233,12 +233,10 @@ class ChartingState extends SwagState {
 			PlayState.instance.song = song;
 		}
 
-		if (FlxG.keys.justPressed.E)
-		{
+		if (FlxG.keys.justPressed.E) {
 			changeNoteSustain(Conductor.stepCrochet);
 		}
-		if (FlxG.keys.justPressed.Q)
-		{
+		if (FlxG.keys.justPressed.Q) {
 			changeNoteSustain(-Conductor.stepCrochet);
 		}
 
@@ -404,8 +402,7 @@ class ChartingState extends SwagState {
 
 		renderedNotes.clear();
 
-		while (renderedSustains.members.length > 0)
-		{
+		while (renderedSustains.members.length > 0) {
 			renderedSustains.remove(renderedSustains.members[0], true);
 		}
 

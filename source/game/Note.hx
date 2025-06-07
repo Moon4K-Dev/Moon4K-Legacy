@@ -23,6 +23,7 @@ class Note extends FlxSprite {
 	public var wasGoodHit:Bool = false;
 
 	public var keyCount:Int = 4;
+	public var isP1Note:Bool = true;
 
 	public static var swagWidth:Float = 160 * 0.7;
 
@@ -61,7 +62,7 @@ class Note extends FlxSprite {
 
 	public function loadNoteSkin(?noteskin:String = 'default', ?direction:Int = 0) {
 		// ADD MOD SUPPORT TO THIS CHECK
-		if (!Assets.exists('assets/images/ui-skins/$noteskin/config.json')) {
+		if (!Assets.exists('content/images/ui-skins/$noteskin/config.json')) {
 			Options.saveData('ui-skin', 0);
 			noteskin = Options.getNoteskins()[0];
 		}

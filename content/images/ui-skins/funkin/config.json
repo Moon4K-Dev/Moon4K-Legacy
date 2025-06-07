@@ -5,20 +5,16 @@
         ["up static0", "up press0", "up confirm0", "up note0"],
         ["right static0", "right press0", "right confirm0", "right note0"],
         ["middle static0", "middle press0", "middle confirm0", "middle note0"],
-        ["left static0", "leftalt press0", "leftalt confirm0", "leftalt note0"],
-        ["down static0", "downalt press0", "downalt confirm0", "downalt note0"],
-        ["up static0", "upalt press0", "upalt confirm0", "upalt note0"],
-        ["right static0", "rightalt press0", "rightalt confirm0", "rightalt note0"],
-        ["left hold", "left hold end"],
-        ["down hold", "down hold end"],
-        ["up hold", "up hold end"],
-        ["right hold", "right hold end"]
+        ["left hold0", "left hold end0"],
+        ["down hold0", "down hold end0"],
+        ["up hold0", "up hold end0"],
+        ["right hold0", "right hold end0"],
+        ["middle hold0", "middle hold end0"]
     ],
     "name": "FNF Arrows",
     "size": 0.63,
     "framerate": 24,
     "noColoring": true,
     "antialiasing": true,
-    "offsets": [1, 1],
     "sustainTransparency": 0.6
 }

@@ -1,3 +1,0 @@
-python fnftoMoon4K.py bopeebo.json
-
-(change bopeebo.json to whatever chart you're trying to convert)

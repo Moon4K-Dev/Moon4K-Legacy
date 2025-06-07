@@ -19,13 +19,7 @@ class OptionSelectState extends SwagState {
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 
-	var menuShit:Array<Dynamic> = [
-		["Graphics"],
-		["Gameplay"],
-		["UI Skin"],
-		["Controls"],
-		["Exit"]
-	];
+	var menuShit:Array<Dynamic> = [["Graphics"], ["Gameplay"], ["UI Skin"], ["Controls"], ["Exit"]];
 	var menuItems:FlxTypedGroup<OptionSelectBox>;
 
 	override public function create() {
@@ -89,7 +83,8 @@ class OptionSelectState extends SwagState {
 					BaseOptionsSubState.menuShit = [
 						[
 							"Anti-Aliasing",
-							"Improves performance at the cost of sharper graphics when\ndisabled.",
+							"Improves performance at the cost of sharper graphics when\ndisabled.\nCurrently: " +
+							(Options.getData('antialiasing') ? "ON" : "OFF"),
 							"antialiasing",
 							"bool"
 						]
@@ -102,11 +97,16 @@ class OptionSelectState extends SwagState {
 					BaseOptionsSubState.menuShit = [
 						[
 							"Downscroll",
-							"Makes all notes scroll downwards instead of upwards.",
+							"Makes all notes scroll downwards instead of upwards.\nCurrently: " + (Options.getData('downscroll') ? "ON" : "OFF"),
 							"downscroll",
 							"bool"
 						],
-						["Botplay", "Makes the bot play the game", "botplay", "bool"],
+						[
+							"Botplay",
+							"Makes the bot play the game\nCurrently: " + (Options.getData('botplay') ? "ON" : "OFF"),
+							"botplay",
+							"bool"
+						],
 						[
 							"Note Offset",
 							"Adjust how early/late your notes appear on-screen.",

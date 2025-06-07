@@ -39,12 +39,12 @@ class ControlsOptionsState extends SwagState {
 
 		for (i in 0...options.length) {
 			var optionText = new FlxText(20, 100 + i * 40, 200, options[i]);
-			optionText.setFormat("assets/fonts/Zero G.ttf", 16, FlxColor.WHITE, LEFT);
+			optionText.setFormat("content/fonts/Zero G.ttf", 16, FlxColor.WHITE, LEFT);
 			optionTexts.push(optionText);
 			add(optionText);
 
 			var keyText = new FlxText(FlxG.width - 220, 100 + i * 40, 200, "");
-			keyText.setFormat("assets/fonts/Zero G.ttf", 16, FlxColor.WHITE, RIGHT);
+			keyText.setFormat("content/fonts/Zero G.ttf", 16, FlxColor.WHITE, RIGHT);
 			keyTexts.push(keyText);
 			add(keyText);
 		}

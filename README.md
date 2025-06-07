@@ -20,15 +20,12 @@
 
 * In-game Song Downloader
 
-* [HScript support!](https://github.com/Celestial-Studioz/Moon4K/tree/main/docs/HScript.md)
-
 # Credits
 
-* YoPhlox - Main Programmer
-* 失った - Helper (legit got the in-game dl working properly)
-* Joalor64GH - Got sustains/hold notes working!
-* Skdoobep - Artist (Made the Moon4K logo)
+* MaybeKoi - Main Programmer
+* Codie/hubbabubbagym - Artist (Made the Moon4K logo)
+* Joalor64GH - Got sustains/hold notes working, and lua scripts working.
 * ★†~AxylusMusic~†★ - WIP Moon4K OST 
-* UncertainProd - StepMania Chart Converter (taken from [here](https://github.com/UncertainProd/SMToPsychFNF-Web))
+* UncertainProd - StepMania Chart Converter Base (taken from [here](https://github.com/UncertainProd/SMToPsychFNF-Web))
 * YT Playlist - Title Music (https://www.youtube.com/watch?v=hQT6WMJ-Fco&list=PL06diOotXAJLAAHBY7kIUm5GQwm2ZinOz&index=1)
 * DeepFriedBolognese - Trojan Virus v3 - V.S. Ron
